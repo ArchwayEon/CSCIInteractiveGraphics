@@ -1,6 +1,9 @@
 #include <glad\glad.h>
 #include "GLSLGraphicsShader.h"
 #include <sstream>
+#include <fstream>
+using std::stringstream;
+using std::ifstream;
 
 void GLSLGraphicsShader::SetUpDefaultSource()
 {
@@ -11,7 +14,7 @@ void GLSLGraphicsShader::SetUpDefaultSource()
       "out vec4 fragColor;\n"\
       "void main()\n"\
       "{\n"\
-      "   gl_Position = vec4(position, 1.0);\n" \
+      "   gl_Position = vec4(position, 1.0)\n" \
       "   fragColor = vec4(vertexColor, 1.0);\n" \
       "}\n";
 
@@ -25,14 +28,14 @@ void GLSLGraphicsShader::SetUpDefaultSource()
       "}\n";
 }
 
-void GLSLGraphicsShader::LoadVertexSourceFromFile(const string& filePath)
+bool GLSLGraphicsShader::LoadVertexSourceFromFile(const string& filePath)
 {
-   // TODO
+   return ReadTextFile(filePath, _vertexSource);
 }
 
-void GLSLGraphicsShader::LoadFragmentSourceFromFile(const string& filePath)
+bool GLSLGraphicsShader::LoadFragmentSourceFromFile(const string& filePath)
 {
-   // TODO
+   return ReadTextFile(filePath, _fragmentSource);
 }
 
 string GLSLGraphicsShader::ReportErrors()
@@ -98,6 +101,38 @@ void GLSLGraphicsShader::LogError(GLuint shader, PFNGLGETSHADERIVPROC glGet__iv,
    glGet__iv(shader, GL_INFO_LOG_LENGTH, &logLength);
    char* info = (char*)malloc(logLength);
    glGet__InfoLog(shader, logLength, NULL, info);
-   _errorReport = string(info);
+   stringstream ss;
+   ss << info;
+   getline(ss, _errorReport);
    free(info);
+}
+
+bool GLSLGraphicsShader::ReadTextFile(const string& filePath, string& data)
+{
+   stringstream ss;
+   ifstream fin;
+   fin.open(filePath.c_str());
+   if (fin.fail()) {
+      ss << "Could not open: " << filePath << std::endl;
+      getline(ss, _errorReport);
+      return false;
+   }
+
+   string line;
+   while (!fin.eof()) {
+      getline(fin, line);
+      Trim(line);
+      if (line != "") { // Skip blank lines
+         data += line + "\n";
+      }
+   }
+   fin.close();
+   return true;
+}
+
+void GLSLGraphicsShader::Trim(string& str)
+{
+   const string delimiters = " \f\n\r\t\v";
+   str.erase(str.find_last_not_of(delimiters) + 1);
+   str.erase(0, str.find_first_not_of(delimiters));
 }

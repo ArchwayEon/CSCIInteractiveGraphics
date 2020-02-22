@@ -15,7 +15,12 @@ private:
    Vertex * _objectData;
 
 public:
-   OpenGLGraphicsObject() : _vaoId(0), _vboId(0), _arraySize(0), _objectData(nullptr)
+   OpenGLGraphicsObject() : 
+      _vaoId(0), _vboId(0), _arraySize(0), _objectData(nullptr)
+   {}
+   OpenGLGraphicsObject(AbstractGraphicsShader* shader) : 
+      AbstractGraphicsObject(shader), _vaoId(0), _vboId(0), 
+      _arraySize(0), _objectData(nullptr)
    {}
    ~OpenGLGraphicsObject();
    void SetObjectData(Vertex* objectData, GLsizei size) { 

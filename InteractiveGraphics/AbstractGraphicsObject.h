@@ -10,6 +10,8 @@ protected:
 
 public:
    AbstractGraphicsObject() : _shader(nullptr) {}
+   AbstractGraphicsObject(AbstractGraphicsShader* shader) :
+      _shader(shader) {}
    virtual ~AbstractGraphicsObject() {}
    virtual void SetShader(AbstractGraphicsShader* shader) {
       _shader = shader;

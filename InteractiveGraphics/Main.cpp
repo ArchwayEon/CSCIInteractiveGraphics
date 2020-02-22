@@ -5,13 +5,23 @@
 #include "OpenGLGraphicsSystem.h"
 #include "OpenGLGraphicsObject.h"
 
+void ReportError(const string& error) 
+{
+   wstring errorString(error.begin(), error.end());
+   MessageBox(
+      NULL,
+      errorString.c_str(),
+      L"An Error Occurred",
+      MB_OK);
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    _In_opt_ HINSTANCE hPrevInstance,
    _In_ LPWSTR    lpCmdLine,
    _In_ int       nCmdShow)
 {
    OpenGLGraphicsWindow* window = 
-      new OpenGLGraphicsWindow("Interactive Graphics Lec Week 6", 800, 600);
+      new OpenGLGraphicsWindow("Interactive Graphics Lec Week 6");
    window->backgroundColor = { 0.5f, 0.0f, 0.5f };
 
    OpenGLGraphicsObject* rectangle = new OpenGLGraphicsObject();
@@ -61,7 +71,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    rectangle->SetObjectData(rectangleVertices, 6);
 
    GLSLGraphicsShader* shader = new GLSLGraphicsShader();
-   shader->SetUpDefaultSource();
+   //shader->SetUpDefaultSource();
+   if (!shader->LoadVertexSourceFromFile("SimpleVertexShader.glsl")) {
+      ReportError(shader->ReportErrors());
+      return 0;
+   }
+   if (!shader->LoadFragmentSourceFromFile("SimpleFragmentShader.glsl")) {
+      ReportError(shader->ReportErrors());
+      return 0;
+   }
    rectangle->SetShader(shader);
 
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, shader);
@@ -72,13 +90,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
       graphics->Run();
    }
    else {
-      string error = graphics->ReportErrors();
-      wstring errorString(error.begin(), error.end());
-      MessageBox(
-         NULL, 
-         errorString.c_str(),
-         L"An Error Occurred", 
-         MB_OK);
+      ReportError(graphics->ReportErrors());
    }
    delete graphics;
    return 0;

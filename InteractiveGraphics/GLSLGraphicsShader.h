@@ -19,8 +19,8 @@ public:
       _vertexSource(""), _fragmentSource("") {}
    ~GLSLGraphicsShader() {}
    void SetUpDefaultSource();
-   void LoadVertexSourceFromFile(const string& filePath);
-   void LoadFragmentSourceFromFile(const string& filePath);
+   bool LoadVertexSourceFromFile(const string& filePath);
+   bool LoadFragmentSourceFromFile(const string& filePath);
    string ReportErrors();
    bool Create();
    void Select();
@@ -28,7 +28,10 @@ public:
 private:
    GLuint CompileShader(GLenum type, const GLchar* source);
    GLuint LinkShader(GLuint vertexShader, GLuint fragmentShader);
-   void LogError(GLuint shader, PFNGLGETSHADERIVPROC glGet__iv, PFNGLGETSHADERINFOLOGPROC glGet__InfoLog);
+   void LogError(GLuint shader, PFNGLGETSHADERIVPROC glGet__iv, 
+      PFNGLGETSHADERINFOLOGPROC glGet__InfoLog);
+   bool ReadTextFile(const string& filePath, string& data);
+   void Trim(string& str);
 };
 
 #endif

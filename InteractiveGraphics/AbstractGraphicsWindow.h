@@ -16,7 +16,7 @@ public:
    RGBA backgroundColor;
 
 public:
-   AbstractGraphicsWindow(string title, int width, int height);
+   AbstractGraphicsWindow(string title, int width=800, int height=600);
    virtual ~AbstractGraphicsWindow();
 
    virtual bool Create() = 0;

@@ -12,7 +12,7 @@ private:
    GLFWwindow* _window;
 
 public:
-   OpenGLGraphicsWindow(string title, int width, int height) :
+   OpenGLGraphicsWindow(string title, int width=800, int height=600) :
       AbstractGraphicsWindow(title, width, height) {
       backgroundColor.red = 0.0f;
       backgroundColor.green = 0.0f;

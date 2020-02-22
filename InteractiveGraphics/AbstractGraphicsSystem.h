@@ -29,7 +29,6 @@ public:
    virtual void ShowWindow() = 0;
    virtual void Setup() = 0;
    virtual void Run() = 0;
-   
 };
 
 #endif
