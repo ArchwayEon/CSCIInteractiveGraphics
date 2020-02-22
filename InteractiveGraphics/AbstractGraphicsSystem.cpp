@@ -8,4 +8,7 @@ AbstractGraphicsSystem::~AbstractGraphicsSystem()
    if (_object != nullptr) {
       delete _object;
    }
+   if (_shader != nullptr) {
+      delete _shader;
+   }
 }

@@ -24,10 +24,11 @@ void OpenGLGraphicsObject::Setup()
    glBindVertexArray(0);
 }
 
-void OpenGLGraphicsObject::Render(unsigned int shaderProgramId)
+void OpenGLGraphicsObject::Render()
 {
    glBindVertexArray(_vaoId);
-   glUseProgram(shaderProgramId);
+   _shader->Select();
+
 
    glBindBuffer(GL_ARRAY_BUFFER, _vboId);
    // Positions

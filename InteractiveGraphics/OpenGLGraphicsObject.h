@@ -23,7 +23,7 @@ public:
       _arraySize = size;
    }
    void Setup();
-   void Render(unsigned int shaderProgramId);
+   void Render();
 };
 
 #endif

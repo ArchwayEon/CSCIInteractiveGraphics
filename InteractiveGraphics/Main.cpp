@@ -1,6 +1,7 @@
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "opengl32.lib")
 #include <Windows.h>
+
 #include "OpenGLGraphicsSystem.h"
 #include "OpenGLGraphicsObject.h"
 
@@ -10,32 +11,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    _In_ int       nCmdShow)
 {
    OpenGLGraphicsWindow* window = 
-      new OpenGLGraphicsWindow("Interactive Graphics Lab Week 5", 800, 600);
+      new OpenGLGraphicsWindow("Interactive Graphics Lec Week 6", 800, 600);
    window->backgroundColor = { 0.5f, 0.0f, 0.5f };
-
-   //OpenGLGraphicsObject* triangle = new OpenGLGraphicsObject();
-   //Vertex* triangleVertices = new Vertex[3];
-   //triangleVertices[0].x = 0.0f;
-   //triangleVertices[0].y = 0.5f;
-   //triangleVertices[0].z = 0.0f;
-   //triangleVertices[0].red = 1.0f;
-   //triangleVertices[0].green = 0.0f;
-   //triangleVertices[0].blue = 0.0f;
-   //
-   //triangleVertices[1].x = -0.5f;
-   //triangleVertices[1].y = -0.5f;
-   //triangleVertices[1].z = 0.0f;
-   //triangleVertices[1].red = 0.0f;
-   //triangleVertices[1].green = 0.0f;
-   //triangleVertices[1].blue = 1.0f;
-   //
-   //triangleVertices[2].x = 0.5f;
-   //triangleVertices[2].y = -0.5f;
-   //triangleVertices[2].z = 0.0f;
-   //triangleVertices[2].red = 0.0f;
-   //triangleVertices[2].green = 1.0f;
-   //triangleVertices[2].blue = 0.0f;
-   //triangle->SetObjectData(triangleVertices, 3);
 
    OpenGLGraphicsObject* rectangle = new OpenGLGraphicsObject();
    Vertex* rectangleVertices = new Vertex[6];
@@ -83,13 +60,26 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    rectangle->SetObjectData(rectangleVertices, 6);
 
-   AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window);
-   graphics->SetObject(rectangle);
+   GLSLGraphicsShader* shader = new GLSLGraphicsShader();
+   shader->SetUpDefaultSource();
+   rectangle->SetShader(shader);
 
-   graphics->InitializeContext();
-   graphics->ShowWindow();
-   graphics->Setup();
-   graphics->Run();
+   AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, shader);
+   graphics->SetObject(rectangle);
+   if (graphics->InitializeContext()) {
+      graphics->ShowWindow();
+      graphics->Setup();
+      graphics->Run();
+   }
+   else {
+      string error = graphics->ReportErrors();
+      wstring errorString(error.begin(), error.end());
+      MessageBox(
+         NULL, 
+         errorString.c_str(),
+         L"An Error Occurred", 
+         MB_OK);
+   }
    delete graphics;
    return 0;
 }
