@@ -8,6 +8,7 @@
 
 void ReportError(const string& error) 
 {
+   // Quick way to convert from string to wstring
    wstring errorString(error.begin(), error.end());
    MessageBox(
       NULL,
