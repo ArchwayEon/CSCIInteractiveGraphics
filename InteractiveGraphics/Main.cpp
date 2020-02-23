@@ -4,6 +4,7 @@
 
 #include "OpenGLGraphicsSystem.h"
 #include "OpenGLGraphicsObject.h"
+#include "TextFileReader.h"
 
 void ReportError(const string& error) 
 {
@@ -70,13 +71,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    rectangle->SetObjectData(rectangleVertices, 6);
 
-   GLSLGraphicsShader* shader = new GLSLGraphicsShader();
-   //shader->SetUpDefaultSource();
-   if (!shader->LoadVertexSourceFromFile("SimpleVertexShader.glsl")) {
-      ReportError(shader->ReportErrors());
-      return 0;
-   }
-   if (!shader->LoadFragmentSourceFromFile("SimpleFragmentShader.glsl")) {
+   GLSLGraphicsShader* shader = 
+      new GLSLGraphicsShader(new TextFileReader());
+   if (!shader->ReadShaderSources(
+      "SimpleVertexShader.glsl", "SimpleFragmentShader.glsl")) {
       ReportError(shader->ReportErrors());
       return 0;
    }

@@ -14,13 +14,15 @@ private:
    GLuint _shaderProgram;
 
 public:
-   GLSLGraphicsShader() : 
+   GLSLGraphicsShader(AbstractReader* reader) : 
+      AbstractGraphicsShader(reader),
       _shaderProgram(0), _errorReport("OK"), 
       _vertexSource(""), _fragmentSource("") {}
    ~GLSLGraphicsShader() {}
-   void SetUpDefaultSource();
-   bool LoadVertexSourceFromFile(const string& filePath);
-   bool LoadFragmentSourceFromFile(const string& filePath);
+   void SetUpDefaultSources();
+   bool ReadShaderSources(const string& vertexFilePath, const string& fragmentFilePath);
+   bool ReadVertexShaderSource(const string& filePath);
+   bool ReadFragmentShaderSource(const string& filePath);
    string ReportErrors();
    bool Create();
    void Select();
@@ -30,8 +32,6 @@ private:
    GLuint LinkShader(GLuint vertexShader, GLuint fragmentShader);
    void LogError(GLuint shader, PFNGLGETSHADERIVPROC glGet__iv, 
       PFNGLGETSHADERINFOLOGPROC glGet__InfoLog);
-   bool ReadTextFile(const string& filePath, string& data);
-   void Trim(string& str);
 };
 
 #endif

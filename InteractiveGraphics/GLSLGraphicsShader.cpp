@@ -2,10 +2,11 @@
 #include "GLSLGraphicsShader.h"
 #include <sstream>
 #include <fstream>
+#include "TextFileReader.h"
 using std::stringstream;
 using std::ifstream;
 
-void GLSLGraphicsShader::SetUpDefaultSource()
+void GLSLGraphicsShader::SetUpDefaultSources()
 {
    _vertexSource =
       "#version 400\n"\
@@ -28,14 +29,29 @@ void GLSLGraphicsShader::SetUpDefaultSource()
       "}\n";
 }
 
-bool GLSLGraphicsShader::LoadVertexSourceFromFile(const string& filePath)
+bool GLSLGraphicsShader::ReadShaderSources(const string& vertexFilePath, const string& fragmentFilePath)
 {
-   return ReadTextFile(filePath, _vertexSource);
+   if (!ReadVertexShaderSource(vertexFilePath)) {
+      return false;
+   }
+   if (!ReadFragmentShaderSource(fragmentFilePath)) {
+      return false;
+   }
+   return true;
 }
 
-bool GLSLGraphicsShader::LoadFragmentSourceFromFile(const string& filePath)
+bool GLSLGraphicsShader::ReadVertexShaderSource(const string& filePath)
 {
-   return ReadTextFile(filePath, _fragmentSource);
+   TextFileReader* reader = (TextFileReader*)_reader;
+   reader->SetFilePath(filePath);
+   return reader->Read(_vertexSource);
+}
+
+bool GLSLGraphicsShader::ReadFragmentShaderSource(const string& filePath)
+{
+   TextFileReader* reader = (TextFileReader*)_reader;
+   reader->SetFilePath(filePath);
+   return reader->Read(_fragmentSource);
 }
 
 string GLSLGraphicsShader::ReportErrors()
@@ -107,32 +123,3 @@ void GLSLGraphicsShader::LogError(GLuint shader, PFNGLGETSHADERIVPROC glGet__iv,
    free(info);
 }
 
-bool GLSLGraphicsShader::ReadTextFile(const string& filePath, string& data)
-{
-   stringstream ss;
-   ifstream fin;
-   fin.open(filePath.c_str());
-   if (fin.fail()) {
-      ss << "Could not open: " << filePath << std::endl;
-      getline(ss, _errorReport);
-      return false;
-   }
-
-   string line;
-   while (!fin.eof()) {
-      getline(fin, line);
-      Trim(line);
-      if (line != "") { // Skip blank lines
-         data += line + "\n";
-      }
-   }
-   fin.close();
-   return true;
-}
-
-void GLSLGraphicsShader::Trim(string& str)
-{
-   const string delimiters = " \f\n\r\t\v";
-   str.erase(str.find_last_not_of(delimiters) + 1);
-   str.erase(0, str.find_first_not_of(delimiters));
-}

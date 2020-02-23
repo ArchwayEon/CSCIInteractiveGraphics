@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <sstream>
-using std::stringstream;
 
 OpenGLGraphicsSystem::OpenGLGraphicsSystem() : AbstractGraphicsSystem()
 {
@@ -24,7 +23,6 @@ OpenGLGraphicsSystem::~OpenGLGraphicsSystem()
 
 bool OpenGLGraphicsSystem::InitializeContext()
 {
-   stringstream ss;
    glfwInit();
    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
