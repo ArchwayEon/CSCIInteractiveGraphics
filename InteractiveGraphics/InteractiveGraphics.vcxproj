@@ -175,7 +175,9 @@
     <ClInclude Include="TextFileReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cube.ig" />
     <None Include="rectangle.ig" />
+    <None Include="Simple3DVertexShader.glsl" />
     <None Include="SimpleFragmentShader.glsl" />
     <None Include="SimpleVertexShader.glsl" />
   </ItemGroup>

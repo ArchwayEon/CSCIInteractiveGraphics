@@ -1,4 +1,5 @@
 #include <glad\glad.h>
+#include <glm/gtc/type_ptr.hpp>
 #include "GLSLGraphicsShader.h"
 #include <sstream>
 #include <fstream>
@@ -85,6 +86,18 @@ bool GLSLGraphicsShader::Create()
 void GLSLGraphicsShader::Select()
 {
    glUseProgram(_shaderProgram);
+}
+
+void GLSLGraphicsShader::SendMatrixToGPU(const string& uniformName, const glm::mat4& matrix)
+{
+   unsigned int uniformLocation = glGetUniformLocation(_shaderProgram, uniformName.c_str());
+   glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void GLSLGraphicsShader::SendMatricesToGPU()
+{
+   SendMatrixToGPU("view", view);
+   SendMatrixToGPU("projection", projection);
 }
 
 GLuint GLSLGraphicsShader::CompileShader(GLenum type, const GLchar* source)

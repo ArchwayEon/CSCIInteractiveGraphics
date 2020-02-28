@@ -6,6 +6,10 @@ struct RGBA {
    float red, green, blue, alpha;
 };
 
+struct Vector {
+   float x, y, z;
+};
+
 struct Vertex {
    float x, y, z;
    float red, green, blue;

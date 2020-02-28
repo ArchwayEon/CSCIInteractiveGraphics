@@ -24,13 +24,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    _In_ int       nCmdShow)
 {
    OpenGLGraphicsWindow* window = 
-      new OpenGLGraphicsWindow("Interactive Graphics Lab Week 6");
-   window->backgroundColor = { 0.5f, 0.0f, 0.5f };
+      new OpenGLGraphicsWindow("Interactive Graphics Lec Week 7");
+   //window->backgroundColor = { 0.5f, 0.0f, 0.5f };
 
-   OpenGLGraphicsObject* rectangle = nullptr;
-   GraphicsObjectReader reader("rectangle.ig");
+   OpenGLGraphicsObject* object = nullptr;
+   GraphicsObjectReader reader("cube.ig");
    if (reader.Read()) {
-      rectangle = reader.GetObject();
+      object = reader.GetObject();
    }
    else {
       ReportError(reader.ReportErrors());
@@ -40,14 +40,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    GLSLGraphicsShader* shader = 
       new GLSLGraphicsShader(new TextFileReader());
    if (!shader->ReadShaderSources(
-      "SimpleVertexShader.glsl", "SimpleFragmentShader.glsl")) {
+      "Simple3DVertexShader.glsl", "SimpleFragmentShader.glsl")) {
       ReportError(shader->ReportErrors());
       return 0;
    }
-   rectangle->SetShader(shader);
+   object->SetShader(shader);
 
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, shader);
-   graphics->SetObject(rectangle);
+   graphics->AddObject("Cube", object);
    if (graphics->InitializeContext()) {
       graphics->ShowWindow();
       graphics->Setup();

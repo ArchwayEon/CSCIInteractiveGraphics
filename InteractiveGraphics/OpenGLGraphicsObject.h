@@ -2,8 +2,9 @@
 #ifndef OPENGL_GRAPHICS_OBJECT
 #define OPENGL_GRAPHICS_OBJECT
 
-#include "AbstractGraphicsObject.h"
 #include <glad/glad.h> 
+#include <glm/glm.hpp>
+#include "AbstractGraphicsObject.h"
 #include "GraphicsStructures.h"
 #include <vector>
 using std::vector;
@@ -16,16 +17,22 @@ private:
    vector<Vertex> _vertices;
 
 public:
+   glm::mat4 orientation;
+
+public:
    OpenGLGraphicsObject() : 
-      _vaoId(0), _vboId(0)
+      _vaoId(0), _vboId(0), orientation(1.0)
    {}
    OpenGLGraphicsObject(AbstractGraphicsShader* shader) : 
-      AbstractGraphicsObject(shader), _vaoId(0), _vboId(0)
+      AbstractGraphicsObject(shader), _vaoId(0), _vboId(0), orientation(1.0)
    {}
    ~OpenGLGraphicsObject();
    void AddVertex(const Vertex& vertex) { _vertices.push_back(vertex); }
    void Setup();
    void Render();
+   void Rotate(float degrees, const glm::vec3& axis);
+   void RotateWorld(float degrees, const glm::vec3& axis);
+   void Move(const glm::vec3& vector);
 };
 
 #endif

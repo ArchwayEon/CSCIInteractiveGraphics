@@ -2,8 +2,8 @@
 #ifndef GLSL_GRAPHICS_SHADER
 #define GLSL_GRAPHICS_SHADER
 
+#include <glm/glm.hpp>
 #include "AbstractGraphicsShader.h"
-
 
 class GLSLGraphicsShader :
    public AbstractGraphicsShader
@@ -14,10 +14,14 @@ private:
    GLuint _shaderProgram;
 
 public:
+   glm::mat4 view, projection;
+
+public:
    GLSLGraphicsShader(AbstractReader* reader) : 
       AbstractGraphicsShader(reader),
       _shaderProgram(0), _errorReport("OK"), 
-      _vertexSource(""), _fragmentSource("") {}
+      _vertexSource(""), _fragmentSource(""), 
+      view(1.0), projection(1.0) {}
    ~GLSLGraphicsShader() {}
    void SetUpDefaultSources();
    bool ReadShaderSources(const string& vertexFilePath, const string& fragmentFilePath);
@@ -26,6 +30,8 @@ public:
    string ReportErrors();
    bool Create();
    void Select();
+   void SendMatrixToGPU(const string& uniformName, const glm::mat4& matrix);
+   void SendMatricesToGPU();
 
 private:
    GLuint CompileShader(GLenum type, const GLchar* source);

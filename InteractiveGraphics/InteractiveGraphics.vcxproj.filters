@@ -97,5 +97,7 @@
     <None Include="SimpleVertexShader.glsl" />
     <None Include="SimpleFragmentShader.glsl" />
     <None Include="rectangle.ig" />
+    <None Include="Simple3DVertexShader.glsl" />
+    <None Include="cube.ig" />
   </ItemGroup>
 </Project>

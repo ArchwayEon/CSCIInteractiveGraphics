@@ -11,6 +11,9 @@ class OpenGLGraphicsSystem :
    public AbstractGraphicsSystem
 {
 private:
+   Vector _cameraPos;
+
+private:
    void ProcessInput();
 
 public:
