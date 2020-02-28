@@ -5,6 +5,7 @@
 #include "OpenGLGraphicsSystem.h"
 #include "OpenGLGraphicsObject.h"
 #include "TextFileReader.h"
+#include "GraphicsObjectReader.h"
 
 void ReportError(const string& error) 
 {
@@ -23,54 +24,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    _In_ int       nCmdShow)
 {
    OpenGLGraphicsWindow* window = 
-      new OpenGLGraphicsWindow("Interactive Graphics Lec Week 6");
+      new OpenGLGraphicsWindow("Interactive Graphics Lab Week 6");
    window->backgroundColor = { 0.5f, 0.0f, 0.5f };
 
-   OpenGLGraphicsObject* rectangle = new OpenGLGraphicsObject();
-   Vertex* rectangleVertices = new Vertex[6];
-   rectangleVertices[0].x = -0.5f;
-   rectangleVertices[0].y =  0.5f;
-   rectangleVertices[0].z =  0.0f;
-   rectangleVertices[0].red = 1.0f;
-   rectangleVertices[0].green = 0.0f;
-   rectangleVertices[0].blue = 0.0f;
-
-   rectangleVertices[1].x = -0.5f;
-   rectangleVertices[1].y = -0.5f;
-   rectangleVertices[1].z =  0.0f;
-   rectangleVertices[1].red = 1.0f;
-   rectangleVertices[1].green = 0.0f;
-   rectangleVertices[1].blue = 0.0f;
-
-   rectangleVertices[2].x =  0.5f;
-   rectangleVertices[2].y = -0.5f;
-   rectangleVertices[2].z =  0.0f;
-   rectangleVertices[2].red = 1.0f;
-   rectangleVertices[2].green = 0.0f;
-   rectangleVertices[2].blue = 0.0f;
-
-   rectangleVertices[3].x = -0.5f;
-   rectangleVertices[3].y = 0.5f;
-   rectangleVertices[3].z = 0.0f;
-   rectangleVertices[3].red = 0.0f;
-   rectangleVertices[3].green = 0.0f;
-   rectangleVertices[3].blue = 1.0f;
-
-   rectangleVertices[4].x = 0.5f;
-   rectangleVertices[4].y = -0.5f;
-   rectangleVertices[4].z = 0.0f;
-   rectangleVertices[4].red = 0.0f;
-   rectangleVertices[4].green = 0.0f;
-   rectangleVertices[4].blue = 1.0f;
-
-   rectangleVertices[5].x = 0.5f;
-   rectangleVertices[5].y = 0.5f;
-   rectangleVertices[5].z = 0.0f;
-   rectangleVertices[5].red = 0.0f;
-   rectangleVertices[5].green = 0.0f;
-   rectangleVertices[5].blue = 1.0f;
-
-   rectangle->SetObjectData(rectangleVertices, 6);
+   OpenGLGraphicsObject* rectangle = nullptr;
+   GraphicsObjectReader reader("rectangle.ig");
+   if (reader.Read()) {
+      rectangle = reader.GetObject();
+   }
+   else {
+      ReportError(reader.ReportErrors());
+      return 0;
+   }
 
    GLSLGraphicsShader* shader = 
       new GLSLGraphicsShader(new TextFileReader());

@@ -59,18 +59,22 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\InteractiveGraphics.props" />
+    <Import Project="InteractiveGraphicsOffice.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\InteractiveGraphics.props" />
+    <Import Project="InteractiveGraphicsOffice.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\InteractiveGraphics.props" />
+    <Import Project="InteractiveGraphicsOffice.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\InteractiveGraphics.props" />
+    <Import Project="InteractiveGraphicsOffice.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -149,6 +153,7 @@
     <ClCompile Include="AbstractReader.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLSLGraphicsShader.cpp" />
+    <ClCompile Include="GraphicsObjectReader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OpenGLGraphicsObject.cpp" />
     <ClCompile Include="OpenGLGraphicsSystem.cpp" />
@@ -162,6 +167,7 @@
     <ClInclude Include="AbstractGraphicsWindow.h" />
     <ClInclude Include="AbstractReader.h" />
     <ClInclude Include="GLSLGraphicsShader.h" />
+    <ClInclude Include="GraphicsObjectReader.h" />
     <ClInclude Include="GraphicsStructures.h" />
     <ClInclude Include="OpenGLGraphicsObject.h" />
     <ClInclude Include="OpenGLGraphicsSystem.h" />
@@ -169,6 +175,7 @@
     <ClInclude Include="TextFileReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="rectangle.ig" />
     <None Include="SimpleFragmentShader.glsl" />
     <None Include="SimpleVertexShader.glsl" />
   </ItemGroup>

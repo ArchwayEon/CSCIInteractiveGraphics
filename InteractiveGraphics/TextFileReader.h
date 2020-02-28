@@ -8,13 +8,15 @@ class TextFileReader :
 {
 private:
    string _filePath;
+   string _data;
 
 public:
    TextFileReader() :
       AbstractReader(), _filePath("") {}
    ~TextFileReader() {}
    void SetFilePath(const string& filePath) { _filePath = filePath; }
-   bool Read(string& data);
+   string GetData() { return _data; }
+   bool Read();
 private:
    void Trim(string& str);
 };

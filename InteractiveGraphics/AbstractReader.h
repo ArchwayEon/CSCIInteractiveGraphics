@@ -12,7 +12,7 @@ protected:
 public:
    AbstractReader() : _error("OK") {}
    virtual ~AbstractReader() {}
-   virtual bool Read(string& data) = 0;
+   virtual bool Read() = 0;
    virtual string ReportErrors() { return _error; }
 };
 

@@ -51,6 +51,9 @@
     <ClCompile Include="TextFileReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicsObjectReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h">
@@ -86,9 +89,13 @@
     <ClInclude Include="TextFileReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicsObjectReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleVertexShader.glsl" />
     <None Include="SimpleFragmentShader.glsl" />
+    <None Include="rectangle.ig" />
   </ItemGroup>
 </Project>

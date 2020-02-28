@@ -44,14 +44,22 @@ bool GLSLGraphicsShader::ReadVertexShaderSource(const string& filePath)
 {
    TextFileReader* reader = (TextFileReader*)_reader;
    reader->SetFilePath(filePath);
-   return reader->Read(_vertexSource);
+   bool result = reader->Read();
+   if (result) {
+      _vertexSource = reader->GetData();
+   }
+   return result;
 }
 
 bool GLSLGraphicsShader::ReadFragmentShaderSource(const string& filePath)
 {
    TextFileReader* reader = (TextFileReader*)_reader;
    reader->SetFilePath(filePath);
-   return reader->Read(_fragmentSource);
+   bool result = reader->Read();
+   if (result) {
+      _fragmentSource = reader->GetData();
+   }
+   return result;
 }
 
 string GLSLGraphicsShader::ReportErrors()

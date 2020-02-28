@@ -3,7 +3,7 @@
 #include <fstream>
 using namespace std;
 
-bool TextFileReader::Read(string& data)
+bool TextFileReader::Read()
 {
    stringstream ss;
    ifstream fin;
@@ -14,12 +14,13 @@ bool TextFileReader::Read(string& data)
       return false;
    }
 
+   _data = "";
    string line;
    while (!fin.eof()) {
       getline(fin, line);
       Trim(line);
       if (line != "") { // Skip blank lines
-         data += line + "\n";
+         _data += line + "\n";
       }
    }
    fin.close();
