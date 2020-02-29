@@ -8,14 +8,14 @@
 #include "OpenGLGraphicsObject.h"
 
 OpenGLGraphicsSystem::OpenGLGraphicsSystem() : 
-   AbstractGraphicsSystem(), _cameraPos({ 0.0f, 3.0f, 10.0f })
+   AbstractGraphicsSystem()
 {
    _window = new OpenGLGraphicsWindow("OpenGL Window", 800, 600);
 }
 
 OpenGLGraphicsSystem::OpenGLGraphicsSystem(
-   OpenGLGraphicsWindow* window, GLSLGraphicsShader* shader):
-   AbstractGraphicsSystem(window, shader), _cameraPos({ 0.0f, 3.0f, 10.0f })
+   OpenGLGraphicsWindow* window, BaseCamera* camera, GLSLGraphicsShader* shader):
+   AbstractGraphicsSystem(window, camera, shader)
 {
 }
 
@@ -72,19 +72,9 @@ void OpenGLGraphicsSystem::Run()
    while (!_window->IsTimeToClose()) {
       ProcessInput();
 
-      _aspectRatio = _window->GetAspectRatio();
-      shader->projection = 
-         glm::perspective(
-            glm::radians(60.0f), // FOV
-            _aspectRatio,
-            0.1f,  // Near view plane
-            100.0f // Far view plane
-         );
-      shader->view = glm::lookAt(
-         glm::vec3(_cameraPos.x, _cameraPos.y, _cameraPos.z), // Position
-         glm::vec3(0.0f, 0.0f, 0.0f),  // Target
-         glm::vec3(0.0f, 1.0f, 0.0f)   // Up
-      );
+      _camera->SetupProjectionAndView(_window->GetAspectRatio());
+      shader->projection = _camera->GetProjection();
+      shader->view = _camera->GetView();
  
       _window->Clear();
       for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
@@ -100,36 +90,37 @@ void OpenGLGraphicsSystem::ProcessInput()
    if (_window->GetKeyState(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
       _window->Close();
    }
+   auto cube = (OpenGLGraphicsObject*)_objects["Cube"];
    if (_window->GetKeyState(GLFW_KEY_Y) == GLFW_PRESS) {
-      _objects["Cube"]->Rotate(1, glm::vec3(0, 1, 0));
+      cube->frame.Rotate(1, glm::vec3(0, 1, 0));
    }
    if (_window->GetKeyState(GLFW_KEY_X) == GLFW_PRESS) {
-      _objects["Cube"]->Rotate(1, glm::vec3(1, 0, 0));
+      cube->frame.Rotate(1, glm::vec3(1, 0, 0));
    }
    if (_window->GetKeyState(GLFW_KEY_Z) == GLFW_PRESS) {
-      _objects["Cube"]->Rotate(1, glm::vec3(0, 0, 1));
+      cube->frame.Rotate(1, glm::vec3(0, 0, 1));
    }
    if (_window->GetKeyState(GLFW_KEY_D) == GLFW_PRESS) {
-      _objects["Cube"]->Move(glm::vec3(0.1f, 0, 0));
+      cube->frame.Move(glm::vec3(0.1f, 0, 0));
    }
    if (_window->GetKeyState(GLFW_KEY_A) == GLFW_PRESS) {
-      _objects["Cube"]->Move(glm::vec3(-0.1f, 0, 0));
+      cube->frame.Move(glm::vec3(-0.1f, 0, 0));
    }
    if (_window->GetKeyState(GLFW_KEY_W) == GLFW_PRESS) {
-      _objects["Cube"]->Move(glm::vec3(0, 0.1f, 0));
+      cube->frame.Move(glm::vec3(0, 0.1f, 0));
    }
    if (_window->GetKeyState(GLFW_KEY_S) == GLFW_PRESS) {
-      _objects["Cube"]->Move(glm::vec3(0, -0.1f, 0));
+      cube->frame.Move(glm::vec3(0, -0.1f, 0));
    }
    if (_window->GetKeyState(GLFW_KEY_R) == GLFW_PRESS) {
-      ((OpenGLGraphicsObject*)_objects["Cube"])->orientation = glm::mat4(1.0);
+      cube->frame.Reset();
    }
 
    if (_window->GetKeyState(GLFW_KEY_1) == GLFW_PRESS) {
-      _cameraPos = { 0.0f, 3.0f, 10.0f };
+      _camera->frame.SetPosition({ 0.0f, 3.0f, 10.0f });
    }
    if (_window->GetKeyState(GLFW_KEY_2) == GLFW_PRESS) {
-      _cameraPos = { 0.0f, -3.0f, 10.0f };
+      _camera->frame.SetPosition({ 0.0f, -3.0f, 10.0f });
    }
 
 }

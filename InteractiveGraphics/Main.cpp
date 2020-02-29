@@ -46,8 +46,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    }
    object->SetShader(shader);
 
-   AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, shader);
+   auto camera = new BaseCamera();
+   AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, shader);
+
    graphics->AddObject("Cube", object);
+
    if (graphics->InitializeContext()) {
       graphics->ShowWindow();
       graphics->Setup();

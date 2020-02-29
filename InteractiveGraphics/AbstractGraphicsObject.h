@@ -19,9 +19,6 @@ public:
    }
    virtual void Setup() = 0;
    virtual void Render() = 0;
-   virtual void Rotate(float degrees, const glm::vec3& axis) = 0;
-   virtual void RotateWorld(float degrees, const glm::vec3& axis) = 0;
-   virtual void Move(const glm::vec3& vector) = 0;
 };
 
 #endif

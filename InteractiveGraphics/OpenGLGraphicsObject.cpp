@@ -29,7 +29,7 @@ void OpenGLGraphicsObject::Render()
    shader->Select();
    
    shader->SendMatricesToGPU();
-   shader->SendMatrixToGPU("world", orientation);
+   shader->SendMatrixToGPU("world", frame.orientation);
 
    glBindVertexArray(_vaoId);
    glBindBuffer(GL_ARRAY_BUFFER, _vboId);
@@ -60,23 +60,4 @@ void OpenGLGraphicsObject::Render()
    glDisableVertexAttribArray(1);
    glUseProgram(0);
    glBindVertexArray(0);
-}
-
-void OpenGLGraphicsObject::Rotate(float degrees, const glm::vec3& axis)
-{
-   orientation = glm::rotate(orientation, glm::radians(degrees), axis);
-}
-
-void OpenGLGraphicsObject::RotateWorld(float degrees, const glm::vec3& axis)
-{
-   glm::mat4 mat(1.0f);
-   mat = glm::rotate(mat, glm::radians(degrees), axis);
-   orientation = mat * orientation;
-}
-
-void OpenGLGraphicsObject::Move(const glm::vec3& vector)
-{
-   glm::mat4 translateMat(0.0f);
-   translateMat[3] = glm::vec4(vector, 0.0f);
-   this->orientation += translateMat;
 }
