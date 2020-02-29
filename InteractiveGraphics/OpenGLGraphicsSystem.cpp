@@ -100,27 +100,27 @@ void OpenGLGraphicsSystem::ProcessInput()
    if (_window->GetKeyState(GLFW_KEY_Z) == GLFW_PRESS) {
       cube->frame.Rotate(1, glm::vec3(0, 0, 1));
    }
-   if (_window->GetKeyState(GLFW_KEY_D) == GLFW_PRESS) {
-      cube->frame.Move(glm::vec3(0.1f, 0, 0));
-   }
-   if (_window->GetKeyState(GLFW_KEY_A) == GLFW_PRESS) {
-      cube->frame.Move(glm::vec3(-0.1f, 0, 0));
-   }
-   if (_window->GetKeyState(GLFW_KEY_W) == GLFW_PRESS) {
-      cube->frame.Move(glm::vec3(0, 0.1f, 0));
-   }
-   if (_window->GetKeyState(GLFW_KEY_S) == GLFW_PRESS) {
-      cube->frame.Move(glm::vec3(0, -0.1f, 0));
-   }
    if (_window->GetKeyState(GLFW_KEY_R) == GLFW_PRESS) {
       cube->frame.Reset();
    }
 
-   if (_window->GetKeyState(GLFW_KEY_1) == GLFW_PRESS) {
-      _camera->frame.SetPosition({ 0.0f, 3.0f, 10.0f });
+   if (_window->GetKeyState(GLFW_KEY_D) == GLFW_PRESS) {
+      _camera->frame.Move({ 0.05f, 0, 0 });
    }
-   if (_window->GetKeyState(GLFW_KEY_2) == GLFW_PRESS) {
-      _camera->frame.SetPosition({ 0.0f, -3.0f, 10.0f });
+   if (_window->GetKeyState(GLFW_KEY_A) == GLFW_PRESS) {
+      _camera->frame.Move({ -0.05f, 0, 0 });
+   }
+   if (_window->GetKeyState(GLFW_KEY_W) == GLFW_PRESS) {
+      _camera->frame.Move({ 0, 0, -0.05f });
+   }
+   if (_window->GetKeyState(GLFW_KEY_S) == GLFW_PRESS) {
+      _camera->frame.Move({ 0, 0, 0.05f });
+   }
+   if (_window->GetKeyState(GLFW_KEY_UP) == GLFW_PRESS) {
+      _camera->frame.Move({ 0, 0.05f, 0 });
+   }
+   if (_window->GetKeyState(GLFW_KEY_DOWN) == GLFW_PRESS) {
+      _camera->frame.Move({ 0, -0.05f, 0 });
    }
 
 }

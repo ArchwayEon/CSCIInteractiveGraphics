@@ -22,6 +22,7 @@ public:
    virtual void Update() {};
    virtual const glm::mat4& GetProjection() const { return _projection; }
    virtual const glm::mat4& GetView() const { return _view; }
+   virtual void SetupLookingForward();
    virtual void SetupProjectionAndView(float aspectRatio);
 };
 

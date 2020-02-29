@@ -19,7 +19,9 @@ public:
       orientation[3] = glm::vec4(pos, 1.0f);
    }
    glm::vec3 GetPosition() const { return glm::vec3(orientation[3]); }
+   glm::vec3 GetXAxis() const { return glm::vec3(orientation[0]); }
    glm::vec3 GetYAxis() const {return glm::vec3(orientation[1]); }
+   glm::vec3 GetZAxis() const { return glm::vec3(orientation[2]); }
 
    void Reset() { orientation = glm::mat4(1.0f); }
    void Rotate(float degrees, const glm::vec3& axis);

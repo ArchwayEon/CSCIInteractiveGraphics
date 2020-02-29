@@ -10,6 +10,14 @@ BaseCamera::BaseCamera() :
    frame.SetPosition(0.0f, 0.0f, 5.0f);
 }
 
+void BaseCamera::SetupLookingForward()
+{
+   glm::vec3 position = frame.GetPosition();
+   glm::vec3 forward = frame.orientation[2];
+   forward = -forward;
+   target = position + forward;
+}
+
 void BaseCamera::SetupProjectionAndView(float aspectRatio)
 {
    _aspectRatio = aspectRatio;
@@ -19,8 +27,9 @@ void BaseCamera::SetupProjectionAndView(float aspectRatio)
       nearPlane,
       farPlane
    );
+   glm::vec3 position = frame.GetPosition();
    _view = glm::lookAt(
-      frame.GetPosition(),
+      position,
       target,
       frame.GetYAxis()
    );
