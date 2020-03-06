@@ -14,7 +14,7 @@ class OpenGLGraphicsSystem :
 public:
    OpenGLGraphicsSystem();
    OpenGLGraphicsSystem(
-      OpenGLGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer, GLSLGraphicsShader* shader);
+      OpenGLGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer);
    ~OpenGLGraphicsSystem();
    bool InitializeContext();
    void ShowWindow();

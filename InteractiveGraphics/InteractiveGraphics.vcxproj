@@ -146,7 +146,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractTexture.cpp" />
     <ClCompile Include="AbstractTimer.cpp" />
+    <ClCompile Include="AbstractVertexStrategy.cpp" />
     <ClCompile Include="BaseCamera.cpp" />
     <ClCompile Include="AbstractGraphicsObject.cpp" />
     <ClCompile Include="AbstractGraphicsShader.cpp" />
@@ -163,11 +165,14 @@
     <ClCompile Include="OpenGLGraphicsSystem.cpp" />
     <ClCompile Include="OpenGLGraphicsWindow.cpp" />
     <ClCompile Include="OpenGLIndexedGraphicsObject.cpp" />
+    <ClCompile Include="OpenGLTexture.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractTexture.h" />
     <ClInclude Include="AbstractTimer.h" />
+    <ClInclude Include="AbstractVertexStrategy.h" />
     <ClInclude Include="BaseCamera.h" />
     <ClInclude Include="AbstractGraphicsObject.h" />
     <ClInclude Include="AbstractGraphicsShader.h" />
@@ -183,6 +188,7 @@
     <ClInclude Include="OpenGLGraphicsSystem.h" />
     <ClInclude Include="OpenGLGraphicsWindow.h" />
     <ClInclude Include="OpenGLIndexedGraphicsObject.h" />
+    <ClInclude Include="OpenGLTexture.h" />
     <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="TextFileReader.h" />
   </ItemGroup>
@@ -192,6 +198,9 @@
     <None Include="Simple3DVertexShader.glsl" />
     <None Include="SimpleFragmentShader.glsl" />
     <None Include="SimpleVertexShader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="crate.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

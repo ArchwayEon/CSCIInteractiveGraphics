@@ -6,13 +6,24 @@ struct RGBA {
    float red, green, blue, alpha;
 };
 
-struct Vector {
+struct Vector3 {
    float x, y, z;
+};
+
+struct Tex {
+   float s, t;
 };
 
 struct Vertex {
    float x, y, z;
    float red, green, blue;
+};
+
+// Vertex - Position, Color (RGBA), Texture
+struct VertexPCT {
+   Vector3 position;
+   RGBA color;
+   Tex tex;
 };
 
 #endif

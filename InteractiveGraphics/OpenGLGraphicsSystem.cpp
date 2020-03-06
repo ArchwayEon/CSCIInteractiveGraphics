@@ -14,8 +14,8 @@ OpenGLGraphicsSystem::OpenGLGraphicsSystem() :
 }
 
 OpenGLGraphicsSystem::OpenGLGraphicsSystem(
-   OpenGLGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer, GLSLGraphicsShader* shader) :
-   AbstractGraphicsSystem(window, camera, timer, shader)
+   OpenGLGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer) :
+   AbstractGraphicsSystem(window, camera, timer)
 {
 }
 
@@ -39,16 +39,15 @@ bool OpenGLGraphicsSystem::InitializeContext()
       _errorReport = "Failed to initialize GLAD\n";
       return false;
    }
-   if (_shader != nullptr) {
-      if (!_shader->Create()) {
-         _errorReport = _shader->ReportErrors();
-         return false;
+   bool shaderNotCreated = false;
+   for (auto shaderIter = _shaders.begin(); shaderIter != _shaders.end(); shaderIter++) {
+      auto shader = shaderIter->second;
+      if (!shader->Create()) {
+         _errorReport += shader->ReportErrors();
+         shaderNotCreated = true;
       }
    }
-   else {
-      _errorReport = "A shader was not created.\n";
-      return false;
-   }
+   if (shaderNotCreated) return false;
    return true;
 }
 
@@ -60,7 +59,17 @@ void OpenGLGraphicsSystem::ShowWindow()
 
 void OpenGLGraphicsSystem::Setup()
 {
+   // Cull back faces and use counter-clockwise winding of front faces
+   glEnable(GL_CULL_FACE);
+   glCullFace(GL_BACK);
+   glFrontFace(GL_CCW);
+
+   // Enable depth testing
    glEnable(GL_DEPTH_TEST);
+   glDepthMask(GL_TRUE);
+   glDepthFunc(GL_LEQUAL);
+   glDepthRange(0.0f, 1.0f);
+
    for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
       iterator->second->Setup();
    }
@@ -69,7 +78,6 @@ void OpenGLGraphicsSystem::Setup()
 void OpenGLGraphicsSystem::Run()
 {
    double elapsedSeconds;
-   auto shader = (GLSLGraphicsShader*)_shader;
    _timer->StartTiming();
    while (!_window->IsTimeToClose()) {
       elapsedSeconds = _timer->GetElapsedTimeInSeconds();
@@ -77,8 +85,11 @@ void OpenGLGraphicsSystem::Run()
       
       _camera->SetupLookingForward();
       _camera->SetupProjectionAndView(_window->GetAspectRatio());
-      shader->projection = _camera->GetProjection();
-      shader->view = _camera->GetView();
+      for (auto shaderIter = _shaders.begin(); shaderIter != _shaders.end(); shaderIter++) {
+         auto shader = (GLSLGraphicsShader*)shaderIter->second;
+         shader->projection = _camera->GetProjection();
+         shader->view = _camera->GetView();
+      }
       
       _camera->Update(elapsedSeconds);
       _window->Clear();

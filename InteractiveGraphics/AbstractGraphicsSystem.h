@@ -15,29 +15,27 @@ protected:
    AbstractGraphicsWindow* _window;
    BaseCamera* _camera;
    AbstractTimer* _timer;
-   AbstractGraphicsShader* _shader;
+   map<string, AbstractGraphicsShader*> _shaders;
    map<string, AbstractGraphicsObject*> _objects;
    string _errorReport;
 
 public:
    AbstractGraphicsSystem() : 
-      _window(nullptr), _camera(new BaseCamera()), _timer(nullptr), _shader(nullptr), 
+      _window(nullptr), _camera(new BaseCamera()), _timer(nullptr),
       _errorReport(""){}
    AbstractGraphicsSystem(
-      AbstractGraphicsWindow* window, BaseCamera* camera, 
-      AbstractTimer* timer, AbstractGraphicsShader* shader) :
-      _window(window), _camera(camera), _shader(shader), _timer(timer),
+      AbstractGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer) :
+      _window(window), _camera(camera), _timer(timer),
       _errorReport(""){}
    virtual ~AbstractGraphicsSystem();
 
    string ReportErrors() { return _errorReport; }
-   virtual void AddObject(const string& objectName, AbstractGraphicsObject* object) {
-      _objects[objectName] = object;
-   }
+   virtual void AddObject(const string& objectName, AbstractGraphicsObject* object, const string& shaderName);
+   virtual void RemoveObject(const string& objectName);
    virtual AbstractGraphicsObject* GetObject(const string& objectName) {
       return _objects[objectName];
    }
-   virtual void SetShader(AbstractGraphicsShader* shader) { _shader = shader; }
+   virtual void AddShader(string shaderName, AbstractGraphicsShader* shader);
    virtual bool InitializeContext() = 0;
    virtual void ShowWindow() = 0;
    virtual void Setup() = 0;

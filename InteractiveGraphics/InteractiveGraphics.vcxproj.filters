@@ -72,6 +72,15 @@
     <ClCompile Include="OpenGLIndexedGraphicsObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AbstractTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractVertexStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h">
@@ -128,6 +137,15 @@
     <ClInclude Include="OpenGLIndexedGraphicsObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AbstractTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractVertexStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleVertexShader.glsl" />
@@ -135,5 +153,10 @@
     <None Include="rectangle.ig" />
     <None Include="Simple3DVertexShader.glsl" />
     <None Include="cube.ig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="crate.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
