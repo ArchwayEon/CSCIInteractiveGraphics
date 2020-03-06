@@ -52,7 +52,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, shader);
 
    graphics->AddObject("Cube", object);
-   object = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f, 1.0f });
+   object = Generate::IndexedFlatSurface(10, 10, { 0.0f, 0.0f, 0.5f, 1.0f });
    object->SetShader(shader);
    graphics->AddObject("Floor", object);
 
