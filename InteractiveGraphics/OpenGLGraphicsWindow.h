@@ -29,11 +29,11 @@ public:
    void SwapBuffers();
    void Clear();
    int GetKeyState(int key);
+   void GetWindowSize();
+   float GetAspectRatio();
 
 private:
-   static void OnResize(GLFWwindow* window, int width, int height) {
-      glViewport(0, 0, width, height);
-   }
+   static void OnResize(GLFWwindow* window, int width, int height);
 };
 
 #endif

@@ -68,8 +68,8 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\InteractiveGraphics.props" />
     <Import Project="InteractiveGraphicsOffice.props" />
+    <Import Project="..\InteractiveGraphics.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -146,11 +146,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseCamera.cpp" />
     <ClCompile Include="AbstractGraphicsObject.cpp" />
     <ClCompile Include="AbstractGraphicsShader.cpp" />
     <ClCompile Include="AbstractGraphicsSystem.cpp" />
     <ClCompile Include="AbstractGraphicsWindow.cpp" />
     <ClCompile Include="AbstractReader.cpp" />
+    <ClCompile Include="Generate.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLSLGraphicsShader.cpp" />
     <ClCompile Include="GraphicsObjectReader.cpp" />
@@ -158,24 +160,30 @@
     <ClCompile Include="OpenGLGraphicsObject.cpp" />
     <ClCompile Include="OpenGLGraphicsSystem.cpp" />
     <ClCompile Include="OpenGLGraphicsWindow.cpp" />
+    <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseCamera.h" />
     <ClInclude Include="AbstractGraphicsObject.h" />
     <ClInclude Include="AbstractGraphicsShader.h" />
     <ClInclude Include="AbstractGraphicsSystem.h" />
     <ClInclude Include="AbstractGraphicsWindow.h" />
     <ClInclude Include="AbstractReader.h" />
+    <ClInclude Include="Generate.h" />
     <ClInclude Include="GLSLGraphicsShader.h" />
     <ClInclude Include="GraphicsObjectReader.h" />
     <ClInclude Include="GraphicsStructures.h" />
     <ClInclude Include="OpenGLGraphicsObject.h" />
     <ClInclude Include="OpenGLGraphicsSystem.h" />
     <ClInclude Include="OpenGLGraphicsWindow.h" />
+    <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="TextFileReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cube.ig" />
     <None Include="rectangle.ig" />
+    <None Include="Simple3DVertexShader.glsl" />
     <None Include="SimpleFragmentShader.glsl" />
     <None Include="SimpleVertexShader.glsl" />
   </ItemGroup>

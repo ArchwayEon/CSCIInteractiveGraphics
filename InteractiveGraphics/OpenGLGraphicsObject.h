@@ -2,9 +2,10 @@
 #ifndef OPENGL_GRAPHICS_OBJECT
 #define OPENGL_GRAPHICS_OBJECT
 
-#include "AbstractGraphicsObject.h"
 #include <glad/glad.h> 
+#include "AbstractGraphicsObject.h"
 #include "GraphicsStructures.h"
+#include "ReferenceFrame.h"
 #include <vector>
 using std::vector;
 
@@ -16,14 +17,18 @@ private:
    vector<Vertex> _vertices;
 
 public:
+   ReferenceFrame frame;
+
+public:
    OpenGLGraphicsObject() : 
-      _vaoId(0), _vboId(0)
+      _vaoId(0), _vboId(0), frame()
    {}
    OpenGLGraphicsObject(AbstractGraphicsShader* shader) : 
-      AbstractGraphicsObject(shader), _vaoId(0), _vboId(0)
+      AbstractGraphicsObject(shader), _vaoId(0), _vboId(0), frame()
    {}
    ~OpenGLGraphicsObject();
    void AddVertex(const Vertex& vertex) { _vertices.push_back(vertex); }
+   void SetColor(int facet, int numberOfVertices, RGBA color);
    void Setup();
    void Render();
 };
