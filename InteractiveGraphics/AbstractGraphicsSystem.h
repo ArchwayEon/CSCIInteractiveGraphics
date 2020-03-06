@@ -31,6 +31,9 @@ public:
    virtual void AddObject(const string& objectName, AbstractGraphicsObject* object) {
       _objects[objectName] = object;
    }
+   virtual AbstractGraphicsObject* GetObject(const string& objectName) {
+      return _objects[objectName];
+   }
    virtual void SetShader(AbstractGraphicsShader* shader) { _shader = shader; }
    virtual bool InitializeContext() = 0;
    virtual void ShowWindow() = 0;

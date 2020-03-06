@@ -28,6 +28,7 @@ public:
    {}
    ~OpenGLGraphicsObject();
    void AddVertex(const Vertex& vertex) { _vertices.push_back(vertex); }
+   void SetColor(int facet, int numberOfVertices, RGBA color);
    void Setup();
    void Render();
 };

@@ -7,6 +7,28 @@ OpenGLGraphicsObject::~OpenGLGraphicsObject()
    glDeleteVertexArrays(1, &_vaoId);
 }
 
+
+//void OpenGLGraphicsObject::SetColor(const vector<int>& indexes, RGBA color)
+//{
+//   for (auto it = indexes.begin(); it != indexes.end(); ++it) {
+//      _vertices[*it].red = color.red;
+//      _vertices[*it].green = color.green;
+//      _vertices[*it].blue = color.blue;
+//   }
+//}
+
+void OpenGLGraphicsObject::SetColor(int facet, int numberOfVertices, RGBA color)
+{
+   vector<int> indexes;
+   int start = facet * numberOfVertices;
+   int end = start + numberOfVertices;
+   for (int i = start; i < end; i++) {
+      _vertices[i].red = color.red;
+      _vertices[i].green = color.green;
+      _vertices[i].blue = color.blue;
+   }
+}
+
 void OpenGLGraphicsObject::Setup()
 {
    glGenVertexArrays(1, &_vaoId);

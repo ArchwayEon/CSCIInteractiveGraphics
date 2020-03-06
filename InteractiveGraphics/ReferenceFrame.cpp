@@ -13,6 +13,12 @@ void ReferenceFrame::RotateWorld(float degrees, const glm::vec3& axis)
    orientation = mat * orientation;
 }
 
+void ReferenceFrame::Scale(float ratio)
+{
+   glm::vec3 sv(ratio, ratio, ratio);
+   orientation = glm::scale(orientation, sv);
+}
+
 void ReferenceFrame::Move(const glm::vec3& vector)
 {
    glm::mat4 translateMat(0.0f);
