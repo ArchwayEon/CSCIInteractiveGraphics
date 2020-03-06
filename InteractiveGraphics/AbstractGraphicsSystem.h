@@ -7,23 +7,26 @@ using std::map;
 #include "AbstractGraphicsObject.h"
 #include "AbstractGraphicsShader.h"
 #include "BaseCamera.h"
+#include "AbstractTimer.h"
 
 class AbstractGraphicsSystem
 {
 protected:
    AbstractGraphicsWindow* _window;
    BaseCamera* _camera;
+   AbstractTimer* _timer;
    AbstractGraphicsShader* _shader;
    map<string, AbstractGraphicsObject*> _objects;
    string _errorReport;
 
 public:
    AbstractGraphicsSystem() : 
-      _window(nullptr), _camera(new BaseCamera()), _shader(nullptr), 
+      _window(nullptr), _camera(new BaseCamera()), _timer(nullptr), _shader(nullptr), 
       _errorReport(""){}
    AbstractGraphicsSystem(
-      AbstractGraphicsWindow* window, BaseCamera* camera, AbstractGraphicsShader* shader) :
-      _window(window), _camera(camera), _shader(shader),
+      AbstractGraphicsWindow* window, BaseCamera* camera, 
+      AbstractTimer* timer, AbstractGraphicsShader* shader) :
+      _window(window), _camera(camera), _shader(shader), _timer(timer),
       _errorReport(""){}
    virtual ~AbstractGraphicsSystem();
 

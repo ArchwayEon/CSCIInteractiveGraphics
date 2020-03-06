@@ -12,7 +12,7 @@ using std::vector;
 class OpenGLGraphicsObject :
    public AbstractGraphicsObject
 {
-private:
+protected:
    GLuint _vaoId, _vboId;
    vector<Vertex> _vertices;
 

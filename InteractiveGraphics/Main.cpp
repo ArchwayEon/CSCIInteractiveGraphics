@@ -7,6 +7,7 @@
 #include "TextFileReader.h"
 #include "GraphicsObjectReader.h"
 #include "Generate.h"
+#include "HighResolutionTimer.h"
 
 void ReportError(const string& error) 
 {
@@ -38,6 +39,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
       return 0;
    }
 
+   
    GLSLGraphicsShader* shader = 
       new GLSLGraphicsShader(new TextFileReader());
    if (!shader->ReadShaderSources(
@@ -47,12 +49,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    }
    object->SetShader(shader);
 
+   auto timer = new HighResolutionTimer();
    auto camera = new BaseCamera();
    camera->frame.SetPosition(2.0f, 1.0f, 7.0f);
-   AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, shader);
+   AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer, shader);
 
    graphics->AddObject("Cube", object);
-   object = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f, 1.0f });
+   object = Generate::IndexedFlatSurface(10, 10, { 0.0f, 0.0f, 0.5f, 1.0f });
    object->SetShader(shader);
    graphics->AddObject("Floor", object);
 

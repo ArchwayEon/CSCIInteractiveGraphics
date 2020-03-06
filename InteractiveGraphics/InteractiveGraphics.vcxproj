@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractTimer.cpp" />
     <ClCompile Include="BaseCamera.cpp" />
     <ClCompile Include="AbstractGraphicsObject.cpp" />
     <ClCompile Include="AbstractGraphicsShader.cpp" />
@@ -156,14 +157,17 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLSLGraphicsShader.cpp" />
     <ClCompile Include="GraphicsObjectReader.cpp" />
+    <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OpenGLGraphicsObject.cpp" />
     <ClCompile Include="OpenGLGraphicsSystem.cpp" />
     <ClCompile Include="OpenGLGraphicsWindow.cpp" />
+    <ClCompile Include="OpenGLIndexedGraphicsObject.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractTimer.h" />
     <ClInclude Include="BaseCamera.h" />
     <ClInclude Include="AbstractGraphicsObject.h" />
     <ClInclude Include="AbstractGraphicsShader.h" />
@@ -174,9 +178,11 @@
     <ClInclude Include="GLSLGraphicsShader.h" />
     <ClInclude Include="GraphicsObjectReader.h" />
     <ClInclude Include="GraphicsStructures.h" />
+    <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="OpenGLGraphicsObject.h" />
     <ClInclude Include="OpenGLGraphicsSystem.h" />
     <ClInclude Include="OpenGLGraphicsWindow.h" />
+    <ClInclude Include="OpenGLIndexedGraphicsObject.h" />
     <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="TextFileReader.h" />
   </ItemGroup>

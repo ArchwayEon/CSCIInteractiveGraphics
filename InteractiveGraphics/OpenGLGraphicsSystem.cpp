@@ -14,8 +14,8 @@ OpenGLGraphicsSystem::OpenGLGraphicsSystem() :
 }
 
 OpenGLGraphicsSystem::OpenGLGraphicsSystem(
-   OpenGLGraphicsWindow* window, BaseCamera* camera, GLSLGraphicsShader* shader) :
-   AbstractGraphicsSystem(window, camera, shader)
+   OpenGLGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer, GLSLGraphicsShader* shader) :
+   AbstractGraphicsSystem(window, camera, timer, shader)
 {
 }
 
@@ -68,15 +68,19 @@ void OpenGLGraphicsSystem::Setup()
 
 void OpenGLGraphicsSystem::Run()
 {
+   double elapsedSeconds;
    auto shader = (GLSLGraphicsShader*)_shader;
+   _timer->StartTiming();
    while (!_window->IsTimeToClose()) {
+      elapsedSeconds = _timer->GetElapsedTimeInSeconds();
       ProcessInput();
-
-      _camera->SetupProjectionAndView(_window->GetAspectRatio());
+      
       _camera->SetupLookingForward();
+      _camera->SetupProjectionAndView(_window->GetAspectRatio());
       shader->projection = _camera->GetProjection();
       shader->view = _camera->GetView();
-
+      
+      _camera->Update(elapsedSeconds);
       _window->Clear();
       for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
          iterator->second->Render();
@@ -118,40 +122,39 @@ void OpenGLGraphicsSystem::ProcessInput()
 
    if (_window->GetKeyState(GLFW_KEY_D) == GLFW_PRESS) {
       if (_window->GetKeyState(GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-         auto right = _camera->frame.GetXAxis();
-         right *= 0.05f;
-         _camera->frame.Move(right);
+         _camera->SetState(BaseCamera::CameraState::MovingRight);
       }
       else {
-         _camera->frame.Rotate(-1, _camera->frame.GetYAxis());
+         _camera->SetState(BaseCamera::CameraState::TurningRight);
       }
+      return;
    }
    if (_window->GetKeyState(GLFW_KEY_A) == GLFW_PRESS) {
       if (_window->GetKeyState(GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-         auto left = -_camera->frame.GetXAxis();
-         left *= 0.05f;
-         _camera->frame.Move(left);
+         _camera->SetState(BaseCamera::CameraState::MovingLeft);
       }
       else {
-         _camera->frame.Rotate(1, _camera->frame.GetYAxis());
+         _camera->SetState(BaseCamera::CameraState::TurningLeft);
       }
+      return;
    }
    if (_window->GetKeyState(GLFW_KEY_W) == GLFW_PRESS) {
-      auto forward = -_camera->frame.GetZAxis();
-      forward *= 0.05f;
-      _camera->frame.Move(forward);
+      _camera->SetState(BaseCamera::CameraState::MovingForward);
+      return;
    }
    if (_window->GetKeyState(GLFW_KEY_S) == GLFW_PRESS) {
-      auto backward = _camera->frame.GetZAxis();
-      backward *= 0.05f;
-      _camera->frame.Move(backward);
+      _camera->SetState(BaseCamera::CameraState::MovingBackward);
+      return;
    }
    if (_window->GetKeyState(GLFW_KEY_UP) == GLFW_PRESS) {
-      _camera->frame.Move({ 0, 0.01f, 0 });
+      _camera->SetState(BaseCamera::CameraState::MovingUp);
+      return;
    }
    if (_window->GetKeyState(GLFW_KEY_DOWN) == GLFW_PRESS) {
-      _camera->frame.Move({ 0, -0.01f, 0 });
+      _camera->SetState(BaseCamera::CameraState::MovingDown);
+      return;
    }
+   _camera->SetState(BaseCamera::CameraState::NotMoving);
 
 }
 

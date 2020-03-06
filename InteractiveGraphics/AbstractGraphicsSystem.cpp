@@ -8,6 +8,9 @@ AbstractGraphicsSystem::~AbstractGraphicsSystem()
    if (_camera != nullptr) {
       delete _camera;
    }
+   if (_timer != nullptr) {
+      delete _timer;
+   }
    for (auto iterator = this->_objects.begin(); iterator != this->_objects.end(); iterator++) {
       delete iterator->second;
    }
