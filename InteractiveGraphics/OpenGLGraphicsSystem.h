@@ -6,6 +6,7 @@
 #include "AbstractGraphicsSystem.h"
 #include "OpenGLGraphicsWindow.h"
 #include "GLSLGraphicsShader.h"
+#include "AbstractTimer.h"
 
 class OpenGLGraphicsSystem :
    public AbstractGraphicsSystem
@@ -13,7 +14,7 @@ class OpenGLGraphicsSystem :
 public:
    OpenGLGraphicsSystem();
    OpenGLGraphicsSystem(
-      OpenGLGraphicsWindow* window, BaseCamera* camera, GLSLGraphicsShader* shader);
+      OpenGLGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer, GLSLGraphicsShader* shader);
    ~OpenGLGraphicsSystem();
    bool InitializeContext();
    void ShowWindow();

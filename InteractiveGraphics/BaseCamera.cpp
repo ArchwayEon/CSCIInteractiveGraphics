@@ -5,9 +5,64 @@ BaseCamera::BaseCamera() :
    fieldOfView(60.0f), _aspectRatio(1.0f), 
    nearPlane(0.1f), farPlane(50.0f), frame(), 
    target({ 0.0f, 0.0f, 0.0f }), 
-   _projection(1.0f), _view(1.0f)
+   _projection(1.0f), _view(1.0f),
+   _state(CameraState::NotMoving)
 {
    frame.SetPosition(0.0f, 0.0f, 5.0f);
+}
+
+void BaseCamera::Update(double elapsedSeconds)
+{
+   switch (_state) {
+      case CameraState::NotMoving:
+         break;
+      case CameraState::MovingForward: {
+         auto forward = -frame.GetZAxis();
+         forward *= (2.0 * elapsedSeconds);
+         frame.Move(forward);
+         break;
+      }
+      case CameraState::MovingBackward: {
+         auto backward = frame.GetZAxis();
+         backward *= (2.0 * elapsedSeconds);
+         frame.Move(backward);
+         break;
+      }
+      case CameraState::MovingUp: {
+         auto up = frame.GetYAxis();
+         up *= (2.0 * elapsedSeconds);
+         frame.Move(up);
+         break;
+      }
+      case CameraState::MovingDown: {
+         auto down = -frame.GetYAxis();
+         down *= (2.0 * elapsedSeconds);
+         frame.Move(down);
+         break;
+      }
+      case CameraState::TurningRight: {
+         auto turnAngle = -90.0 * elapsedSeconds;
+         frame.Rotate((float)turnAngle, frame.GetYAxis());
+         break;
+      }
+      case CameraState::TurningLeft: {
+         auto turnAngle = 90.0 * elapsedSeconds;
+         frame.Rotate((float)turnAngle, frame.GetYAxis());
+         break;
+      }
+      case CameraState::MovingRight: {
+         auto right = frame.GetXAxis();
+         right *= (2.0 * elapsedSeconds);
+         frame.Move(right);
+         break;
+      }
+      case CameraState::MovingLeft: {
+         auto left = -frame.GetXAxis();
+         left *= (2.0 * elapsedSeconds);
+         frame.Move(left);
+         break;
+      }
+   }
 }
 
 void BaseCamera::SetupLookingForward()
