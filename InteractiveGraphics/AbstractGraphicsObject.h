@@ -4,6 +4,7 @@
 #include "AbstractGraphicsShader.h"
 #include <glm/glm.hpp>
 #include "AbstractTexture.h"
+#include "AbstractVertexStrategy.h"
 
 class AbstractGraphicsObject
 {
@@ -12,9 +13,15 @@ protected:
    AbstractTexture* _texture;
 
 public:
-   AbstractGraphicsObject() : _shader(nullptr), _texture(nullptr) {}
-   AbstractGraphicsObject(AbstractGraphicsShader* shader, AbstractTexture* texture = nullptr) :
-      _shader(shader), _texture(nullptr) {}
+   AbstractVertexStrategy* vertexStrategy;
+
+public:
+   AbstractGraphicsObject() : 
+      _shader(nullptr), _texture(nullptr), vertexStrategy(nullptr) {}
+   AbstractGraphicsObject(
+      AbstractGraphicsShader* shader,
+      AbstractTexture* texture = nullptr) :
+      _shader(shader), vertexStrategy(nullptr), _texture(nullptr) {}
    virtual ~AbstractGraphicsObject() {}
    virtual void SetShader(AbstractGraphicsShader* shader) {
       _shader = shader;

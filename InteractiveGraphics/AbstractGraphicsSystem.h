@@ -32,7 +32,7 @@ public:
    string ReportErrors() { return _errorReport; }
    virtual void AddObject(const string& objectName, AbstractGraphicsObject* object, const string& shaderName);
    virtual void RemoveObject(const string& objectName);
-   virtual AbstractGraphicsObject* GetObject(const string& objectName) {
+   virtual AbstractGraphicsObject* GetGraphicsObject(const string& objectName) {
       return _objects[objectName];
    }
    virtual void AddShader(string shaderName, AbstractGraphicsShader* shader);

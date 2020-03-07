@@ -8,6 +8,7 @@
 #include "GraphicsObjectReader.h"
 #include "Generate.h"
 #include "HighResolutionTimer.h"
+#include "OpenGLVertexPCStrategy.h"
 
 void ReportError(const string& error) 
 {
@@ -31,7 +32,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    OpenGLGraphicsObject* object = nullptr;
    GraphicsObjectReader reader("cube.ig");
    if (reader.Read()) {
-      object = reader.GetObject();
+      object = reader.GetGraphicsObject();
    }
    else {
       ReportError(reader.ReportErrors());
@@ -52,23 +53,26 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->AddShader("Simple3DShader", shader);
 
    graphics->AddObject("Cube", object, "Simple3DShader");
+
    object = Generate::IndexedFlatSurface(10, 10, { 0.5f, 0.5f, 0.5f, 1.0f });
    graphics->AddObject("Floor", object, "Simple3DShader");
 
-   auto cube = (OpenGLGraphicsObject*)graphics->GetObject("Cube");
+   auto cube = (OpenGLGraphicsObject*)graphics->GetGraphicsObject("Cube");
    cube->frame.Move({ 0.0f, 0.5f, 0.0f });
 
    object = Generate::Cuboid(0.5f, 1, 1, { 0.5f, 0.5f, 0.0f, 1.0f });
    graphics->AddObject("C2", object, "Simple3DShader");
    object->frame.Move({ 3.0f, 0.5f, 0.0f });
-   auto c2 = (OpenGLGraphicsObject*)graphics->GetObject("C2");
-   c2->SetColor(0, 6, { 0.5f, 0.0f, 0.0f, 1.0f });
+   auto c2 = (OpenGLGraphicsObject*)graphics->GetGraphicsObject("C2");
+   auto vertexStrategy = (OpenGLVertexPCStrategy*)c2->vertexStrategy;
+   vertexStrategy->SetColor(0, 6, { 0.5f, 0.0f, 0.0f, 1.0f });
 
    object = Generate::Cuboid(1, 2, 1, { 0.0f, 0.5f, 0.5f, 1.0f });
    graphics->AddObject("C3", object, "Simple3DShader");
    object->frame.Move({ 0.0f, 0.5f, 4.0f });
-   auto c3 = (OpenGLGraphicsObject*)graphics->GetObject("C3");
-   c3->SetColor(5, 6, { 0.0f, 0.0f, 0.5f, 1.0f });
+   auto c3 = (OpenGLGraphicsObject*)graphics->GetGraphicsObject("C3");
+   vertexStrategy = (OpenGLVertexPCStrategy*)c3->vertexStrategy;
+   vertexStrategy->SetColor(0, 6, { 0.5f, 0.0f, 0.0f, 1.0f });
 
    if (graphics->InitializeContext()) {
       graphics->ShowWindow();

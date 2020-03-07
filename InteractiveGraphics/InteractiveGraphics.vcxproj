@@ -165,7 +165,9 @@
     <ClCompile Include="OpenGLGraphicsSystem.cpp" />
     <ClCompile Include="OpenGLGraphicsWindow.cpp" />
     <ClCompile Include="OpenGLIndexedGraphicsObject.cpp" />
+    <ClCompile Include="OpenGLIndexedVertexPCStrategy.cpp" />
     <ClCompile Include="OpenGLTexture.cpp" />
+    <ClCompile Include="OpenGLVertexPCStrategy.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
   </ItemGroup>
@@ -188,7 +190,9 @@
     <ClInclude Include="OpenGLGraphicsSystem.h" />
     <ClInclude Include="OpenGLGraphicsWindow.h" />
     <ClInclude Include="OpenGLIndexedGraphicsObject.h" />
+    <ClInclude Include="OpenGLIndexedVertexPCStrategy.h" />
     <ClInclude Include="OpenGLTexture.h" />
+    <ClInclude Include="OpenGLVertexPCStrategy.h" />
     <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="TextFileReader.h" />
   </ItemGroup>

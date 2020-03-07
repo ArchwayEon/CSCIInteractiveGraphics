@@ -14,7 +14,7 @@ private:
 public:
    GraphicsObjectReader(string filePath) : 
       _filePath(filePath), _object(nullptr) {}
-   OpenGLGraphicsObject* GetObject() { return _object; }
+   OpenGLGraphicsObject* GetGraphicsObject() { return _object; }
    bool Read();
 };
 

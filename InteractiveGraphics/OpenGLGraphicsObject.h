@@ -14,23 +14,31 @@ class OpenGLGraphicsObject :
 {
 protected:
    GLuint _vaoId, _vboId;
-   vector<Vertex> _vertices;
+   //vector<Vertex> _vertices;
 
 public:
    ReferenceFrame frame;
 
 public:
    OpenGLGraphicsObject() : 
+      AbstractGraphicsObject(),
       _vaoId(0), _vboId(0), frame()
    {}
-   OpenGLGraphicsObject(AbstractGraphicsShader* shader) : 
-      AbstractGraphicsObject(shader), _vaoId(0), _vboId(0), frame()
+   OpenGLGraphicsObject(
+      AbstractGraphicsShader* shader,
+      AbstractTexture* texture = nullptr) :
+      AbstractGraphicsObject(shader, texture), _vaoId(0), _vboId(0), frame()
    {}
    ~OpenGLGraphicsObject();
-   void AddVertex(const Vertex& vertex) { _vertices.push_back(vertex); }
-   void SetColor(int facet, int numberOfVertices, RGBA color);
+   //void AddVertex(const Vertex& vertex) { _vertices.push_back(vertex); }
+   //void SetColor(int facet, int numberOfVertices, RGBA color);
    void Setup();
    void Render();
+
+protected:
+   void SetBufferInterpretation(
+      unsigned int location, unsigned int count, 
+      unsigned int bytesToNext, unsigned char offset);
 };
 
 #endif
