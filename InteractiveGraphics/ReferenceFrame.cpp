@@ -25,3 +25,20 @@ void ReferenceFrame::Move(const glm::vec3& vector)
    translateMat[3] = glm::vec4(vector, 0.0f);
    this->orientation += translateMat;
 }
+
+void ReferenceFrame::PointAt(float x, float y, float z)
+{
+   PointAt({ x, y, z });
+}
+
+void ReferenceFrame::PointAt(const glm::vec3& point)
+{
+   glm::vec3 position = GetPosition();
+   glm::vec3 forward = glm::normalize(position - point);
+   glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+   glm::vec3 cameraRight = glm::normalize(glm::cross(up, forward));
+   glm::vec3 cameraUp = glm::cross(forward, cameraRight);
+   this->orientation[0] = glm::vec4(cameraRight, 0.0f);
+   this->orientation[1] = glm::vec4(cameraUp, 0.0f);
+   this->orientation[2] = glm::vec4(forward, 0.0f);
+}

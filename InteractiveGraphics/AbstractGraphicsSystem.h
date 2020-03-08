@@ -17,6 +17,7 @@ protected:
    AbstractTimer* _timer;
    map<string, AbstractGraphicsShader*> _shaders;
    map<string, AbstractGraphicsObject*> _objects;
+   map<string, AbstractTexture*> _textures;
    string _errorReport;
 
 public:
@@ -36,6 +37,10 @@ public:
       return _objects[objectName];
    }
    virtual void AddShader(string shaderName, AbstractGraphicsShader* shader);
+   virtual void AddTexture(string textureName, AbstractTexture* texture);
+   virtual AbstractTexture* GetTexture(const string& textureName) {
+      return _textures[textureName];
+   }
    virtual bool InitializeContext() = 0;
    virtual void ShowWindow() = 0;
    virtual void Setup() = 0;

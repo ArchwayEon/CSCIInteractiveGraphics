@@ -168,6 +168,8 @@
     <ClCompile Include="OpenGLIndexedVertexPCStrategy.cpp" />
     <ClCompile Include="OpenGLTexture.cpp" />
     <ClCompile Include="OpenGLVertexPCStrategy.cpp" />
+    <ClCompile Include="OpenGLVertexPCTStrategy.cpp" />
+    <ClCompile Include="OpenGLVertexStrategy.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
   </ItemGroup>
@@ -193,17 +195,22 @@
     <ClInclude Include="OpenGLIndexedVertexPCStrategy.h" />
     <ClInclude Include="OpenGLTexture.h" />
     <ClInclude Include="OpenGLVertexPCStrategy.h" />
+    <ClInclude Include="OpenGLVertexPCTStrategy.h" />
+    <ClInclude Include="OpenGLVertexStrategy.h" />
     <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="TextFileReader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cube.ig" />
+    <None Include="FSPositionColorTexture.glsl" />
     <None Include="rectangle.ig" />
     <None Include="Simple3DVertexShader.glsl" />
     <None Include="SimpleFragmentShader.glsl" />
     <None Include="SimpleVertexShader.glsl" />
+    <None Include="VSPositionColorTexture.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="brickwall.jpg" />
     <Image Include="crate.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -24,10 +24,7 @@ void OpenGLIndexedGraphicsObject::Render()
 
    glBindVertexArray(_vaoId);
    glBindBuffer(GL_ARRAY_BUFFER, _vboId);
-   // Positions
-   SetBufferInterpretation(0, 3, sizeof(Vertex), 0);
-   // Colors
-   SetBufferInterpretation(1, 3, sizeof(Vertex), (sizeof(GLfloat) * 3));
+
    this->vertexStrategy->RenderWithIndex(_indexVbo, GL_TRIANGLES);
    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
    glDisableVertexAttribArray(0);

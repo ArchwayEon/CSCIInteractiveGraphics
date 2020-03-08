@@ -22,7 +22,7 @@ public:
       AbstractGraphicsShader* shader,
       AbstractTexture* texture = nullptr) :
       _shader(shader), vertexStrategy(nullptr), _texture(nullptr) {}
-   virtual ~AbstractGraphicsObject() {}
+   virtual ~AbstractGraphicsObject();
    virtual void SetShader(AbstractGraphicsShader* shader) {
       _shader = shader;
    }

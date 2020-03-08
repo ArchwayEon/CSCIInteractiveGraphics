@@ -87,6 +87,12 @@
     <ClCompile Include="OpenGLIndexedVertexPCStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGLVertexPCTStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLVertexStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h">
@@ -158,6 +164,12 @@
     <ClInclude Include="OpenGLIndexedVertexPCStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OpenGLVertexPCTStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLVertexStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleVertexShader.glsl" />
@@ -165,9 +177,14 @@
     <None Include="rectangle.ig" />
     <None Include="Simple3DVertexShader.glsl" />
     <None Include="cube.ig" />
+    <None Include="VSPositionColorTexture.glsl" />
+    <None Include="FSPositionColorTexture.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="crate.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="brickwall.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

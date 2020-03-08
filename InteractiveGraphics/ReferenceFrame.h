@@ -28,6 +28,8 @@ public:
    void RotateWorld(float degrees, const glm::vec3& axis);
    void Scale(float ratio);
    void Move(const glm::vec3& vector);
+   void PointAt(float x, float y, float z);
+   void PointAt(const glm::vec3& point);
 };
 
 #endif

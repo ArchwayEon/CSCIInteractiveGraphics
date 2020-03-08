@@ -18,7 +18,7 @@ public:
    virtual ~AbstractTexture();
 
    virtual void LoadFromFile(const string& filename) = 0;
-   virtual void SetTextureData(unsigned char* data, unsigned int size, int width, int height) = 0;
+   virtual void LoadFromArray(unsigned char* data, unsigned int size, int width, int height) = 0;
    virtual void Select() = 0;
    virtual void Setup() = 0;
    string ErrorReport() { return _error; }

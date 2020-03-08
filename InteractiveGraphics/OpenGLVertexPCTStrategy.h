@@ -1,20 +1,19 @@
 #pragma once
-#ifndef OPENGL_VERTEXPC_STRATEGY
-#define OPENGL_VERTEXPC_STRATEGY
-#include "AbstractVertexStrategy.h"
+#ifndef OPENGL_VERTEXPCT_STRATEGY
+#define OPENGL_VERTEXPCT_STRATEGY
 #include "OpenGLVertexStrategy.h"
-#include <vector>
 #include "GraphicsStructures.h"
+#include <vector>
 using std::vector;
 
-class OpenGLVertexPCStrategy :
+class OpenGLVertexPCTStrategy :
    public OpenGLVertexStrategy
 {
 protected:
-   vector<VertexPC> _vertices;
+   vector<VertexPCT> _vertices;
 
 public:
-   virtual void AddVertex(const VertexPC& vertex) { _vertices.push_back(vertex); }
+   virtual void AddVertex(const VertexPCT& vertex) { _vertices.push_back(vertex); }
    virtual void SetColor(int facet, int numberOfVertices, RGBA color);
    void SetupBuffer(unsigned int handle);
    void Render(unsigned int primitiveType);

@@ -23,7 +23,7 @@ public:
    void SetMagFilter(GLint magFilter) { _magFilter = magFilter; }
 
    void LoadFromFile(const string& filename);
-   void SetTextureData(unsigned char* data, unsigned int size, int width, int height);
+   void LoadFromArray(unsigned char* data, unsigned int size, int width, int height);
    void Select();
    void Setup();
 };

@@ -14,7 +14,8 @@ struct Tex {
    float s, t;
 };
 
-struct Vertex {
+// Vertex - Position, Color
+struct VertexPC {
    float x, y, z;
    float red, green, blue;
 };

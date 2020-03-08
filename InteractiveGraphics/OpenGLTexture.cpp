@@ -29,7 +29,7 @@ void OpenGLTexture::LoadFromFile(const string& filename)
    }
 }
 
-void OpenGLTexture::SetTextureData(unsigned char* data, unsigned int size, int width, int height)
+void OpenGLTexture::LoadFromArray(unsigned char* data, unsigned int size, int width, int height)
 {
    _width = width;
    _height = height;

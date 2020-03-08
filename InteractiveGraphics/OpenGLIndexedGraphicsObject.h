@@ -8,7 +8,6 @@ class OpenGLIndexedGraphicsObject :
 {
 protected:
    GLuint _indexVbo;
-   //vector<unsigned int> _indexes;
 
 public:
    OpenGLIndexedGraphicsObject() :
@@ -17,7 +16,6 @@ public:
    OpenGLIndexedGraphicsObject(AbstractGraphicsShader* shader) :
       OpenGLGraphicsObject(shader), _indexVbo(0)
    {}
-   //void AddIndex(unsigned int index) { _indexes.push_back(index); }
    void Setup();
    void Render();
 };

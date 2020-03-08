@@ -9,6 +9,7 @@
 #include "Generate.h"
 #include "HighResolutionTimer.h"
 #include "OpenGLVertexPCStrategy.h"
+#include "OpenGLTexture.h"
 
 void ReportError(const string& error) 
 {
@@ -38,19 +39,28 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
       ReportError(reader.ReportErrors());
       return 0;
    }
-   
-   GLSLGraphicsShader* shader = new GLSLGraphicsShader(new TextFileReader());
-   if (!shader->ReadShaderSources(
+
+   GLSLGraphicsShader* simple3DShader = new GLSLGraphicsShader(new TextFileReader());
+   if (!simple3DShader->ReadShaderSources(
       "Simple3DVertexShader.glsl", "SimpleFragmentShader.glsl")) {
-      ReportError(shader->ReportErrors());
+      ReportError(simple3DShader->ReportErrors());
+      return 0;
+   }
+   GLSLGraphicsShader* simplePCTShader = new GLSLGraphicsShader(new TextFileReader());
+   if (!simplePCTShader->ReadShaderSources(
+      "VSPositionColorTexture.glsl", "FSPositionColorTexture.glsl")) {
+      ReportError(simplePCTShader->ReportErrors());
       return 0;
    }
 
    auto timer = new HighResolutionTimer();
    auto camera = new BaseCamera();
-   camera->frame.SetPosition(2.0f, 1.0f, 7.0f);
+   camera->frame.SetPosition(2.0f, 3.0f, 10.0f);
+   //camera->frame.PointAt(0, 0, 0);
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer);
-   graphics->AddShader("Simple3DShader", shader);
+
+   graphics->AddShader("Simple3DShader", simple3DShader);
+   graphics->AddShader("SimplePCTShader", simplePCTShader);
 
    graphics->AddObject("Cube", object, "Simple3DShader");
 
@@ -73,6 +83,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    auto c3 = (OpenGLGraphicsObject*)graphics->GetGraphicsObject("C3");
    vertexStrategy = (OpenGLVertexPCStrategy*)c3->vertexStrategy;
    vertexStrategy->SetColor(0, 6, { 0.5f, 0.0f, 0.0f, 1.0f });
+
+   OpenGLTexture* wallTexture = new OpenGLTexture();
+   //unsigned char pixels[] = {
+   //  128,   0,   0, 139,  69,  19, 0, 0, // Bottom of image
+   //  139,  69,  19, 188, 143, 143, 0, 0
+   //};
+   //wallTexture->LoadFromArray(pixels, 16, 2, 2);
+   wallTexture->LoadFromFile("brickwall.jpg");
+   graphics->AddTexture("brickwall", wallTexture);
+
+   OpenGLGraphicsObject* wall = Generate::TexturedFlatSurface(10, 10, { 1.0f, 1.0f, 1.0f, 1.0f });
+   wall->SetTexture(wallTexture);
+   graphics->AddObject("wall", wall, "SimplePCTShader");
+   wall->frame.Move({ 0.0f, 5.0f, -5.0f });
+   wall->frame.Rotate(90.0f, wall->frame.GetXAxis());
 
    if (graphics->InitializeContext()) {
       graphics->ShowWindow();

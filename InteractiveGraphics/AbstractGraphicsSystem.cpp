@@ -11,14 +11,22 @@ AbstractGraphicsSystem::~AbstractGraphicsSystem()
    if (_timer != nullptr) {
       delete _timer;
    }
-   for (auto objectIter = this->_objects.begin(); objectIter != this->_objects.end(); objectIter++) {
+   for (auto objectIter = this->_objects.begin(); 
+      objectIter != this->_objects.end(); objectIter++) {
       delete objectIter->second;
    }
    this->_objects.clear();
-   for (auto shaderIter = this->_shaders.begin(); shaderIter != this->_shaders.end(); shaderIter++) {
+   for (auto shaderIter = this->_shaders.begin(); 
+      shaderIter != this->_shaders.end(); shaderIter++) {
       delete shaderIter->second;
    }
    this->_shaders.clear();
+
+   for (auto textureIter = this->_textures.begin(); 
+      textureIter != this->_textures.end(); textureIter++) {
+      delete textureIter->second;
+   }
+   this->_textures.clear();
 }
 
 void AbstractGraphicsSystem::AddObject(const string& objectName, AbstractGraphicsObject* object, const string& shaderName)
@@ -38,4 +46,9 @@ void AbstractGraphicsSystem::RemoveObject(const string& objectName)
 void AbstractGraphicsSystem::AddShader(string shaderName, AbstractGraphicsShader* shader)
 {
    _shaders[shaderName] = shader;
+}
+
+void AbstractGraphicsSystem::AddTexture(string textureName, AbstractTexture* texture)
+{
+   _textures[textureName] = texture;
 }
