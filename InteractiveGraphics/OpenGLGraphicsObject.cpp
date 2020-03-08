@@ -31,6 +31,9 @@ void OpenGLGraphicsObject::Render()
 
    glBindVertexArray(_vaoId);
    glBindBuffer(GL_ARRAY_BUFFER, _vboId);
+   if (_texture != nullptr) {
+      _texture->Select();
+   }
    this->vertexStrategy->Render(GL_TRIANGLES);
 
    glDisableVertexAttribArray(0);
