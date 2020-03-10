@@ -23,11 +23,12 @@ void OpenGLGraphicsObject::Setup()
 
 void OpenGLGraphicsObject::Render()
 {
-   auto vertexStrategy = (OpenGLVertexStrategy*)this->vertexStrategy;
    auto shader = (GLSLGraphicsShader*)_shader;
    shader->Select();
    shader->SendMatricesToGPU();
    shader->SendMatrixToGPU("world", frame.orientation);
+
+   auto vertexStrategy = (OpenGLVertexStrategy*)this->vertexStrategy;
    vertexStrategy->SelectVAO();
    vertexStrategy->SelectVBO();
    if (_texture != nullptr) {

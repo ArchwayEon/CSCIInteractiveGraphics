@@ -30,15 +30,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    OpenGLGraphicsWindow* window = 
       new OpenGLGraphicsWindow("Interactive Graphics Lec Week 8");
 
-   OpenGLGraphicsObject* object = nullptr;
-   GraphicsObjectReader reader("cube.ig");
-   if (reader.Read()) {
-      object = reader.GetGraphicsObject();
-   }
-   else {
-      ReportError(reader.ReportErrors());
-      return 0;
-   }
+
 
    GLSLGraphicsShader* simple3DShader = new GLSLGraphicsShader(new TextFileReader());
    if (!simple3DShader->ReadShaderSources(
@@ -56,15 +48,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    auto timer = new HighResolutionTimer();
    auto camera = new BaseCamera();
    camera->frame.SetPosition(2.0f, 3.0f, 10.0f);
-   //camera->frame.PointAt(0, 0, 0);
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer);
-
    graphics->AddShader("Simple3DShader", simple3DShader);
    graphics->AddShader("SimplePCTShader", simplePCTShader);
 
-   graphics->AddObject("Cube", object, "Simple3DShader");
+   OpenGLGraphicsObject* cubeFromFile = nullptr;
+   GraphicsObjectReader reader("cube.ig");
+   if (reader.Read()) {
+      cubeFromFile = reader.GetGraphicsObject();
+   }
+   else {
+      ReportError(reader.ReportErrors());
+      return 0;
+   }
+   graphics->AddObject("Cube", cubeFromFile, "Simple3DShader");
 
-   object = Generate::IndexedFlatSurface(10, 10, { 0.5f, 0.5f, 0.5f, 1.0f });
+   OpenGLGraphicsObject* object = Generate::IndexedFlatSurface(10, 10, { 0.5f, 0.5f, 0.5f, 1.0f });
    graphics->AddObject("Floor", object, "Simple3DShader");
 
    auto cube = (OpenGLGraphicsObject*)graphics->GetGraphicsObject("Cube");
