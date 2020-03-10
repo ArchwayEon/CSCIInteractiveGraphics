@@ -5,10 +5,9 @@
 class AbstractVertexStrategy
 {
 public:
-   virtual void SetupBuffer(unsigned int handle) = 0;
-   virtual void SetupIndexBuffer(unsigned int handle) {}
+   virtual void SetupBuffer() = 0;
+   virtual void SetupIndexBuffer() {}
    virtual void Render(unsigned int primitiveType) {};
-   virtual void RenderWithIndex(unsigned int handle, unsigned int primitiveType) {}
 
 protected:
    // Instructs the GPU how to interpret the buffer

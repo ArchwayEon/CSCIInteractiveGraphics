@@ -13,10 +13,9 @@ void OpenGLVertexPCStrategy::SetColor(int facet, int numberOfVertices, RGBA colo
    }
 }
 
-void OpenGLVertexPCStrategy::SetupBuffer(unsigned int handle)
+void OpenGLVertexPCStrategy::SetupBuffer()
 {
-   // Bind the object to the binding target
-   glBindBuffer(GL_ARRAY_BUFFER, handle);
+   SelectVBO();
    // Allocate memory in the GPU for the buffer bound to the binding target and then
    // copy the data
    glBufferData(GL_ARRAY_BUFFER, 

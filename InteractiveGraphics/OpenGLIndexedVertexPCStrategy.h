@@ -8,14 +8,12 @@ class OpenGLIndexedVertexPCStrategy :
 {
 protected:
    vector<unsigned int> _indexes;
-   unsigned int _indexVbo;
 
 public:
-   OpenGLIndexedVertexPCStrategy() : _indexVbo(0) {}
-   void SetIndexVbo(unsigned int indexVbo) { _indexVbo = indexVbo; };
+   OpenGLIndexedVertexPCStrategy() {}
    void AddIndex(unsigned int index) { _indexes.push_back(index); }
-   void SetupIndexBuffer(unsigned int handle);
-   void RenderWithIndex(unsigned int handle, unsigned int primitiveType);
+   void SetupIndexBuffer();
+   void Render(unsigned int primitiveType);
 };
 #endif
 

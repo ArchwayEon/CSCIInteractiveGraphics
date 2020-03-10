@@ -16,7 +16,7 @@ protected:
 public:
    virtual void AddVertex(const VertexPC& vertex) { _vertices.push_back(vertex); }
    virtual void SetColor(int facet, int numberOfVertices, RGBA color);
-   void SetupBuffer(unsigned int handle);
+   void SetupBuffer();
    void Render(unsigned int primitiveType);
 };
 

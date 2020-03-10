@@ -12,21 +12,20 @@ using std::vector;
 class OpenGLGraphicsObject :
    public AbstractGraphicsObject
 {
-protected:
-   GLuint _vaoId, _vboId;
+//protected:
+//   GLuint _vaoId, _vboId;
 
 public:
    ReferenceFrame frame;
 
 public:
    OpenGLGraphicsObject() : 
-      AbstractGraphicsObject(),
-      _vaoId(0), _vboId(0), frame()
+      AbstractGraphicsObject(), frame()
    {}
    OpenGLGraphicsObject(
       AbstractGraphicsShader* shader,
       AbstractTexture* texture = nullptr) :
-      AbstractGraphicsObject(shader, texture), _vaoId(0), _vboId(0), frame()
+      AbstractGraphicsObject(shader, texture), frame()
    {}
    ~OpenGLGraphicsObject();
    void Setup();
