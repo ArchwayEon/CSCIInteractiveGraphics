@@ -100,6 +100,25 @@ void GLSLGraphicsShader::SendMatricesToGPU()
    SendMatrixToGPU("projection", projection);
 }
 
+void GLSLGraphicsShader::SendFloatToGPU(const string& name, float data) const
+{
+   unsigned int location = glGetUniformLocation(_shaderProgram, name.c_str());
+   glUniform1f(location, data);
+}
+
+void GLSLGraphicsShader::SendVector3ToGPU(const string& name, const glm::vec3& vector) const
+{
+   unsigned int location = glGetUniformLocation(_shaderProgram, name.c_str());
+   glUniform3fv(location, 1, glm::value_ptr(vector));
+}
+
+void GLSLGraphicsShader::SendGlobalLightToGPU(const glm::vec3& position, const glm::vec3& color, float intensity) const
+{
+   SendVector3ToGPU("globalLightPosition", position);
+   SendVector3ToGPU("globalLightColor", color);
+   SendFloatToGPU("globalLightIntensity", intensity);
+}
+
 GLuint GLSLGraphicsShader::CompileShader(GLenum type, const GLchar* source)
 {
    GLint length = (GLint)(sizeof(GLchar) * strlen(source));

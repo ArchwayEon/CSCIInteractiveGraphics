@@ -32,6 +32,9 @@ public:
    void Select();
    void SendMatrixToGPU(const string& uniformName, const glm::mat4& matrix);
    void SendMatricesToGPU();
+   void SendFloatToGPU(const string& name, float data) const;
+   void SendVector3ToGPU(const string& name, const glm::vec3& vector) const;
+   void SendGlobalLightToGPU(const glm::vec3& position, const glm::vec3& color, float intensity) const;
 
 private:
    GLuint CompileShader(GLenum type, const GLchar* source);

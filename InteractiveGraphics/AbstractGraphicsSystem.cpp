@@ -1,5 +1,24 @@
 #include "AbstractGraphicsSystem.h"
 
+AbstractGraphicsSystem::AbstractGraphicsSystem() : 
+   _window(nullptr), _camera(new BaseCamera()), _timer(nullptr), _errorReport("")
+{
+   Init();
+}
+
+AbstractGraphicsSystem::AbstractGraphicsSystem(AbstractGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer) :
+   _window(window), _camera(camera), _timer(timer), _errorReport("")
+{
+   Init();
+}
+
+void AbstractGraphicsSystem::Init()
+{
+   globalLight.color = { 1.0f, 1.0f, 1.0f }; // White light
+   globalLight.intensity = 0.25f;
+   globalLight.position = { 100.0f, 100.0f, 0.0f };
+}
+
 AbstractGraphicsSystem::~AbstractGraphicsSystem()
 {
    if (_window != nullptr) {
@@ -52,3 +71,5 @@ void AbstractGraphicsSystem::AddTexture(string textureName, AbstractTexture* tex
 {
    _textures[textureName] = texture;
 }
+
+

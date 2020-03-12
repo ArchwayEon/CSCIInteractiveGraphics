@@ -27,6 +27,7 @@ void OpenGLGraphicsObject::Render()
    shader->Select();
    shader->SendMatricesToGPU();
    shader->SendMatrixToGPU("world", frame.orientation);
+   shader->SendFloatToGPU("materialAmbientIntensity", material.ambientIntensity);
 
    auto vertexStrategy = (OpenGLVertexStrategy*)this->vertexStrategy;
    vertexStrategy->SelectVAO();

@@ -5,27 +5,21 @@
 #include <glad/glad.h> 
 #include "AbstractGraphicsObject.h"
 #include "GraphicsStructures.h"
-#include "ReferenceFrame.h"
+
 #include <vector>
 using std::vector;
 
 class OpenGLGraphicsObject :
    public AbstractGraphicsObject
 {
-//protected:
-//   GLuint _vaoId, _vboId;
-
-public:
-   ReferenceFrame frame;
-
 public:
    OpenGLGraphicsObject() : 
-      AbstractGraphicsObject(), frame()
+      AbstractGraphicsObject()
    {}
    OpenGLGraphicsObject(
       AbstractGraphicsShader* shader,
       AbstractTexture* texture = nullptr) :
-      AbstractGraphicsObject(shader, texture), frame()
+      AbstractGraphicsObject(shader, texture)
    {}
    ~OpenGLGraphicsObject();
    void Setup();

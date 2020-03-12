@@ -5,6 +5,10 @@
 #include <glm/glm.hpp>
 #include "AbstractTexture.h"
 #include "AbstractVertexStrategy.h"
+#include "ReferenceFrame.h"
+#include "GraphicsStructures.h"
+
+class AbstractAnimation;
 
 class AbstractGraphicsObject
 {
@@ -14,23 +18,29 @@ protected:
 
 public:
    AbstractVertexStrategy* vertexStrategy;
+   ReferenceFrame frame;
+   AbstractAnimation* animation;
+   Material material;
 
 public:
-   AbstractGraphicsObject() : 
-      _shader(nullptr), _texture(nullptr), vertexStrategy(nullptr) {}
-   AbstractGraphicsObject(
-      AbstractGraphicsShader* shader,
-      AbstractTexture* texture = nullptr) :
-      _shader(shader), vertexStrategy(nullptr), _texture(nullptr) {}
+   AbstractGraphicsObject();
+   AbstractGraphicsObject(AbstractGraphicsShader* shader, AbstractTexture* texture = nullptr);
    virtual ~AbstractGraphicsObject();
    virtual void SetShader(AbstractGraphicsShader* shader) {
       _shader = shader;
+   }
+   virtual AbstractGraphicsShader* GetShader() {
+      return _shader;
    }
    virtual void SetTexture(AbstractTexture* texture) {
       _texture = texture;
    }
    virtual void Setup() = 0;
    virtual void Render() = 0;
+   virtual void Update(double elapsedSeconds);
+
+protected:
+   virtual void Init();
 };
 
 #endif

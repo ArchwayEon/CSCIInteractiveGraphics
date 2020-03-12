@@ -21,13 +21,11 @@ protected:
    string _errorReport;
 
 public:
-   AbstractGraphicsSystem() : 
-      _window(nullptr), _camera(new BaseCamera()), _timer(nullptr),
-      _errorReport(""){}
-   AbstractGraphicsSystem(
-      AbstractGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer) :
-      _window(window), _camera(camera), _timer(timer),
-      _errorReport(""){}
+   Light globalLight;
+
+public:
+   AbstractGraphicsSystem();
+   AbstractGraphicsSystem(AbstractGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer);
    virtual ~AbstractGraphicsSystem();
 
    string ReportErrors() { return _errorReport; }
@@ -45,6 +43,9 @@ public:
    virtual void ShowWindow() = 0;
    virtual void Setup() = 0;
    virtual void Run() = 0;
+
+protected:
+   virtual void Init();
 };
 
 #endif

@@ -6,6 +6,7 @@
 #include <sstream>
 #include <glm/gtc/matrix_transform.hpp>
 #include "OpenGLGraphicsObject.h"
+#include "OpenGLVertexPCTStrategy.h"
 
 OpenGLGraphicsSystem::OpenGLGraphicsSystem() :
    AbstractGraphicsSystem()
@@ -77,6 +78,16 @@ void OpenGLGraphicsSystem::Setup()
 
 void OpenGLGraphicsSystem::Run()
 {
+   glm::vec3 globalLightPosition(
+      globalLight.position.x, 
+      globalLight.position.y, 
+      globalLight.position.z);
+   glm::vec3 globalLightColor(
+      globalLight.color.red,
+      globalLight.color.green,
+      globalLight.color.blue
+   );
+
    double elapsedSeconds;
    _timer->StartTiming();
    while (!_window->IsTimeToClose()) {
@@ -94,6 +105,12 @@ void OpenGLGraphicsSystem::Run()
       _camera->Update(elapsedSeconds);
       _window->Clear();
       for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
+         iterator->second->Update(elapsedSeconds);
+      }
+      for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
+         auto shader = (GLSLGraphicsShader*)iterator->second->GetShader();
+         shader->Select();
+         shader->SendGlobalLightToGPU(globalLightPosition, globalLightColor, globalLight.intensity);
          iterator->second->Render();
       }
 
@@ -105,30 +122,6 @@ void OpenGLGraphicsSystem::ProcessInput()
 {
    if (_window->GetKeyState(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
       _window->Close();
-   }
-   auto cube = (OpenGLGraphicsObject*)_objects["Cube"];
-   auto c2 = (OpenGLGraphicsObject*)_objects["C2"];
-   if (_window->GetKeyState(GLFW_KEY_Y) == GLFW_PRESS) {
-      cube->frame.Rotate(1, glm::vec3(0, 1, 0));
-      c2->frame.RotateWorld(1, glm::vec3(0, 1, 0));
-   }
-   if (_window->GetKeyState(GLFW_KEY_X) == GLFW_PRESS) {
-      cube->frame.Rotate(1, glm::vec3(1, 0, 0));
-      c2->frame.RotateWorld(1, glm::vec3(1, 0, 0));
-   }
-   if (_window->GetKeyState(GLFW_KEY_Z) == GLFW_PRESS) {
-      cube->frame.Rotate(1, glm::vec3(0, 0, 1));
-      c2->frame.RotateWorld(1, glm::vec3(0, 0, 1));
-   }
-   if (_window->GetKeyState(GLFW_KEY_R) == GLFW_PRESS) {
-      cube->frame.Reset();
-      c2->frame.Reset();
-   }
-   if (_window->GetKeyState(GLFW_KEY_1) == GLFW_PRESS) {
-      c2->frame.Scale(0.9f);
-   }
-   if (_window->GetKeyState(GLFW_KEY_2) == GLFW_PRESS) {
-      c2->frame.Scale(1.1f);
    }
 
    if (_window->GetKeyState(GLFW_KEY_D) == GLFW_PRESS) {

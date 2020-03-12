@@ -93,6 +93,12 @@
     <ClCompile Include="OpenGLVertexStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RotateAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLVertexPCNTStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h">
@@ -170,6 +176,12 @@
     <ClInclude Include="OpenGLVertexStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RotateAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLVertexPCNTStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleVertexShader.glsl" />
@@ -179,12 +191,18 @@
     <None Include="cube.ig" />
     <None Include="VSPositionColorTexture.glsl" />
     <None Include="FSPositionColorTexture.glsl" />
+    <None Include="FSPCTAmbientLight.glsl" />
+    <None Include="VSPCNTLighting.glsl" />
+    <None Include="FSPCNTLight.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="crate.jpg">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="brickwall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="marble-stone-floor.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

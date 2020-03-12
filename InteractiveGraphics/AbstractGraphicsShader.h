@@ -19,6 +19,7 @@ public:
    virtual string ReportErrors() = 0;
    virtual bool Create() = 0;
    virtual void Select() = 0;
+   virtual void SendFloatToGPU(const string& name, float data) const = 0;
 };
 
 #endif

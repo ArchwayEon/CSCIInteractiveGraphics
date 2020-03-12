@@ -2,6 +2,7 @@
 #include "OpenGLVertexPCStrategy.h"
 #include "OpenGLIndexedVertexPCStrategy.h"
 #include "OpenGLVertexPCTStrategy.h"
+#include "OpenGLVertexPCNTStrategy.h"
 
 OpenGLGraphicsObject* Generate::FlatSurface(float width, float depth, RGBA color)
 {
@@ -23,7 +24,7 @@ OpenGLGraphicsObject* Generate::FlatSurface(float width, float depth, RGBA color
    return flatSurface;
 }
 
-OpenGLGraphicsObject* Generate::TexturedFlatSurface(float width, float depth, RGBA color)
+OpenGLGraphicsObject* Generate::TexturedFlatSurface(float width, float depth, RGBA color, float maxS, float maxT)
 {
    auto flatSurface = new OpenGLGraphicsObject();
    flatSurface->vertexStrategy = new OpenGLVertexPCTStrategy();
@@ -33,7 +34,7 @@ OpenGLGraphicsObject* Generate::TexturedFlatSurface(float width, float depth, RG
    VertexPCT V1 = { 
       -halfWidth, 0.0f, -halfDepth, 
       color.red, color.green, color.blue, color.alpha,
-      0.0f, 1.0f
+      0.0f, maxT
    };
    VertexPCT V2 = { 
       -halfWidth, 0.0f,  halfDepth, 
@@ -43,12 +44,52 @@ OpenGLGraphicsObject* Generate::TexturedFlatSurface(float width, float depth, RG
    VertexPCT V3 = { 
       halfWidth, 0.0f,  halfDepth, 
       color.red, color.green, color.blue, color.alpha,
-      1.0f, 0.0f
+      maxS, 0.0f
    };
    VertexPCT V4 = { 
       halfWidth, 0.0f, -halfDepth, 
       color.red, color.green, color.blue, color.alpha,
-      1.0f, 1.0f
+      maxS, maxT
+   };
+   vertexStrategy->AddVertex(V1);
+   vertexStrategy->AddVertex(V2);
+   vertexStrategy->AddVertex(V3);
+   vertexStrategy->AddVertex(V1);
+   vertexStrategy->AddVertex(V3);
+   vertexStrategy->AddVertex(V4);
+   return flatSurface;
+}
+
+OpenGLGraphicsObject* Generate::NormalizedTexturedFlatSurface(float width, float depth, RGBA color, float maxS, float maxT)
+{
+   auto flatSurface = new OpenGLGraphicsObject();
+   flatSurface->vertexStrategy = new OpenGLVertexPCNTStrategy();
+   auto vertexStrategy = (OpenGLVertexPCNTStrategy*)flatSurface->vertexStrategy;
+   float halfWidth = width / 2;
+   float halfDepth = depth / 2;
+   VertexPCNT V1 = {
+      -halfWidth, 0.0f, -halfDepth,
+      color.red, color.green, color.blue, color.alpha,
+      0.0f, 1.0f, 0.0f, 
+      0.0f, maxT
+   };
+   VertexPCNT V2 = {
+      -halfWidth, 0.0f,  halfDepth,
+      color.red, color.green, color.blue, color.alpha,
+      0.0f, 1.0f, 0.0f,
+      0.0f, 0.0f
+   };
+   VertexPCNT V3 = {
+      halfWidth, 0.0f,  halfDepth,
+      color.red, color.green, color.blue, color.alpha,
+      0.0f, 1.0f, 0.0f,
+      maxS, 0.0f
+   };
+   VertexPCNT V4 = {
+      halfWidth, 0.0f, -halfDepth,
+      color.red, color.green, color.blue, color.alpha,
+      0.0f, 1.0f, 0.0f,
+      maxS, maxT
    };
    vertexStrategy->AddVertex(V1);
    vertexStrategy->AddVertex(V2);
@@ -143,4 +184,204 @@ OpenGLIndexedGraphicsObject* Generate::IndexedFlatSurface(float width, float dep
    vertexStrategy->AddIndex(2);
    vertexStrategy->AddIndex(3);
    return flatSurface;
+}
+
+OpenGLGraphicsObject* Generate::TexturedCuboid(float width, float depth, float height, RGBA color)
+{
+   auto cuboid = new OpenGLGraphicsObject();
+   cuboid->vertexStrategy = new OpenGLVertexPCTStrategy();
+   auto vertexStrategy = (OpenGLVertexPCTStrategy*)cuboid->vertexStrategy;
+   float halfWidth = width / 2;
+   float halfDepth = depth / 2;
+   float halfHeight = height / 2;
+   VertexPCT V1 = { -halfWidth,  halfHeight, halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCT V2 = { -halfWidth, -halfHeight, halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCT V3 = { halfWidth, -halfHeight, halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCT V4 = { halfWidth,  halfHeight, halfDepth, color.red, color.green, color.blue, color.alpha };
+
+   VertexPCT V5 = { halfWidth,  halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCT V6 = { halfWidth, -halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCT V7 = { -halfWidth, -halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCT V8 = { -halfWidth,  halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
+   // Face 1
+   V1.tex = { 0, 1 };
+   vertexStrategy->AddVertex(V1);
+   V2.tex = { 0, 0 };
+   vertexStrategy->AddVertex(V2);
+   V3.tex = { 1, 0 };
+   vertexStrategy->AddVertex(V3);
+   vertexStrategy->AddVertex(V1);
+   vertexStrategy->AddVertex(V3);
+   V4.tex = { 1, 1 };
+   vertexStrategy->AddVertex(V4);
+   // Face 2
+   V4.tex = { 0, 1 };
+   vertexStrategy->AddVertex(V4);
+   V3.tex = { 0, 0 };
+   vertexStrategy->AddVertex(V3);
+   V6.tex = { 1, 0 };
+   vertexStrategy->AddVertex(V6);
+   vertexStrategy->AddVertex(V4);
+   vertexStrategy->AddVertex(V6);
+   V5.tex = { 1, 1 };
+   vertexStrategy->AddVertex(V5);
+   // Face 3
+   V5.tex = { 0, 1 };
+   vertexStrategy->AddVertex(V5);
+   V6.tex = { 0, 0 };
+   vertexStrategy->AddVertex(V6);
+   V7.tex = { 1, 0 };
+   vertexStrategy->AddVertex(V7);
+   vertexStrategy->AddVertex(V5);
+   vertexStrategy->AddVertex(V7);
+   V8.tex = { 1, 1 };
+   vertexStrategy->AddVertex(V8);
+   // Face 4
+   V8.tex = { 0, 1 };
+   vertexStrategy->AddVertex(V8);
+   V7.tex = { 0, 0 };
+   vertexStrategy->AddVertex(V7);
+   V2.tex = { 1, 0 };
+   vertexStrategy->AddVertex(V2);
+   vertexStrategy->AddVertex(V8);
+   vertexStrategy->AddVertex(V2);
+   V1.tex = { 1, 1 };
+   vertexStrategy->AddVertex(V1);
+   // Face 5
+   V6.tex = { 0, 1 };
+   vertexStrategy->AddVertex(V6);
+   V3.tex = { 0, 0 };
+   vertexStrategy->AddVertex(V3);
+   V2.tex = { 1, 0 };
+   vertexStrategy->AddVertex(V2);
+   vertexStrategy->AddVertex(V6);
+   vertexStrategy->AddVertex(V2);
+   V7.tex = { 1, 1 };
+   vertexStrategy->AddVertex(V7);
+   // Face 6
+   V8.tex = { 0, 1 };
+   vertexStrategy->AddVertex(V8);
+   V1.tex = { 0, 0 };
+   vertexStrategy->AddVertex(V1);
+   V4.tex = { 1, 0 };
+   vertexStrategy->AddVertex(V4);
+   vertexStrategy->AddVertex(V8);
+   vertexStrategy->AddVertex(V4);
+   V5.tex = { 1, 1 };
+   vertexStrategy->AddVertex(V5);
+
+   return cuboid;
+
+}
+
+OpenGLGraphicsObject* Generate::NormalizedTexturedCuboid(float width, float depth, float height, RGBA color)
+{
+   auto cuboid = new OpenGLGraphicsObject();
+   cuboid->vertexStrategy = new OpenGLVertexPCNTStrategy();
+   auto vertexStrategy = (OpenGLVertexPCNTStrategy*)cuboid->vertexStrategy;
+   float halfWidth = width / 2;
+   float halfDepth = depth / 2;
+   float halfHeight = height / 2;
+   VertexPCNT V1 = { -halfWidth,  halfHeight, halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCNT V2 = { -halfWidth, -halfHeight, halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCNT V3 = { halfWidth, -halfHeight, halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCNT V4 = { halfWidth,  halfHeight, halfDepth, color.red, color.green, color.blue, color.alpha };
+
+   VertexPCNT V5 = { halfWidth,  halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCNT V6 = { halfWidth, -halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCNT V7 = { -halfWidth, -halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
+   VertexPCNT V8 = { -halfWidth,  halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
+   // Face 1
+   V1.tex = { 0, 1 };
+   V1.normal = { 0, 0, 1 };
+   vertexStrategy->AddVertex(V1);
+   V2.tex = { 0, 0 };
+   V2.normal = { 0, 0, 1 };
+   vertexStrategy->AddVertex(V2);
+   V3.tex = { 1, 0 };
+   V3.normal = { 0, 0, 1 };
+   vertexStrategy->AddVertex(V3);
+   vertexStrategy->AddVertex(V1);
+   vertexStrategy->AddVertex(V3);
+   V4.tex = { 1, 1 };
+   V4.normal = { 0, 0, 1 };
+   vertexStrategy->AddVertex(V4);
+   // Face 2
+   V4.tex = { 0, 1 };
+   V4.normal = { 1, 0, 0 };
+   vertexStrategy->AddVertex(V4);
+   V3.tex = { 0, 0 };
+   V3.normal = { 1, 0, 0 };
+   vertexStrategy->AddVertex(V3);
+   V6.tex = { 1, 0 };
+   V6.normal = { 1, 0, 0 };
+   vertexStrategy->AddVertex(V6);
+   vertexStrategy->AddVertex(V4);
+   vertexStrategy->AddVertex(V6);
+   V5.tex = { 1, 1 };
+   V5.normal = { 1, 0, 0 };
+   vertexStrategy->AddVertex(V5);
+   // Face 3
+   V5.tex = { 0, 1 };
+   V5.normal = { 0, 0, -1 };
+   vertexStrategy->AddVertex(V5);
+   V6.tex = { 0, 0 };
+   V6.normal = { 0, 0, -1 };
+   vertexStrategy->AddVertex(V6);
+   V7.tex = { 1, 0 };
+   V7.normal = { 0, 0, -1 };
+   vertexStrategy->AddVertex(V7);
+   vertexStrategy->AddVertex(V5);
+   vertexStrategy->AddVertex(V7);
+   V8.tex = { 1, 1 };
+   V8.normal = { 0, 0, -1 };
+   vertexStrategy->AddVertex(V8);
+   // Face 4
+   V8.tex = { 0, 1 };
+   V8.normal = { -1, 0, 0 };
+   vertexStrategy->AddVertex(V8);
+   V7.tex = { 0, 0 };
+   V7.normal = { -1, 0, 0 };
+   vertexStrategy->AddVertex(V7);
+   V2.tex = { 1, 0 };
+   V2.normal = { -1, 0, 0 };
+   vertexStrategy->AddVertex(V2);
+   vertexStrategy->AddVertex(V8);
+   vertexStrategy->AddVertex(V2);
+   V1.tex = { 1, 1 };
+   V1.normal = { -1, 0, 0 };
+   vertexStrategy->AddVertex(V1);
+   // Face 5
+   V6.tex = { 0, 1 };
+   V6.normal = { 0, -1, 0 };
+   vertexStrategy->AddVertex(V6);
+   V3.tex = { 0, 0 };
+   V3.normal = { 0, -1, 0 };
+   vertexStrategy->AddVertex(V3);
+   V2.tex = { 1, 0 };
+   V2.normal = { 0, -1, 0 };
+   vertexStrategy->AddVertex(V2);
+   vertexStrategy->AddVertex(V6);
+   vertexStrategy->AddVertex(V2);
+   V7.tex = { 1, 1 };
+   V7.normal = { 0, -1, 0 };
+   vertexStrategy->AddVertex(V7);
+   // Face 6
+   V8.tex = { 0, 1 };
+   V8.normal = { 0, 1, 0 };
+   vertexStrategy->AddVertex(V8);
+   V1.tex = { 0, 0 };
+   V1.normal = { 0, 1, 0 };
+   vertexStrategy->AddVertex(V1);
+   V4.tex = { 1, 0 };
+   V4.normal = { 0, 1, 0 };
+   vertexStrategy->AddVertex(V4);
+   vertexStrategy->AddVertex(V8);
+   vertexStrategy->AddVertex(V4);
+   V5.tex = { 1, 1 };
+   V5.normal = { 0, 1, 0 };
+   vertexStrategy->AddVertex(V5);
+
+   return cuboid;
+
 }
