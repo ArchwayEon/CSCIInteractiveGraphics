@@ -9,6 +9,7 @@ using std::map;
 #include "BaseCamera.h"
 #include "AbstractTimer.h"
 #include "BaseGraphicsScene.h"
+#include "AbstractAnimation.h"
 
 class BaseGraphicsScene;
 
@@ -19,8 +20,8 @@ protected:
    BaseCamera* _camera;
    AbstractTimer* _timer;
    map<string, AbstractGraphicsShader*> _shaders;
-   //map<string, AbstractGraphicsObject*> _objects;
    map<string, AbstractTexture*> _textures;
+   map<string, AbstractAnimation*> _animations;
    string _errorReport;
 
 public:
@@ -32,11 +33,16 @@ public:
    virtual ~AbstractGraphicsSystem();
 
    string ReportErrors() { return _errorReport; }
-   virtual void AddShader(string shaderName, AbstractGraphicsShader* shader);
-   virtual void AddTexture(string textureName, AbstractTexture* texture);
+   virtual void AddShader(const string& shaderName, AbstractGraphicsShader* shader);
+   virtual void AddTexture(const string& textureName, AbstractTexture* texture);
+   virtual void AddAnimation(const string& animationName, AbstractAnimation* animation);
    virtual AbstractTexture* GetTexture(const string& textureName) {
       return _textures[textureName];
    }
+   virtual AbstractAnimation* GetAnimation(const string& animationName) {
+      return _animations[animationName];
+   }
+   
    virtual bool InitializeContext() = 0;
    virtual void ShowWindow() = 0;
    virtual void Setup() = 0;

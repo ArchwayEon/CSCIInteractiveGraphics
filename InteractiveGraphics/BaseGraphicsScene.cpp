@@ -1,8 +1,11 @@
 #include "BaseGraphicsScene.h"
 #include "AbstractGraphicsShader.h"
+#include "AbstractAnimation.h"
+#include "BaseCamera.h"
 
-BaseGraphicsScene::BaseGraphicsScene()
+BaseGraphicsScene::BaseGraphicsScene(BaseCamera* camera)
 {
+   this->camera = camera;
    Init();
 }
 
@@ -17,6 +20,7 @@ BaseGraphicsScene::~BaseGraphicsScene()
 
 void BaseGraphicsScene::Init()
 {
+   this->camera->frame.SetPosition(0.0f, 3.0f, 10.0f);
    this->globalLight.color = { 1.0f, 1.0f, 1.0f }; // White light
    this->globalLight.intensity = 0.25f;
    this->globalLight.position = { 100.0f, 100.0f, 0.0f };
@@ -50,6 +54,13 @@ void BaseGraphicsScene::Update(double elapsedSeconds)
    for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
       iterator->second->Update(elapsedSeconds);
    }
+}
+
+void BaseGraphicsScene::SetObjectsAnimation(const string& objectName, AbstractAnimation* animation)
+{
+   auto object = _objects[objectName];
+   object->animation = animation;
+   animation->graphicsObject = object;
 }
 
 void BaseGraphicsScene::Render()

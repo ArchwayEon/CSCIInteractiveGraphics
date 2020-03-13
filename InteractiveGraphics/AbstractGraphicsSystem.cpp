@@ -1,6 +1,7 @@
 #include "AbstractGraphicsSystem.h"
 #include "BaseGraphicsScene.h"
 
+
 AbstractGraphicsSystem::AbstractGraphicsSystem() : 
    _window(nullptr), _camera(new BaseCamera()), _timer(nullptr), _errorReport("")
 {
@@ -34,25 +35,36 @@ AbstractGraphicsSystem::~AbstractGraphicsSystem()
       delete shaderIter->second;
    }
    this->_shaders.clear();
-
    for (auto textureIter = this->_textures.begin(); 
       textureIter != this->_textures.end(); textureIter++) {
       delete textureIter->second;
    }
    this->_textures.clear();
+   for (auto animationIter = this->_animations.begin();
+      animationIter != this->_animations.end(); animationIter++) {
+      delete animationIter->second;
+   }
+   this->_animations.clear();
    if (this->scene != nullptr) {
       delete this->scene;
    }
 }
 
-void AbstractGraphicsSystem::AddShader(string shaderName, AbstractGraphicsShader* shader)
+void AbstractGraphicsSystem::AddShader(const string& shaderName, AbstractGraphicsShader* shader)
 {
    _shaders[shaderName] = shader;
 }
 
-void AbstractGraphicsSystem::AddTexture(string textureName, AbstractTexture* texture)
+void AbstractGraphicsSystem::AddTexture(const string& textureName, AbstractTexture* texture)
 {
    _textures[textureName] = texture;
 }
+
+void AbstractGraphicsSystem::AddAnimation(const string& animationName, AbstractAnimation* animation)
+{
+   _animations[animationName] = animation;
+}
+
+
 
 

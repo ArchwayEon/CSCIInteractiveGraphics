@@ -31,6 +31,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
    OpenGLGraphicsWindow* window = 
       new OpenGLGraphicsWindow("Interactive Graphics Lec Week 10");
+   auto timer = new HighResolutionTimer();
+   auto camera = new BaseCamera();
+   AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer);
+   graphics->scene = new BaseGraphicsScene(camera);
 
    // Load the shaders
    GLSLGraphicsShader* simple3DShader = new GLSLGraphicsShader(new TextFileReader());
@@ -59,11 +63,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
       return 0;
    }
 
-   auto timer = new HighResolutionTimer();
-   auto camera = new BaseCamera();
-   camera->frame.SetPosition(2.0f, 3.0f, 10.0f);
-   AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer);
-   graphics->scene = new BaseGraphicsScene();
    graphics->AddShader("Simple3DShader", simple3DShader);
    graphics->AddShader("SimplePCTShader", simplePCTShader);
    graphics->AddShader("AmbientLightShader", ambientLightShader);
@@ -100,17 +99,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->scene->AddObject("crate3", crate3, globalLightShader);
    crate3->frame.Move({ 3.0f, 1.0f, 0.0f });
 
-   auto rotateAnimation = new RotateAnimation();
-   rotateAnimation->graphicsObject = graphics->scene->GetGraphicsObject("crate1");
-   graphics->scene->GetGraphicsObject("crate1")->animation = rotateAnimation;
+   auto rotateAnimation1 = new RotateAnimation();
+   graphics->AddAnimation("RotateAnimation1", rotateAnimation1);
+   auto rotateAnimation2 = new RotateAnimation();
+   graphics->AddAnimation("RotateAnimation2", rotateAnimation2);
+   auto rotateAnimation3 = new RotateAnimation();
+   graphics->AddAnimation("RotateAnimation3", rotateAnimation3);
 
-   rotateAnimation = new RotateAnimation();
-   rotateAnimation->graphicsObject = graphics->scene->GetGraphicsObject("crate2");
-   graphics->scene->GetGraphicsObject("crate2")->animation = rotateAnimation;
-
-   rotateAnimation = new RotateAnimation();
-   rotateAnimation->graphicsObject = graphics->scene->GetGraphicsObject("crate3");
-   graphics->scene->GetGraphicsObject("crate3")->animation = rotateAnimation;
+   graphics->scene->SetObjectsAnimation("crate1", rotateAnimation1);
+   graphics->scene->SetObjectsAnimation("crate2", rotateAnimation2);
+   graphics->scene->SetObjectsAnimation("crate3", rotateAnimation3);
 
    OpenGLTexture* floorTexture = new OpenGLTexture();
    floorTexture->LoadFromFile("marble-stone-floor.jpg");

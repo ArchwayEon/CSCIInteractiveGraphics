@@ -9,6 +9,8 @@ using std::map;
 using std::string;
 
 class AbstractGraphicsShader;
+class AbstractAnimation;
+class BaseCamera;
 
 class BaseGraphicsScene
 {
@@ -17,9 +19,10 @@ protected:
 
 public:
    Light globalLight;
+   BaseCamera* camera;
 
 public:
-   BaseGraphicsScene();
+   BaseGraphicsScene(BaseCamera* camera);
    virtual ~BaseGraphicsScene();
    virtual void AddObject(
       const string& objectName, 
@@ -29,6 +32,7 @@ public:
    virtual AbstractGraphicsObject* GetGraphicsObject(const string& objectName) {
       return _objects[objectName];
    }
+   virtual void SetObjectsAnimation(const string& objectName, AbstractAnimation* animation);
    virtual void Setup();
    virtual void Update(double elapsedSeconds);
    virtual void Render();
