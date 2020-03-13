@@ -274,7 +274,7 @@ OpenGLGraphicsObject* Generate::TexturedCuboid(float width, float depth, float h
 
 }
 
-OpenGLGraphicsObject* Generate::NormalizedTexturedCuboid(float width, float depth, float height, RGBA color)
+OpenGLGraphicsObject* Generate::NormalizedTexturedCuboid(float width, float depth, float height, RGBA color, float maxS, float maxT)
 {
    auto cuboid = new OpenGLGraphicsObject();
    cuboid->vertexStrategy = new OpenGLVertexPCNTStrategy();
@@ -292,93 +292,93 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedCuboid(float width, float dept
    VertexPCNT V7 = { -halfWidth, -halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
    VertexPCNT V8 = { -halfWidth,  halfHeight, -halfDepth, color.red, color.green, color.blue, color.alpha };
    // Face 1
-   V1.tex = { 0, 1 };
+   V1.tex = { 0, maxT };
    V1.normal = { 0, 0, 1 };
    vertexStrategy->AddVertex(V1);
    V2.tex = { 0, 0 };
    V2.normal = { 0, 0, 1 };
    vertexStrategy->AddVertex(V2);
-   V3.tex = { 1, 0 };
+   V3.tex = { maxS, 0 };
    V3.normal = { 0, 0, 1 };
    vertexStrategy->AddVertex(V3);
    vertexStrategy->AddVertex(V1);
    vertexStrategy->AddVertex(V3);
-   V4.tex = { 1, 1 };
+   V4.tex = { maxS, maxT };
    V4.normal = { 0, 0, 1 };
    vertexStrategy->AddVertex(V4);
    // Face 2
-   V4.tex = { 0, 1 };
+   V4.tex = { 0, maxT };
    V4.normal = { 1, 0, 0 };
    vertexStrategy->AddVertex(V4);
    V3.tex = { 0, 0 };
    V3.normal = { 1, 0, 0 };
    vertexStrategy->AddVertex(V3);
-   V6.tex = { 1, 0 };
+   V6.tex = { maxS, 0 };
    V6.normal = { 1, 0, 0 };
    vertexStrategy->AddVertex(V6);
    vertexStrategy->AddVertex(V4);
    vertexStrategy->AddVertex(V6);
-   V5.tex = { 1, 1 };
+   V5.tex = { maxS, maxT };
    V5.normal = { 1, 0, 0 };
    vertexStrategy->AddVertex(V5);
    // Face 3
-   V5.tex = { 0, 1 };
+   V5.tex = { 0, maxT };
    V5.normal = { 0, 0, -1 };
    vertexStrategy->AddVertex(V5);
    V6.tex = { 0, 0 };
    V6.normal = { 0, 0, -1 };
    vertexStrategy->AddVertex(V6);
-   V7.tex = { 1, 0 };
+   V7.tex = { maxS, 0 };
    V7.normal = { 0, 0, -1 };
    vertexStrategy->AddVertex(V7);
    vertexStrategy->AddVertex(V5);
    vertexStrategy->AddVertex(V7);
-   V8.tex = { 1, 1 };
+   V8.tex = { maxS, maxT };
    V8.normal = { 0, 0, -1 };
    vertexStrategy->AddVertex(V8);
    // Face 4
-   V8.tex = { 0, 1 };
+   V8.tex = { 0, maxT };
    V8.normal = { -1, 0, 0 };
    vertexStrategy->AddVertex(V8);
    V7.tex = { 0, 0 };
    V7.normal = { -1, 0, 0 };
    vertexStrategy->AddVertex(V7);
-   V2.tex = { 1, 0 };
+   V2.tex = { maxS, 0 };
    V2.normal = { -1, 0, 0 };
    vertexStrategy->AddVertex(V2);
    vertexStrategy->AddVertex(V8);
    vertexStrategy->AddVertex(V2);
-   V1.tex = { 1, 1 };
+   V1.tex = { maxS, maxT };
    V1.normal = { -1, 0, 0 };
    vertexStrategy->AddVertex(V1);
    // Face 5
-   V6.tex = { 0, 1 };
+   V6.tex = { 0, maxT };
    V6.normal = { 0, -1, 0 };
    vertexStrategy->AddVertex(V6);
    V3.tex = { 0, 0 };
    V3.normal = { 0, -1, 0 };
    vertexStrategy->AddVertex(V3);
-   V2.tex = { 1, 0 };
+   V2.tex = { maxS, 0 };
    V2.normal = { 0, -1, 0 };
    vertexStrategy->AddVertex(V2);
    vertexStrategy->AddVertex(V6);
    vertexStrategy->AddVertex(V2);
-   V7.tex = { 1, 1 };
+   V7.tex = { maxS, maxT };
    V7.normal = { 0, -1, 0 };
    vertexStrategy->AddVertex(V7);
    // Face 6
-   V8.tex = { 0, 1 };
+   V8.tex = { 0, maxT };
    V8.normal = { 0, 1, 0 };
    vertexStrategy->AddVertex(V8);
    V1.tex = { 0, 0 };
    V1.normal = { 0, 1, 0 };
    vertexStrategy->AddVertex(V1);
-   V4.tex = { 1, 0 };
+   V4.tex = { maxS, 0 };
    V4.normal = { 0, 1, 0 };
    vertexStrategy->AddVertex(V4);
    vertexStrategy->AddVertex(V8);
    vertexStrategy->AddVertex(V4);
-   V5.tex = { 1, 1 };
+   V5.tex = { maxS, maxT };
    V5.normal = { 0, 1, 0 };
    vertexStrategy->AddVertex(V5);
 

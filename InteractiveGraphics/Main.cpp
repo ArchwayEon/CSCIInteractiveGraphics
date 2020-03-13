@@ -74,11 +74,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    wallTexture->SetMinFilter(GL_LINEAR);
    graphics->AddTexture("brickwall", wallTexture);
 
-   OpenGLGraphicsObject* wall = Generate::NormalizedTexturedFlatSurface(10, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
+   //OpenGLGraphicsObject* wall = Generate::NormalizedTexturedFlatSurface(10, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
+   OpenGLGraphicsObject* wall = Generate::NormalizedTexturedCuboid(10, 1, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
    wall->SetTexture(wallTexture);
    graphics->scene->AddObject("wall", wall, globalLightShader);
    wall->frame.Move({ 0.0f, 5.0f, -5.0f });
-   wall->frame.Rotate(90.0f, wall->frame.GetXAxis());
+   //wall->frame.Rotate(90.0f, wall->frame.GetXAxis());
 
    OpenGLTexture* crateTexture = new OpenGLTexture();
    crateTexture->LoadFromFile("crate.jpg");

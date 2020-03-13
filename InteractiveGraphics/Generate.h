@@ -16,7 +16,7 @@ public:
    static OpenGLGraphicsObject* Cuboid(float width, float depth, float height, RGBA color);
    static OpenGLIndexedGraphicsObject* IndexedFlatSurface(float width, float depth, RGBA color);
    static OpenGLGraphicsObject* TexturedCuboid(float width, float depth, float height, RGBA color);
-   static OpenGLGraphicsObject* NormalizedTexturedCuboid(float width, float depth, float height, RGBA color);
+   static OpenGLGraphicsObject* NormalizedTexturedCuboid(float width, float depth, float height, RGBA color, float maxS=1, float maxT=1);
 };
 
 #endif
