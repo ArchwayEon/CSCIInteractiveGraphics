@@ -119,6 +119,13 @@ void GLSLGraphicsShader::SendGlobalLightToGPU(const glm::vec3& position, const g
    SendFloatToGPU("globalLightIntensity", intensity);
 }
 
+void GLSLGraphicsShader::SendLocalLightToGPU(const glm::vec3& position, const glm::vec3& color, float intensity) const
+{
+   SendVector3ToGPU("localLightPosition", position);
+   SendVector3ToGPU("localLightColor", color);
+   SendFloatToGPU("localLightIntensity", intensity);
+}
+
 GLuint GLSLGraphicsShader::CompileShader(GLenum type, const GLchar* source)
 {
    GLint length = (GLint)(sizeof(GLchar) * strlen(source));

@@ -24,6 +24,8 @@ public:
    virtual void SendVector3ToGPU(const string& name, const glm::vec3& vector) const = 0;
    virtual void SendGlobalLightToGPU(
       const glm::vec3& position, const glm::vec3& color, float intensity) const = 0;
+   virtual void SendLocalLightToGPU(
+      const glm::vec3& position, const glm::vec3& color, float intensity) const = 0;
 };
 
 #endif

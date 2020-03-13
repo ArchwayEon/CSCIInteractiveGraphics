@@ -35,6 +35,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    auto camera = new BaseCamera();
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer);
    graphics->scene = new BaseGraphicsScene(camera);
+   graphics->scene->localLight.color = { 1, 1, 1 };
+   graphics->scene->localLight.intensity = 0.5f;
+   graphics->scene->localLight.position = { -3.0f, 7.0f, -3.0f };
 
    // Load the shaders
    GLSLGraphicsShader* simple3DShader = new GLSLGraphicsShader(new TextFileReader());
@@ -55,11 +58,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
       ReportError(ambientLightShader->ReportErrors());
       return 0;
    }
-
    GLSLGraphicsShader* globalLightShader = new GLSLGraphicsShader(new TextFileReader());
    if (!globalLightShader->ReadShaderSources(
       "VSPCNTLighting.glsl", "FSPCNTLight.glsl")) {
       ReportError(globalLightShader->ReportErrors());
+      return 0;
+   }
+   GLSLGraphicsShader* localLightShader = new GLSLGraphicsShader(new TextFileReader());
+   if (!localLightShader->ReadShaderSources(
+      "VSPCNTLighting.glsl", "FSPCNTLocalLight.glsl")) {
+      ReportError(localLightShader->ReportErrors());
       return 0;
    }
 
@@ -67,6 +75,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->AddShader("SimplePCTShader", simplePCTShader);
    graphics->AddShader("AmbientLightShader", ambientLightShader);
    graphics->AddShader("GlobalLightShader", globalLightShader);
+   graphics->AddShader("LocalLightShader", localLightShader);
 
    OpenGLTexture* wallTexture = new OpenGLTexture();
    wallTexture->LoadFromFile("brickwall.jpg");
@@ -77,7 +86,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    //OpenGLGraphicsObject* wall = Generate::NormalizedTexturedFlatSurface(10, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
    OpenGLGraphicsObject* wall = Generate::NormalizedTexturedCuboid(10, 1, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
    wall->SetTexture(wallTexture);
-   graphics->scene->AddObject("wall", wall, globalLightShader);
+   graphics->scene->AddObject("wall", wall, localLightShader);
    wall->frame.Move({ 0.0f, 5.0f, -5.0f });
    //wall->frame.Rotate(90.0f, wall->frame.GetXAxis());
 
@@ -97,7 +106,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    OpenGLGraphicsObject* crate3 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate3->SetTexture(crateTexture);
-   graphics->scene->AddObject("crate3", crate3, globalLightShader);
+   graphics->scene->AddObject("crate3", crate3, localLightShader);
    crate3->frame.Move({ 3.0f, 1.0f, 0.0f });
 
    auto rotateAnimation1 = new RotateAnimation();
@@ -119,7 +128,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    OpenGLGraphicsObject* floor = Generate::NormalizedTexturedFlatSurface(50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 50.0f, 50.0f);
    floor->SetTexture(floorTexture);
-   graphics->scene->AddObject("floor", floor, globalLightShader);
+   graphics->scene->AddObject("floor", floor, localLightShader);
 
    OpenGLTexture* skyTexture = new OpenGLTexture();
    skyTexture->LoadFromFile("sky.jpg");

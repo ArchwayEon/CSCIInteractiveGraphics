@@ -19,6 +19,7 @@ protected:
 
 public:
    Light globalLight;
+   Light localLight;
    BaseCamera* camera;
 
 public:

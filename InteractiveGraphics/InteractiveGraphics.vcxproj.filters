@@ -200,6 +200,7 @@
     <None Include="FSPCTAmbientLight.glsl" />
     <None Include="VSPCNTLighting.glsl" />
     <None Include="FSPCNTLight.glsl" />
+    <None Include="FSPCNTLocalLight.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="crate.jpg">

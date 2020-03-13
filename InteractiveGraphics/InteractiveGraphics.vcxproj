@@ -209,6 +209,7 @@
   <ItemGroup>
     <None Include="cube.ig" />
     <None Include="FSPCNTLight.glsl" />
+    <None Include="FSPCNTLocalLight.glsl" />
     <None Include="FSPCTAmbientLight.glsl" />
     <None Include="FSPositionColorTexture.glsl" />
     <None Include="rectangle.ig" />

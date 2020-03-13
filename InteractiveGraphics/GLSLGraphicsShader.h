@@ -35,6 +35,7 @@ public:
    void SendFloatToGPU(const string& name, float data) const;
    void SendVector3ToGPU(const string& name, const glm::vec3& vector) const;
    void SendGlobalLightToGPU(const glm::vec3& position, const glm::vec3& color, float intensity) const;
+   void SendLocalLightToGPU(const glm::vec3& position, const glm::vec3& color, float intensity) const;
 
 private:
    GLuint CompileShader(GLenum type, const GLchar* source);

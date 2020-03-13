@@ -24,6 +24,10 @@ void BaseGraphicsScene::Init()
    this->globalLight.color = { 1.0f, 1.0f, 1.0f }; // White light
    this->globalLight.intensity = 0.25f;
    this->globalLight.position = { 100.0f, 100.0f, 0.0f };
+
+   this->localLight.color = { 1, 1, 1 };
+   this->localLight.intensity = 0.5f;
+   this->localLight.position = { 4.0f, 3.0f, -4.0f };
 }
 
 void BaseGraphicsScene::AddObject(
@@ -74,6 +78,15 @@ void BaseGraphicsScene::Render()
       this->globalLight.color.green,
       this->globalLight.color.blue
    );
+   glm::vec3 localLightPosition(
+      this->localLight.position.x,
+      this->localLight.position.y,
+      this->localLight.position.z);
+   glm::vec3 localLightColor(
+      this->localLight.color.red,
+      this->localLight.color.green,
+      this->localLight.color.blue
+   );
    for (auto iter = _objects.begin(); iter != _objects.end(); iter++) {
       auto shader = iter->second->GetShader();
       shader->Select();
@@ -81,6 +94,10 @@ void BaseGraphicsScene::Render()
          globalLightPosition, 
          globalLightColor, 
          this->globalLight.intensity);
+      shader->SendLocalLightToGPU(
+         localLightPosition,
+         localLightColor,
+         this->localLight.intensity);
       iter->second->Render();
    }
 }
