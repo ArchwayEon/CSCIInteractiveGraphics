@@ -71,23 +71,11 @@ void OpenGLGraphicsSystem::Setup()
    glDepthFunc(GL_LEQUAL);
    glDepthRange(0.0f, 1.0f);
 
-   for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
-      iterator->second->Setup();
-   }
+   this->scene->Setup();
 }
 
 void OpenGLGraphicsSystem::Run()
 {
-   glm::vec3 globalLightPosition(
-      globalLight.position.x, 
-      globalLight.position.y, 
-      globalLight.position.z);
-   glm::vec3 globalLightColor(
-      globalLight.color.red,
-      globalLight.color.green,
-      globalLight.color.blue
-   );
-
    double elapsedSeconds;
    _timer->StartTiming();
    while (!_window->IsTimeToClose()) {
@@ -104,16 +92,8 @@ void OpenGLGraphicsSystem::Run()
       
       _camera->Update(elapsedSeconds);
       _window->Clear();
-      for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
-         iterator->second->Update(elapsedSeconds);
-      }
-      for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
-         auto shader = (GLSLGraphicsShader*)iterator->second->GetShader();
-         shader->Select();
-         shader->SendGlobalLightToGPU(globalLightPosition, globalLightColor, globalLight.intensity);
-         iterator->second->Render();
-      }
-
+      this->scene->Update(elapsedSeconds);
+      this->scene->Render();
       _window->SwapBuffers();
    }
 }

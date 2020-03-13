@@ -11,6 +11,7 @@
 #include "OpenGLVertexPCStrategy.h"
 #include "OpenGLTexture.h"
 #include "RotateAnimation.h"
+#include "BaseGraphicsScene.h"
 
 void ReportError(const string& error) 
 {
@@ -62,6 +63,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    auto camera = new BaseCamera();
    camera->frame.SetPosition(2.0f, 3.0f, 10.0f);
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer);
+   graphics->scene = new BaseGraphicsScene();
    graphics->AddShader("Simple3DShader", simple3DShader);
    graphics->AddShader("SimplePCTShader", simplePCTShader);
    graphics->AddShader("AmbientLightShader", ambientLightShader);
@@ -75,7 +77,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    OpenGLGraphicsObject* wall = Generate::NormalizedTexturedFlatSurface(10, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
    wall->SetTexture(wallTexture);
-   graphics->AddObject("wall", wall, "GlobalLightShader");
+   graphics->scene->AddObject("wall", wall, globalLightShader);
    wall->frame.Move({ 0.0f, 5.0f, -5.0f });
    wall->frame.Rotate(90.0f, wall->frame.GetXAxis());
 
@@ -85,30 +87,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    OpenGLGraphicsObject* crate1 = Generate::TexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate1->SetTexture(crateTexture);
-   graphics->AddObject("crate1", crate1, "AmbientLightShader");
+   graphics->scene->AddObject("crate1", crate1, ambientLightShader);
    crate1->frame.Move({ -3.0f, 1.0f, 0.0f });
 
    OpenGLGraphicsObject* crate2 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate2->SetTexture(crateTexture);
-   graphics->AddObject("crate2", crate2, "GlobalLightShader");
+   graphics->scene->AddObject("crate2", crate2, globalLightShader);
    crate2->frame.Move({ 0.0f, 1.0f, 0.0f });
 
    OpenGLGraphicsObject* crate3 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate3->SetTexture(crateTexture);
-   graphics->AddObject("crate3", crate3, "GlobalLightShader");
+   graphics->scene->AddObject("crate3", crate3, globalLightShader);
    crate3->frame.Move({ 3.0f, 1.0f, 0.0f });
 
    auto rotateAnimation = new RotateAnimation();
-   rotateAnimation->graphicsObject = graphics->GetGraphicsObject("crate1");
-   graphics->GetGraphicsObject("crate1")->animation = rotateAnimation;
+   rotateAnimation->graphicsObject = graphics->scene->GetGraphicsObject("crate1");
+   graphics->scene->GetGraphicsObject("crate1")->animation = rotateAnimation;
 
    rotateAnimation = new RotateAnimation();
-   rotateAnimation->graphicsObject = graphics->GetGraphicsObject("crate2");
-   graphics->GetGraphicsObject("crate2")->animation = rotateAnimation;
+   rotateAnimation->graphicsObject = graphics->scene->GetGraphicsObject("crate2");
+   graphics->scene->GetGraphicsObject("crate2")->animation = rotateAnimation;
 
    rotateAnimation = new RotateAnimation();
-   rotateAnimation->graphicsObject = graphics->GetGraphicsObject("crate3");
-   graphics->GetGraphicsObject("crate3")->animation = rotateAnimation;
+   rotateAnimation->graphicsObject = graphics->scene->GetGraphicsObject("crate3");
+   graphics->scene->GetGraphicsObject("crate3")->animation = rotateAnimation;
 
    OpenGLTexture* floorTexture = new OpenGLTexture();
    floorTexture->LoadFromFile("marble-stone-floor.jpg");
@@ -118,7 +120,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    OpenGLGraphicsObject* floor = Generate::NormalizedTexturedFlatSurface(50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 50.0f, 50.0f);
    floor->SetTexture(floorTexture);
-   graphics->AddObject("floor", floor, "GlobalLightShader");
+   graphics->scene->AddObject("floor", floor, globalLightShader);
 
    OpenGLTexture* skyTexture = new OpenGLTexture();
    skyTexture->LoadFromFile("sky.jpg");
@@ -128,12 +130,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    OpenGLGraphicsObject* sky = Generate::TexturedFlatSurface(100, 100, { 1.0f, 1.0f, 1.0f, 1.0f }, 1, 1);
    sky->SetTexture(skyTexture);
-   graphics->AddObject("sky", sky, "SimplePCTShader");
+   graphics->scene->AddObject("sky", sky, simplePCTShader);
    sky->frame.Move({ 0.0f, 15.0f, 0.0f });
    sky->frame.Rotate(180.0f, wall->frame.GetXAxis());
 
    OpenGLGraphicsObject* cube = Generate::Cuboid(0.1f, 0.1f, 0.1f, { 1.0f, 1.0f, 1.0f, 1.0f });
-   graphics->AddObject("cube", cube, "Simple3DShader");
+   graphics->scene->AddObject("cube", cube, simple3DShader);
    cube->frame.Move({ -3.0f, 7.0f, -3.0f });
 
    if (graphics->InitializeContext()) {

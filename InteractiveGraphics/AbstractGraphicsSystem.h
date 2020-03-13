@@ -8,6 +8,9 @@ using std::map;
 #include "AbstractGraphicsShader.h"
 #include "BaseCamera.h"
 #include "AbstractTimer.h"
+#include "BaseGraphicsScene.h"
+
+class BaseGraphicsScene;
 
 class AbstractGraphicsSystem
 {
@@ -16,12 +19,12 @@ protected:
    BaseCamera* _camera;
    AbstractTimer* _timer;
    map<string, AbstractGraphicsShader*> _shaders;
-   map<string, AbstractGraphicsObject*> _objects;
+   //map<string, AbstractGraphicsObject*> _objects;
    map<string, AbstractTexture*> _textures;
    string _errorReport;
 
 public:
-   Light globalLight;
+   BaseGraphicsScene* scene;
 
 public:
    AbstractGraphicsSystem();
@@ -29,11 +32,6 @@ public:
    virtual ~AbstractGraphicsSystem();
 
    string ReportErrors() { return _errorReport; }
-   virtual void AddObject(const string& objectName, AbstractGraphicsObject* object, const string& shaderName);
-   virtual void RemoveObject(const string& objectName);
-   virtual AbstractGraphicsObject* GetGraphicsObject(const string& objectName) {
-      return _objects[objectName];
-   }
    virtual void AddShader(string shaderName, AbstractGraphicsShader* shader);
    virtual void AddTexture(string textureName, AbstractTexture* texture);
    virtual AbstractTexture* GetTexture(const string& textureName) {

@@ -1,4 +1,5 @@
 #include "AbstractGraphicsSystem.h"
+#include "BaseGraphicsScene.h"
 
 AbstractGraphicsSystem::AbstractGraphicsSystem() : 
    _window(nullptr), _camera(new BaseCamera()), _timer(nullptr), _errorReport("")
@@ -14,9 +15,7 @@ AbstractGraphicsSystem::AbstractGraphicsSystem(AbstractGraphicsWindow* window, B
 
 void AbstractGraphicsSystem::Init()
 {
-   globalLight.color = { 1.0f, 1.0f, 1.0f }; // White light
-   globalLight.intensity = 0.25f;
-   globalLight.position = { 100.0f, 100.0f, 0.0f };
+   this->scene = nullptr;
 }
 
 AbstractGraphicsSystem::~AbstractGraphicsSystem()
@@ -30,11 +29,6 @@ AbstractGraphicsSystem::~AbstractGraphicsSystem()
    if (_timer != nullptr) {
       delete _timer;
    }
-   for (auto objectIter = this->_objects.begin(); 
-      objectIter != this->_objects.end(); objectIter++) {
-      delete objectIter->second;
-   }
-   this->_objects.clear();
    for (auto shaderIter = this->_shaders.begin(); 
       shaderIter != this->_shaders.end(); shaderIter++) {
       delete shaderIter->second;
@@ -46,19 +40,8 @@ AbstractGraphicsSystem::~AbstractGraphicsSystem()
       delete textureIter->second;
    }
    this->_textures.clear();
-}
-
-void AbstractGraphicsSystem::AddObject(const string& objectName, AbstractGraphicsObject* object, const string& shaderName)
-{
-   _objects[objectName] = object;
-   _objects[objectName]->SetShader(_shaders[shaderName]);
-}
-
-void AbstractGraphicsSystem::RemoveObject(const string& objectName)
-{
-   auto objectIter = _objects.find(objectName);
-   if (objectIter != _objects.end()) {
-      _objects.erase(objectIter);
+   if (this->scene != nullptr) {
+      delete this->scene;
    }
 }
 
