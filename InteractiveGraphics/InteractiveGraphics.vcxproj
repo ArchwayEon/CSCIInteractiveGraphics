@@ -210,6 +210,7 @@
     <None Include="cube.ig" />
     <None Include="FSPCNTLight.glsl" />
     <None Include="FSPCNTLocalLight.glsl" />
+    <None Include="FSPCNTLighting.glsl" />
     <None Include="FSPCTAmbientLight.glsl" />
     <None Include="FSPositionColorTexture.glsl" />
     <None Include="rectangle.ig" />
@@ -223,6 +224,7 @@
     <Image Include="brickwall.jpg" />
     <Image Include="crate.jpg" />
     <Image Include="marble-stone-floor.jpg" />
+    <Image Include="metal.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -106,6 +106,12 @@ void GLSLGraphicsShader::SendFloatToGPU(const string& name, float data) const
    glUniform1f(location, data);
 }
 
+void GLSLGraphicsShader::SendIntegerToGPU(const string& name, int data) const
+{
+   unsigned int location = glGetUniformLocation(_shaderProgram, name.c_str());
+   glUniform1i(location, data);
+}
+
 void GLSLGraphicsShader::SendVector3ToGPU(const string& name, const glm::vec3& vector) const
 {
    unsigned int location = glGetUniformLocation(_shaderProgram, name.c_str());
@@ -119,11 +125,14 @@ void GLSLGraphicsShader::SendGlobalLightToGPU(const glm::vec3& position, const g
    SendFloatToGPU("globalLightIntensity", intensity);
 }
 
-void GLSLGraphicsShader::SendLocalLightToGPU(const glm::vec3& position, const glm::vec3& color, float intensity) const
+void GLSLGraphicsShader::SendLocalLightToGPU(
+   const glm::vec3& position, const glm::vec3& color, 
+   float intensity, float attenuationCoefficient) const
 {
    SendVector3ToGPU("localLightPosition", position);
    SendVector3ToGPU("localLightColor", color);
    SendFloatToGPU("localLightIntensity", intensity);
+   SendFloatToGPU("localLightAttenuationCoefficient", attenuationCoefficient);
 }
 
 GLuint GLSLGraphicsShader::CompileShader(GLenum type, const GLchar* source)

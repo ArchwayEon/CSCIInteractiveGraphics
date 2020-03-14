@@ -54,7 +54,7 @@ void OpenGLTexture::Setup()
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _wrapT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _minFilter);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _magFilter);
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, _data);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, _data);
       glGenerateMipmap(GL_TEXTURE_2D);
       if (_loadedFromFile) {
          stbi_image_free(_data);

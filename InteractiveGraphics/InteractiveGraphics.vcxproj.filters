@@ -201,6 +201,7 @@
     <None Include="VSPCNTLighting.glsl" />
     <None Include="FSPCNTLight.glsl" />
     <None Include="FSPCNTLocalLight.glsl" />
+    <None Include="FSPCNTLighting.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="crate.jpg">
@@ -210,6 +211,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="marble-stone-floor.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="metal.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

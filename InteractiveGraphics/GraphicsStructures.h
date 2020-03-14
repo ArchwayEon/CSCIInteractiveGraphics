@@ -38,14 +38,13 @@ struct VertexPCNT {
 
 struct Material {
    float ambientIntensity; // Light "emitted" by the object
-   float specularIntensity;
-   int shininess;
 };
 
 struct Light {
    Vector3 position;
    RGB color;
    float intensity;
+   float attenuationCoefficient;
 };
 
 

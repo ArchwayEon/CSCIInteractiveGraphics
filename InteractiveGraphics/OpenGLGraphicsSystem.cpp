@@ -138,6 +138,14 @@ void OpenGLGraphicsSystem::ProcessInput()
       _camera->SetState(BaseCamera::CameraState::MovingDown);
       return;
    }
+   if (_window->GetKeyState(GLFW_KEY_LEFT) == GLFW_PRESS) {
+      _camera->SetState(BaseCamera::CameraState::MovingLeft);
+      return;
+   }
+   if (_window->GetKeyState(GLFW_KEY_RIGHT) == GLFW_PRESS) {
+      _camera->SetState(BaseCamera::CameraState::MovingRight);
+      return;
+   }
    _camera->SetState(BaseCamera::CameraState::NotMoving);
 
 }

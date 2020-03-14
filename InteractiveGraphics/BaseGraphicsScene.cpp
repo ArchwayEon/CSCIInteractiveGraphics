@@ -28,6 +28,7 @@ void BaseGraphicsScene::Init()
    this->localLight.color = { 1, 1, 1 };
    this->localLight.intensity = 0.5f;
    this->localLight.position = { 4.0f, 3.0f, -4.0f };
+   this->localLight.attenuationCoefficient = 0.2f;
 }
 
 void BaseGraphicsScene::AddObject(
@@ -97,7 +98,9 @@ void BaseGraphicsScene::Render()
       shader->SendLocalLightToGPU(
          localLightPosition,
          localLightColor,
-         this->localLight.intensity);
+         this->localLight.intensity,
+         this->localLight.attenuationCoefficient);
+      shader->SendVector3ToGPU("viewPosition", camera->frame.GetPosition());
       iter->second->Render();
    }
 }
