@@ -2,23 +2,17 @@
 #ifndef OPENGL_VERTEXPCNT_STRATEGY
 #define OPENGL_VERTEXPCNT_STRATEGY
 #include "OpenGLVertexStrategy.h"
-#include "GraphicsStructures.h"
-#include <vector>
-using std::vector;
+
+class AbstractMesh;
 
 class OpenGLVertexPCNTStrategy :
    public OpenGLVertexStrategy
 {
-protected:
-   vector<VertexPCNT> _vertices;
-
 public:
-   virtual void AddVertex(const VertexPCNT& vertex) { _vertices.push_back(vertex); }
+   OpenGLVertexPCNTStrategy(AbstractMesh* mesh = nullptr);
+   virtual ~OpenGLVertexPCNTStrategy();
    void SetupBuffer();
    void Render(unsigned int primitiveType);
-   void SetTextureCoord(int index, float s, float t) {
-      _vertices[index].tex = { s, t };
-   }
 };
 
 #endif

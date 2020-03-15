@@ -3,6 +3,7 @@
 #include "OpenGLIndexedVertexPCStrategy.h"
 #include "OpenGLVertexPCTStrategy.h"
 #include "OpenGLVertexPCNTStrategy.h"
+#include "PolygonMesh.h"
 
 OpenGLGraphicsObject* Generate::FlatSurface(float width, float depth, RGBA color)
 {
@@ -91,12 +92,13 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedFlatSurface(float width, float
       0.0f, 1.0f, 0.0f,
       maxS, maxT
    };
-   vertexStrategy->AddVertex(V1);
-   vertexStrategy->AddVertex(V2);
-   vertexStrategy->AddVertex(V3);
-   vertexStrategy->AddVertex(V1);
-   vertexStrategy->AddVertex(V3);
-   vertexStrategy->AddVertex(V4);
+   auto mesh = (PolygonMesh*)vertexStrategy->GetMesh();
+   mesh->AddVertex(V1);
+   mesh->AddVertex(V2);
+   mesh->AddVertex(V3);
+   mesh->AddVertex(V1);
+   mesh->AddVertex(V3);
+   mesh->AddVertex(V4);
    return flatSurface;
 }
 
@@ -279,6 +281,7 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedCuboid(float width, float dept
    auto cuboid = new OpenGLGraphicsObject();
    cuboid->vertexStrategy = new OpenGLVertexPCNTStrategy();
    auto vertexStrategy = (OpenGLVertexPCNTStrategy*)cuboid->vertexStrategy;
+   auto mesh = (PolygonMesh*)vertexStrategy->GetMesh();
    float halfWidth = width / 2;
    float halfDepth = depth / 2;
    float halfHeight = height / 2;
@@ -294,94 +297,174 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedCuboid(float width, float dept
    // Face 1
    V1.tex = { 0, maxT };
    V1.normal = { 0, 0, 1 };
-   vertexStrategy->AddVertex(V1);
+   mesh->AddVertex(V1);
    V2.tex = { 0, 0 };
    V2.normal = { 0, 0, 1 };
-   vertexStrategy->AddVertex(V2);
+   mesh->AddVertex(V2);
    V3.tex = { maxS, 0 };
    V3.normal = { 0, 0, 1 };
-   vertexStrategy->AddVertex(V3);
-   vertexStrategy->AddVertex(V1);
-   vertexStrategy->AddVertex(V3);
+   mesh->AddVertex(V3);
+   mesh->AddVertex(V1);
+   mesh->AddVertex(V3);
    V4.tex = { maxS, maxT };
    V4.normal = { 0, 0, 1 };
-   vertexStrategy->AddVertex(V4);
+   mesh->AddVertex(V4);
    // Face 2
    V4.tex = { 0, maxT };
    V4.normal = { 1, 0, 0 };
-   vertexStrategy->AddVertex(V4);
+   mesh->AddVertex(V4);
    V3.tex = { 0, 0 };
    V3.normal = { 1, 0, 0 };
-   vertexStrategy->AddVertex(V3);
+   mesh->AddVertex(V3);
    V6.tex = { maxS, 0 };
    V6.normal = { 1, 0, 0 };
-   vertexStrategy->AddVertex(V6);
-   vertexStrategy->AddVertex(V4);
-   vertexStrategy->AddVertex(V6);
+   mesh->AddVertex(V6);
+   mesh->AddVertex(V4);
+   mesh->AddVertex(V6);
    V5.tex = { maxS, maxT };
    V5.normal = { 1, 0, 0 };
-   vertexStrategy->AddVertex(V5);
+   mesh->AddVertex(V5);
    // Face 3
    V5.tex = { 0, maxT };
    V5.normal = { 0, 0, -1 };
-   vertexStrategy->AddVertex(V5);
+   mesh->AddVertex(V5);
    V6.tex = { 0, 0 };
    V6.normal = { 0, 0, -1 };
-   vertexStrategy->AddVertex(V6);
+   mesh->AddVertex(V6);
    V7.tex = { maxS, 0 };
    V7.normal = { 0, 0, -1 };
-   vertexStrategy->AddVertex(V7);
-   vertexStrategy->AddVertex(V5);
-   vertexStrategy->AddVertex(V7);
+   mesh->AddVertex(V7);
+   mesh->AddVertex(V5);
+   mesh->AddVertex(V7);
    V8.tex = { maxS, maxT };
    V8.normal = { 0, 0, -1 };
-   vertexStrategy->AddVertex(V8);
+   mesh->AddVertex(V8);
    // Face 4
    V8.tex = { 0, maxT };
    V8.normal = { -1, 0, 0 };
-   vertexStrategy->AddVertex(V8);
+   mesh->AddVertex(V8);
    V7.tex = { 0, 0 };
    V7.normal = { -1, 0, 0 };
-   vertexStrategy->AddVertex(V7);
+   mesh->AddVertex(V7);
    V2.tex = { maxS, 0 };
    V2.normal = { -1, 0, 0 };
-   vertexStrategy->AddVertex(V2);
-   vertexStrategy->AddVertex(V8);
-   vertexStrategy->AddVertex(V2);
+   mesh->AddVertex(V2);
+   mesh->AddVertex(V8);
+   mesh->AddVertex(V2);
    V1.tex = { maxS, maxT };
    V1.normal = { -1, 0, 0 };
-   vertexStrategy->AddVertex(V1);
+   mesh->AddVertex(V1);
    // Face 5
    V6.tex = { 0, maxT };
    V6.normal = { 0, -1, 0 };
-   vertexStrategy->AddVertex(V6);
+   mesh->AddVertex(V6);
    V3.tex = { 0, 0 };
    V3.normal = { 0, -1, 0 };
-   vertexStrategy->AddVertex(V3);
+   mesh->AddVertex(V3);
    V2.tex = { maxS, 0 };
    V2.normal = { 0, -1, 0 };
-   vertexStrategy->AddVertex(V2);
-   vertexStrategy->AddVertex(V6);
-   vertexStrategy->AddVertex(V2);
+   mesh->AddVertex(V2);
+   mesh->AddVertex(V6);
+   mesh->AddVertex(V2);
    V7.tex = { maxS, maxT };
    V7.normal = { 0, -1, 0 };
-   vertexStrategy->AddVertex(V7);
+   mesh->AddVertex(V7);
    // Face 6
    V8.tex = { 0, maxT };
    V8.normal = { 0, 1, 0 };
-   vertexStrategy->AddVertex(V8);
+   mesh->AddVertex(V8);
    V1.tex = { 0, 0 };
    V1.normal = { 0, 1, 0 };
-   vertexStrategy->AddVertex(V1);
+   mesh->AddVertex(V1);
    V4.tex = { maxS, 0 };
    V4.normal = { 0, 1, 0 };
-   vertexStrategy->AddVertex(V4);
-   vertexStrategy->AddVertex(V8);
-   vertexStrategy->AddVertex(V4);
+   mesh->AddVertex(V4);
+   mesh->AddVertex(V8);
+   mesh->AddVertex(V4);
    V5.tex = { maxS, maxT };
    V5.normal = { 0, 1, 0 };
-   vertexStrategy->AddVertex(V5);
+   mesh->AddVertex(V5);
 
    return cuboid;
 
+}
+
+AbstractMesh* Generate::NormalizedTexturedFlatMesh(
+   float width, float depth, int widthFacetCount, int depthFacetCount, 
+   RGBA color, float textureWidthRepeat, float textureDepthRepeat)
+{
+   PolygonMesh* mesh = new PolygonMesh();
+   VertexPCNT V1, V2, V3, V4;
+   // Each facet is in the XZ plane:
+   // V1 V4   V1 has tex coord (startS, endT)
+   // +--+    V2 has tex coord (startS, startT)
+   // |\ |    V3 has tex coord (endS, startT)
+   // | \|    V4 has tex coord (endS, endT)
+   // +--+
+   // V2 V3
+   float halfWidth = width / 2;
+   float halfDepth = depth / 2;
+   float facetWidth = width / widthFacetCount;
+   float facetDepth = depth / depthFacetCount;
+   float sDelta = textureWidthRepeat / widthFacetCount;
+   float tDelta = textureDepthRepeat / depthFacetCount;
+   float startS, startT, endS, endT = textureDepthRepeat;
+   float x, y = 0, z = -halfDepth;
+   startT = endT - tDelta;
+   for (int row = 1; row <= depthFacetCount; ++row) {
+      x = -halfWidth;
+      startS = 0;
+      endT = startT + tDelta;
+      for (int col = 1; col <= depthFacetCount; ++col) {
+         endS = startS + sDelta;
+         if (endS > textureWidthRepeat) endS = textureWidthRepeat;
+         V1.position = { x, y, z };
+         V1.color = color;
+         V1.normal = { 0, 1, 0 };
+         V1.tex = { startS, endT };
+
+         V2.position = { x, y, z + facetDepth };
+         V2.color = color;
+         V2.normal = { 0, 1, 0 };
+         V2.tex = { startS, startT };
+
+         V3.position = { x + facetWidth, y, z + facetDepth };
+         V3.color = color;
+         V3.normal = { 0, 1, 0 };
+         V3.tex = { endS, startT };
+
+         V4.position = { x + facetWidth, y, z };
+         V4.color = color;
+         V4.normal = { 0, 1, 0 };
+         V4.tex = { endS, endT };
+
+         mesh->AddVertex(V1);
+         mesh->AddVertex(V2);
+         mesh->AddVertex(V3);
+         mesh->AddVertex(V1);
+         mesh->AddVertex(V3);
+         mesh->AddVertex(V4);
+
+         startS = endS;
+         if (startS >= textureWidthRepeat) startS = 0;
+         x += facetWidth;
+      } // Next col
+      startT -= tDelta;
+      if (startT < 0) startT = 0;
+      z += facetDepth;
+   } // Next row
+
+   return mesh;
+}
+
+OpenGLGraphicsObject* Generate::NormalizedTexturedFlatSurface(float width, float depth, int widthFacetCount, int depthFacetCount, RGBA color, float textureWidthRepeat, float textureDepthRepeat)
+{
+   auto flatSurface = new OpenGLGraphicsObject();
+   flatSurface->vertexStrategy = new OpenGLVertexPCNTStrategy();
+   auto vertexStrategy = (OpenGLVertexPCNTStrategy*)flatSurface->vertexStrategy;
+   auto mesh = Generate::NormalizedTexturedFlatMesh(
+      width, depth, widthFacetCount, depthFacetCount, color, 
+      textureWidthRepeat, textureDepthRepeat);
+   vertexStrategy->SetMesh(mesh);
+   return flatSurface;
 }

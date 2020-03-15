@@ -102,6 +102,9 @@
     <ClCompile Include="BaseGraphicsScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PolygonMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h">
@@ -186,6 +189,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BaseGraphicsScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PolygonMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

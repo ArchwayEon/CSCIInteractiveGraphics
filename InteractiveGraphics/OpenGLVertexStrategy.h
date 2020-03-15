@@ -3,6 +3,7 @@
 #define OPENGL_VERTEX_STRATEGY
 #include "AbstractVertexStrategy.h"
 #include <glad\glad.h>
+class AbstractMesh;
 
 class OpenGLVertexStrategy :
    public AbstractVertexStrategy
@@ -12,9 +13,11 @@ protected:
    GLuint _indexVboId;
 
 public:
-   OpenGLVertexStrategy() : _vaoId(0), _vboId(0), _indexVboId(0)
+   OpenGLVertexStrategy(AbstractMesh* mesh = nullptr) : 
+      AbstractVertexStrategy(mesh),
+      _vaoId(0), _vboId(0), _indexVboId(0)
    {}
-   virtual ~OpenGLVertexStrategy();
+   ~OpenGLVertexStrategy();
 
    virtual inline void CreateVAO();
    virtual inline void SelectVAO();
@@ -29,7 +32,7 @@ public:
 protected:
    virtual void SetBufferInterpretation(
       unsigned int location, unsigned int count,
-      unsigned int bytesToNext, unsigned char offset);
+      size_t bytesToNext, size_t offset);
 };
 
 #endif

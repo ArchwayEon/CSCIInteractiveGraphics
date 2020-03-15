@@ -90,10 +90,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    wallTexture->SetMinFilter(GL_LINEAR);
    graphics->AddTexture("brickwall", wallTexture);
 
-   OpenGLGraphicsObject* wall = Generate::NormalizedTexturedCuboid(10, 1, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
-   wall->SetTexture(wallTexture);
-   graphics->scene->AddObject("wall", wall, lightingShader);
-   wall->frame.Move({ 0.0f, 5.0f, -5.0f });
+   OpenGLTexture* floorTexture = new OpenGLTexture();
+   floorTexture->LoadFromFile("marble-stone-floor.jpg");
+   floorTexture->SetMagFilter(GL_LINEAR);
+   floorTexture->SetMinFilter(GL_LINEAR);
+   graphics->AddTexture("marbleFloor", floorTexture);
+
+   OpenGLTexture* skyTexture = new OpenGLTexture();
+   skyTexture->LoadFromFile("sky.jpg");
+   skyTexture->SetMagFilter(GL_LINEAR);
+   skyTexture->SetMinFilter(GL_LINEAR);
+   graphics->AddTexture("sky", skyTexture);
 
    OpenGLTexture* crateTexture = new OpenGLTexture();
    crateTexture->LoadFromFile("crate.jpg");
@@ -102,6 +109,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    OpenGLTexture* metalTexture = new OpenGLTexture();
    metalTexture->LoadFromFile("metal.jpg");
    graphics->AddTexture("metal", metalTexture);
+
+   OpenGLGraphicsObject* wall = Generate::NormalizedTexturedCuboid(10, 1, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
+   wall->SetTexture(wallTexture);
+   graphics->scene->AddObject("wall", wall, lightingShader);
+   wall->frame.Move({ 0.0f, 5.0f, -5.0f });
 
    OpenGLGraphicsObject* crate1 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate1->SetTexture(metalTexture);
@@ -137,21 +149,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->scene->SetObjectsAnimation("crate3", rotateAnimation3);
    graphics->scene->SetObjectsAnimation("crate4", rotateAnimation4);
 
-   OpenGLTexture* floorTexture = new OpenGLTexture();
-   floorTexture->LoadFromFile("marble-stone-floor.jpg");
-   floorTexture->SetMagFilter(GL_LINEAR);
-   floorTexture->SetMinFilter(GL_LINEAR);
-   graphics->AddTexture("marbleFloor", floorTexture);
-
-   OpenGLGraphicsObject* floor = Generate::NormalizedTexturedFlatSurface(50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 50.0f, 50.0f);
+   OpenGLGraphicsObject* floor = 
+      Generate::NormalizedTexturedFlatSurface(50, 50, 50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 100.0f, 100.0f);
    floor->SetTexture(floorTexture);
    graphics->scene->AddObject("floor", floor, lightingShader);
-
-   OpenGLTexture* skyTexture = new OpenGLTexture();
-   skyTexture->LoadFromFile("sky.jpg");
-   skyTexture->SetMagFilter(GL_LINEAR);
-   skyTexture->SetMinFilter(GL_LINEAR);
-   graphics->AddTexture("sky", skyTexture);
 
    OpenGLGraphicsObject* sky = Generate::TexturedFlatSurface(100, 100, { 1.0f, 1.0f, 1.0f, 1.0f }, 1, 1);
    sky->SetTexture(skyTexture);

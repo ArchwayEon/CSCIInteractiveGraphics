@@ -172,11 +172,13 @@
     <ClCompile Include="OpenGLVertexPCStrategy.cpp" />
     <ClCompile Include="OpenGLVertexPCTStrategy.cpp" />
     <ClCompile Include="OpenGLVertexStrategy.cpp" />
+    <ClCompile Include="PolygonMesh.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="RotateAnimation.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractMesh.h" />
     <ClInclude Include="AbstractTexture.h" />
     <ClInclude Include="AbstractTimer.h" />
     <ClInclude Include="AbstractVertexStrategy.h" />
@@ -202,6 +204,7 @@
     <ClInclude Include="OpenGLVertexPCStrategy.h" />
     <ClInclude Include="OpenGLVertexPCTStrategy.h" />
     <ClInclude Include="OpenGLVertexStrategy.h" />
+    <ClInclude Include="PolygonMesh.h" />
     <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="RotateAnimation.h" />
     <ClInclude Include="TextFileReader.h" />
