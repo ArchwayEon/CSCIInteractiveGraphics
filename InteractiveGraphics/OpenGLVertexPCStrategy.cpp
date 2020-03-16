@@ -25,16 +25,17 @@ void OpenGLVertexPCStrategy::SetupBuffer()
    // Allocate memory in the GPU for the buffer bound to the binding target and then
    // copy the data
    glBufferData(GL_ARRAY_BUFFER, 
-      _vertices.size() * sizeof(VertexPC), &_vertices[0], 
+      _vertices.size() * GetSizeOfVertex(), &_vertices[0], 
       GL_STATIC_DRAW);
 }
 
 void OpenGLVertexPCStrategy::Render(unsigned int primitiveType)
 {
+   size_t vertexSize = GetSizeOfVertex();
    // Positions
-   SetBufferInterpretation(0, 3, sizeof(VertexPC), _positionOffset);
+   SetBufferInterpretation(0, 3, vertexSize, _positionOffset);
    // Colors
-   SetBufferInterpretation(1, 3, sizeof(VertexPC), (sizeof(GLfloat) * _colorOffset));
+   SetBufferInterpretation(1, 3, vertexSize, (sizeof(GLfloat) * _colorOffset));
    glDrawArrays(primitiveType, 0, (GLsizei)_vertices.size());
 }
 

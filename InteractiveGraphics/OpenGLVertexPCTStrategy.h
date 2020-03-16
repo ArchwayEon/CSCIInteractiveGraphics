@@ -22,6 +22,9 @@ public:
       _vertices[index].tex = { s, t };
    }
 
+protected:
+   size_t GetSizeOfVertex() { return sizeof(VertexPCT); }
+
 };
 
 #endif

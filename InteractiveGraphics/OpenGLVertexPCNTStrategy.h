@@ -20,6 +20,9 @@ public:
    void SetTextureCoord(int index, float s, float t) {
       _vertices[index].tex = { s, t };
    }
+
+protected:
+   size_t GetSizeOfVertex() { return sizeof(VertexPCNT); }
 };
 
 #endif

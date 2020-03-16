@@ -29,7 +29,7 @@ public:
 protected:
    virtual void SetBufferInterpretation(
       unsigned int location, unsigned int count,
-      unsigned int bytesToNext, size_t offset);
+      size_t bytesToNext, size_t offset);
 };
 
 #endif

@@ -30,7 +30,8 @@ protected:
    // offset - the number of bytes to the first item
    virtual void SetBufferInterpretation(
       unsigned int location, unsigned int count,
-      unsigned int bytesToNext, size_t offset) = 0;
+      size_t bytesToNext, size_t offset) = 0;
+   virtual size_t GetSizeOfVertex() = 0;
 };
 
 #endif

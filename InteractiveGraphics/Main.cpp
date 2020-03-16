@@ -38,6 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->scene->globalLight.intensity = 0.05f;
    graphics->scene->localLight.color = { 1, 1, 1 };
    graphics->scene->localLight.intensity = 0.7f;
+   graphics->scene->localLight.attenuationCoefficient = 0.9f;
 
    // Load the shaders
    GLSLGraphicsShader* simple3DShader = new GLSLGraphicsShader(new TextFileReader());
@@ -84,7 +85,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->AddShader("LocalLightShader", localLightShader);
    graphics->AddShader("LightingShader", lightingShader);
 
-   GLSLGraphicsShader* currentShader = ambientLightShader;
+   GLSLGraphicsShader* currentShader = lightingShader;
 
    OpenGLTexture* wallTexture = new OpenGLTexture();
    wallTexture->LoadFromFile("brickwall.jpg");
@@ -92,7 +93,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    wallTexture->SetMinFilter(GL_LINEAR);
    graphics->AddTexture("brickwall", wallTexture);
 
-   OpenGLGraphicsObject* wall = Generate::NormalizedTexturedCuboid(10, 1, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
+   OpenGLGraphicsObject* wall = Generate::Cuboid("NormalizedTextured", 10, 1, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
    wall->SetTexture(wallTexture);
    graphics->scene->AddObject("wall", wall, currentShader);
    wall->frame.Move({ 0.0f, 5.0f, -5.0f });
@@ -105,22 +106,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    metalTexture->LoadFromFile("metal.jpg");
    graphics->AddTexture("metal", metalTexture);
 
-   OpenGLGraphicsObject* crate1 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+   OpenGLGraphicsObject* crate1 = Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate1->SetTexture(metalTexture);
    graphics->scene->AddObject("crate1", crate1, currentShader);
    crate1->frame.Move({ -3.0f, 1.0f, 0.0f });
 
-   OpenGLGraphicsObject* crate2 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+   OpenGLGraphicsObject* crate2 = Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate2->SetTexture(crateTexture);
    graphics->scene->AddObject("crate2", crate2, currentShader);
    crate2->frame.Move({ 0.0f, 1.0f, 0.0f });
 
-   OpenGLGraphicsObject* crate3 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+   OpenGLGraphicsObject* crate3 = Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate3->SetTexture(metalTexture);
    graphics->scene->AddObject("crate3", crate3, currentShader);
    crate3->frame.Move({ 3.0f, 1.0f, 0.0f });
 
-   OpenGLGraphicsObject* crate4 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+   OpenGLGraphicsObject* crate4 = Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate4->SetTexture(crateTexture);
    graphics->scene->AddObject("crate4", crate4, currentShader);
    crate4->frame.Move({ 0.0f, 7.0f, -3.0f });
@@ -145,7 +146,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    floorTexture->SetMinFilter(GL_LINEAR);
    graphics->AddTexture("marbleFloor", floorTexture);
 
-   OpenGLGraphicsObject* floor = Generate::NormalizedTexturedFlatSurface(50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 50.0f, 50.0f);
+   OpenGLGraphicsObject* floor = Generate::FlatSurface("NormalizedTextured", 50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 50.0f, 50.0f);
    floor->SetTexture(floorTexture);
    graphics->scene->AddObject("floor", floor, currentShader);
 
