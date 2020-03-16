@@ -60,7 +60,7 @@ void OpenGLVertexStrategy::UnselectAll()
 
 void OpenGLVertexStrategy::SetBufferInterpretation(
    unsigned int location, unsigned int count, 
-   unsigned int bytesToNext, unsigned char offset)
+   unsigned int bytesToNext, size_t offset)
 {
    glEnableVertexAttribArray(location);
    glVertexAttribPointer(

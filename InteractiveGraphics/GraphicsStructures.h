@@ -37,7 +37,7 @@ struct VertexPCNT {
 };
 
 struct Material {
-   float ambientIntensity; // Light "emitted" by the object
+   float ambientIntensity; // Intensity of light applied to the object
 };
 
 struct Light {

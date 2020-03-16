@@ -16,7 +16,7 @@ AbstractGraphicsObject::AbstractGraphicsObject(AbstractGraphicsShader* shader, A
 
 void AbstractGraphicsObject::Init()
 {
-   material.ambientIntensity = 0.01f;
+   material.ambientIntensity = 0.5f;
 }
 
 AbstractGraphicsObject::~AbstractGraphicsObject()

@@ -1,6 +1,12 @@
 #include "OpenGLVertexPCStrategy.h"
 #include <glad\glad.h>
 
+OpenGLVertexPCStrategy::OpenGLVertexPCStrategy() : OpenGLVertexStrategy()
+{
+   _positionOffset = 0;
+   _colorOffset = 3;
+}
+
 void OpenGLVertexPCStrategy::SetColor(int facet, int numberOfVertices, RGBA color)
 {
    vector<int> indexes;
@@ -26,9 +32,9 @@ void OpenGLVertexPCStrategy::SetupBuffer()
 void OpenGLVertexPCStrategy::Render(unsigned int primitiveType)
 {
    // Positions
-   SetBufferInterpretation(0, 3, sizeof(VertexPC), 0);
+   SetBufferInterpretation(0, 3, sizeof(VertexPC), _positionOffset);
    // Colors
-   SetBufferInterpretation(1, 3, sizeof(VertexPC), (sizeof(GLfloat) * 3));
+   SetBufferInterpretation(1, 3, sizeof(VertexPC), (sizeof(GLfloat) * _colorOffset));
    glDrawArrays(primitiveType, 0, (GLsizei)_vertices.size());
 }
 

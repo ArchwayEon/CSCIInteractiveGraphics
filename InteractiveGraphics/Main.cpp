@@ -84,6 +84,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->AddShader("LocalLightShader", localLightShader);
    graphics->AddShader("LightingShader", lightingShader);
 
+   GLSLGraphicsShader* currentShader = ambientLightShader;
+
    OpenGLTexture* wallTexture = new OpenGLTexture();
    wallTexture->LoadFromFile("brickwall.jpg");
    wallTexture->SetMagFilter(GL_LINEAR);
@@ -92,7 +94,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    OpenGLGraphicsObject* wall = Generate::NormalizedTexturedCuboid(10, 1, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
    wall->SetTexture(wallTexture);
-   graphics->scene->AddObject("wall", wall, lightingShader);
+   graphics->scene->AddObject("wall", wall, currentShader);
    wall->frame.Move({ 0.0f, 5.0f, -5.0f });
 
    OpenGLTexture* crateTexture = new OpenGLTexture();
@@ -105,22 +107,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    OpenGLGraphicsObject* crate1 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate1->SetTexture(metalTexture);
-   graphics->scene->AddObject("crate1", crate1, lightingShader);
+   graphics->scene->AddObject("crate1", crate1, currentShader);
    crate1->frame.Move({ -3.0f, 1.0f, 0.0f });
 
    OpenGLGraphicsObject* crate2 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate2->SetTexture(crateTexture);
-   graphics->scene->AddObject("crate2", crate2, lightingShader);
+   graphics->scene->AddObject("crate2", crate2, currentShader);
    crate2->frame.Move({ 0.0f, 1.0f, 0.0f });
 
    OpenGLGraphicsObject* crate3 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate3->SetTexture(metalTexture);
-   graphics->scene->AddObject("crate3", crate3, lightingShader);
+   graphics->scene->AddObject("crate3", crate3, currentShader);
    crate3->frame.Move({ 3.0f, 1.0f, 0.0f });
 
    OpenGLGraphicsObject* crate4 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate4->SetTexture(crateTexture);
-   graphics->scene->AddObject("crate4", crate4, lightingShader);
+   graphics->scene->AddObject("crate4", crate4, currentShader);
    crate4->frame.Move({ 0.0f, 7.0f, -3.0f });
 
    auto rotateAnimation1 = new RotateAnimation(30);
@@ -145,7 +147,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
    OpenGLGraphicsObject* floor = Generate::NormalizedTexturedFlatSurface(50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 50.0f, 50.0f);
    floor->SetTexture(floorTexture);
-   graphics->scene->AddObject("floor", floor, lightingShader);
+   graphics->scene->AddObject("floor", floor, currentShader);
 
    OpenGLTexture* skyTexture = new OpenGLTexture();
    skyTexture->LoadFromFile("sky.jpg");

@@ -1,5 +1,13 @@
 #include "OpenGLVertexPCNTStrategy.h"
 
+OpenGLVertexPCNTStrategy::OpenGLVertexPCNTStrategy()
+{
+   _positionOffset = 0;
+   _colorOffset = 3;
+   _normalOffset = 7;
+   _textureOffset = 10;
+}
+
 void OpenGLVertexPCNTStrategy::SetupBuffer()
 {
    SelectVBO();
@@ -13,12 +21,12 @@ void OpenGLVertexPCNTStrategy::SetupBuffer()
 void OpenGLVertexPCNTStrategy::Render(unsigned int primitiveType)
 {
    // Positions
-   SetBufferInterpretation(0, 3, sizeof(VertexPCNT), 0);
+   SetBufferInterpretation(0, 3, sizeof(VertexPCNT), _positionOffset);
    // Colors
-   SetBufferInterpretation(1, 4, sizeof(VertexPCNT), (sizeof(GLfloat) * 3));
+   SetBufferInterpretation(1, 4, sizeof(VertexPCNT), (sizeof(GLfloat) * _colorOffset));
    // Normals
-   SetBufferInterpretation(2, 3, sizeof(VertexPCNT), (sizeof(GLfloat) * 7));
+   SetBufferInterpretation(2, 3, sizeof(VertexPCNT), (sizeof(GLfloat) * _normalOffset));
    // Texture Coordinates
-   SetBufferInterpretation(3, 2, sizeof(VertexPCNT), (sizeof(GLfloat) * 10));
+   SetBufferInterpretation(3, 2, sizeof(VertexPCNT), (sizeof(GLfloat) * _textureOffset));
    glDrawArrays(primitiveType, 0, (GLsizei)_vertices.size());
 }

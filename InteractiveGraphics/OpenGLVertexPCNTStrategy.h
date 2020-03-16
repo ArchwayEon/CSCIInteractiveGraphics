@@ -13,6 +13,7 @@ protected:
    vector<VertexPCNT> _vertices;
 
 public:
+   OpenGLVertexPCNTStrategy();
    virtual void AddVertex(const VertexPCNT& vertex) { _vertices.push_back(vertex); }
    void SetupBuffer();
    void Render(unsigned int primitiveType);

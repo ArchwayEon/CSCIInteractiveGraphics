@@ -13,6 +13,7 @@ protected:
    vector<VertexPCT> _vertices;
 
 public:
+   OpenGLVertexPCTStrategy();
    virtual void AddVertex(const VertexPCT& vertex) { _vertices.push_back(vertex); }
    virtual void SetColor(int facet, int numberOfVertices, RGBA color);
    void SetupBuffer();
