@@ -389,11 +389,11 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedCuboid(float width, float dept
 
 }
 
-AbstractMesh* Generate::NormalizedTexturedFlatMesh(
+void Generate::NormalizedTexturedFlatMesh(
+   PolygonMesh* meshToFill,
    float width, float depth, int widthFacetCount, int depthFacetCount, 
    RGBA color, float textureWidthRepeat, float textureDepthRepeat)
 {
-   PolygonMesh* mesh = new PolygonMesh();
    VertexPCNT V1, V2, V3, V4;
    // Each facet is in the XZ plane:
    // V1 V4   V1 has tex coord (startS, endT)
@@ -438,12 +438,12 @@ AbstractMesh* Generate::NormalizedTexturedFlatMesh(
          V4.normal = { 0, 1, 0 };
          V4.tex = { endS, endT };
 
-         mesh->AddVertex(V1);
-         mesh->AddVertex(V2);
-         mesh->AddVertex(V3);
-         mesh->AddVertex(V1);
-         mesh->AddVertex(V3);
-         mesh->AddVertex(V4);
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V2);
+         meshToFill->AddVertex(V3);
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V3);
+         meshToFill->AddVertex(V4);
 
          startS = endS;
          if (startS >= textureWidthRepeat) startS = 0;
@@ -453,8 +453,6 @@ AbstractMesh* Generate::NormalizedTexturedFlatMesh(
       if (startT < 0) startT = 0;
       z += facetDepth;
    } // Next row
-
-   return mesh;
 }
 
 OpenGLGraphicsObject* Generate::NormalizedTexturedFlatSurface(float width, float depth, int widthFacetCount, int depthFacetCount, RGBA color, float textureWidthRepeat, float textureDepthRepeat)
@@ -462,7 +460,9 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedFlatSurface(float width, float
    auto flatSurface = new OpenGLGraphicsObject();
    flatSurface->vertexStrategy = new OpenGLVertexPCNTStrategy();
    auto vertexStrategy = (OpenGLVertexPCNTStrategy*)flatSurface->vertexStrategy;
-   auto mesh = Generate::NormalizedTexturedFlatMesh(
+   auto mesh = new PolygonMesh();
+   Generate::NormalizedTexturedFlatMesh(
+      mesh,
       width, depth, widthFacetCount, depthFacetCount, color, 
       textureWidthRepeat, textureDepthRepeat);
    vertexStrategy->SetMesh(mesh);
