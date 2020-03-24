@@ -174,7 +174,6 @@
     <ClCompile Include="OpenGLVertexStrategy.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="RotateAnimation.cpp" />
-    <ClCompile Include="SceneReader.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
   </ItemGroup>
   <ItemGroup>
