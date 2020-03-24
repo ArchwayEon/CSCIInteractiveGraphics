@@ -102,6 +102,9 @@
     <ClCompile Include="BaseGraphicsScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h">
@@ -188,6 +191,9 @@
     <ClInclude Include="BaseGraphicsScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SceneReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleVertexShader.glsl" />
@@ -202,6 +208,7 @@
     <None Include="FSPCNTLight.glsl" />
     <None Include="FSPCNTLocalLight.glsl" />
     <None Include="FSPCNTLighting.glsl" />
+    <None Include="CrateScene.scn" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="crate.jpg">
