@@ -31,7 +31,9 @@ public:
    AbstractGraphicsSystem();
    AbstractGraphicsSystem(AbstractGraphicsWindow* window, BaseCamera* camera, AbstractTimer* timer);
    virtual ~AbstractGraphicsSystem();
-
+   virtual AbstractGraphicsWindow* GetWindow() {
+      return _window;
+   }
    string ReportErrors() { return _errorReport; }
    virtual void AddShader(const string& shaderName, AbstractGraphicsShader* shader);
    virtual void AddTexture(const string& textureName, AbstractTexture* texture);
@@ -41,6 +43,9 @@ public:
    }
    virtual AbstractAnimation* GetAnimation(const string& animationName) {
       return _animations[animationName];
+   }
+   virtual AbstractGraphicsShader* GetShader(const string& shaderName) {
+      return _shaders[shaderName];
    }
    
    virtual bool InitializeContext() = 0;

@@ -207,9 +207,11 @@
     <ClInclude Include="PolygonMesh.h" />
     <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="RotateAnimation.h" />
+    <ClInclude Include="SceneReader.h" />
     <ClInclude Include="TextFileReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CrateScene.scn" />
     <None Include="cube.ig" />
     <None Include="FSPCNTLight.glsl" />
     <None Include="FSPCNTLocalLight.glsl" />

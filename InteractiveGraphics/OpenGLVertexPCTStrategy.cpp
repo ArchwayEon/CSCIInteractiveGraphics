@@ -1,6 +1,13 @@
 #include "OpenGLVertexPCTStrategy.h"
 #include <glad\glad.h>
 
+OpenGLVertexPCTStrategy::OpenGLVertexPCTStrategy() : OpenGLVertexStrategy()
+{
+   _positionOffset = 0;
+   _colorOffset = 3;
+   _textureOffset = 7;
+}
+
 void OpenGLVertexPCTStrategy::SetColor(int facet, int numberOfVertices, RGBA color)
 {
    vector<int> indexes;
@@ -20,17 +27,18 @@ void OpenGLVertexPCTStrategy::SetupBuffer()
    // Allocate memory in the GPU for the buffer bound to the binding target and then
    // copy the data
    glBufferData(GL_ARRAY_BUFFER,
-      _vertices.size() * sizeof(VertexPCT), &_vertices[0],
+      _vertices.size() * GetSizeOfVertex(), &_vertices[0],
       GL_STATIC_DRAW);
 }
 
 void OpenGLVertexPCTStrategy::Render(unsigned int primitiveType)
 {
+   size_t vertexSize = GetSizeOfVertex();
    // Positions
-   SetBufferInterpretation(0, 3, sizeof(VertexPCT), 0);
+   SetBufferInterpretation(0, 3, vertexSize, _positionOffset);
    // Colors
-   SetBufferInterpretation(1, 4, sizeof(VertexPCT), (sizeof(GLfloat) * 3));
+   SetBufferInterpretation(1, 4, vertexSize, (sizeof(GLfloat) * _colorOffset));
    // Texture Coordinates
-   SetBufferInterpretation(2, 2, sizeof(VertexPCT), (sizeof(GLfloat) * 7));
+   SetBufferInterpretation(2, 2, vertexSize, (sizeof(GLfloat) * _textureOffset));
    glDrawArrays(primitiveType, 0, (GLsizei)_vertices.size());
 }

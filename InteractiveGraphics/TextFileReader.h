@@ -6,7 +6,7 @@
 class TextFileReader :
    public AbstractReader
 {
-private:
+protected:
    string _filePath;
    string _data;
 
@@ -17,7 +17,7 @@ public:
    void SetFilePath(const string& filePath) { _filePath = filePath; }
    string GetData() { return _data; }
    bool Read();
-private:
+protected:
    void Trim(string& str);
 };
 

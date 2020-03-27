@@ -19,6 +19,9 @@ public:
    AbstractGraphicsWindow(string title, int width=800, int height=600);
    virtual ~AbstractGraphicsWindow();
 
+   virtual void SetTitle(const string& title) {
+      _title = title;
+   }
    virtual bool Create() = 0;
    virtual void SetOnResize() = 0;
    virtual void Show() = 0;
