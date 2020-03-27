@@ -23,6 +23,7 @@ public:
    static OpenGLGraphicsObject* Cuboid(string type, 
       float width, float depth, float height, RGBA color, float maxS = 1, float maxT = 1);
    static OpenGLGraphicsObject* Cuboid(float width, float depth, float height, RGBA color);
+   static OpenGLGraphicsObject* Axis(float xLength=1, float yLength=1, float zLength=1);
    static OpenGLGraphicsObject* TexturedCuboid(float width, float depth, float height, RGBA color, float maxS = 1, float maxT = 1);
    static OpenGLGraphicsObject* NormalizedTexturedCuboid(float width, float depth, float height, RGBA color, float maxS=1, float maxT=1);
 };

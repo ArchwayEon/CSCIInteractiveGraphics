@@ -227,6 +227,7 @@
     <Image Include="crate.jpg" />
     <Image Include="marble-stone-floor.jpg" />
     <Image Include="metal.jpg" />
+    <Image Include="wood_floor_texture.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,6 +3,18 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "OpenGLVertexStrategy.h"
 
+OpenGLGraphicsObject::OpenGLGraphicsObject() :
+   AbstractGraphicsObject()
+{
+   Init();
+}
+
+OpenGLGraphicsObject::OpenGLGraphicsObject(AbstractGraphicsShader* shader, AbstractTexture* texture) :
+   AbstractGraphicsObject(shader, texture)
+{
+   Init();
+}
+
 OpenGLGraphicsObject::~OpenGLGraphicsObject()
 {
 }
@@ -35,7 +47,12 @@ void OpenGLGraphicsObject::Render()
    if (_texture != nullptr) {
       _texture->Select();
    }
-   vertexStrategy->Render(GL_TRIANGLES);
+   vertexStrategy->Render(_primitiveType);
    vertexStrategy->UnselectAll();
+}
+
+void OpenGLGraphicsObject::Init()
+{
+   _primitiveType = GL_TRIANGLES;
 }
 

@@ -220,5 +220,8 @@
     <Image Include="metal.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="wood_floor_texture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

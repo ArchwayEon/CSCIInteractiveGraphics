@@ -148,6 +148,130 @@ void OpenGLGraphicsSystem::ProcessInput()
    }
    _camera->SetState(BaseCamera::CameraState::NotMoving);
 
+   if (_window->GetKeyState(GLFW_KEY_Y) == GLFW_PRESS) {
+      scene->localLight.position.y += 0.1f;
+      auto cube = (OpenGLGraphicsObject * )scene->GetGraphicsObject("cube");
+      cube->frame.Move({ 0, 0.1f, 0 });
+      return;
+   }
+   if (_window->GetKeyState(GLFW_KEY_H) == GLFW_PRESS) {
+      scene->localLight.position.y -= 0.1f;
+      auto cube = (OpenGLGraphicsObject*)scene->GetGraphicsObject("cube");
+      cube->frame.Move({ 0, -0.1f, 0 });
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_G) == GLFW_PRESS) {
+      scene->localLight.position.x -= 0.1f;
+      auto cube = (OpenGLGraphicsObject*)scene->GetGraphicsObject("cube");
+      cube->frame.Move({ -0.1f, 0, 0 });
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_K) == GLFW_PRESS) {
+      scene->localLight.position.x += 0.1f;
+      auto cube = (OpenGLGraphicsObject*)scene->GetGraphicsObject("cube");
+      cube->frame.Move({ 0.1f, 0, 0 });
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_U) == GLFW_PRESS) {
+      scene->localLight.position.z -= 0.1f;
+      auto cube = (OpenGLGraphicsObject*)scene->GetGraphicsObject("cube");
+      cube->frame.Move({ 0, 0, -0.1f });
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_J) == GLFW_PRESS) {
+      scene->localLight.position.z += 0.1f;
+      auto cube = (OpenGLGraphicsObject*)scene->GetGraphicsObject("cube");
+      cube->frame.Move({ 0, 0, 0.1f });
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_1) == GLFW_PRESS) {
+      scene->globalLight.intensity += 0.01f;
+      if (scene->globalLight.intensity > 1) {
+         scene->globalLight.intensity = 1;
+      }
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_2) == GLFW_PRESS) {
+      scene->globalLight.intensity -= 0.01f;
+      if (scene->globalLight.intensity < 0) {
+         scene->globalLight.intensity = 0;
+      }
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_3) == GLFW_PRESS) {
+      auto crate = (OpenGLGraphicsObject*)scene->GetGraphicsObject("crate2");
+      crate->material.ambientIntensity += .01f;
+      if (crate->material.ambientIntensity > 1)
+         crate->material.ambientIntensity = 1;
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_4) == GLFW_PRESS) {
+      auto crate = (OpenGLGraphicsObject*)scene->GetGraphicsObject("crate2");
+      crate->material.ambientIntensity -= .01f;
+      if (crate->material.ambientIntensity < 0)
+         crate->material.ambientIntensity = 0;
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_5) == GLFW_PRESS) {
+      if (scene->localLight.color.red == 1.0f &&
+         scene->localLight.color.green == 1.0f &&
+         scene->localLight.color.blue == 1.0f)
+         scene->localLight.color = { 1.0f, 0.0f, 0.0f };
+      else if (scene->localLight.color.red == 1.0f &&
+         scene->localLight.color.green == 0.0f &&
+         scene->localLight.color.blue == 0.0f)
+         scene->localLight.color = { 0.0f, 1.0f, 0.0f };
+      else if (scene->localLight.color.red == 0.0f &&
+         scene->localLight.color.green == 1.0f &&
+         scene->localLight.color.blue == 0.0f)
+         scene->localLight.color = { 0.0f, 0.0f, 1.0f };
+      else if (scene->localLight.color.red == 0.0f &&
+         scene->localLight.color.green == 0.0f &&
+         scene->localLight.color.blue == 1.0f)
+         scene->localLight.color = { 1.0f, 1.0f, 1.0f };
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_6) == GLFW_PRESS) {
+      scene->localLight.intensity += 0.01f;
+      if (scene->localLight.intensity > 1) {
+         scene->localLight.intensity = 1;
+      }
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_7) == GLFW_PRESS) {
+      scene->localLight.intensity -= 0.01f;
+      if (scene->localLight.intensity < 0) {
+         scene->localLight.intensity = 0;
+      }
+      return;
+   }
+   if (_window->GetKeyState(GLFW_KEY_8) == GLFW_PRESS) {
+      scene->localLight.attenuationCoefficient += 0.1f;
+      if (scene->localLight.attenuationCoefficient > 1) {
+         scene->localLight.attenuationCoefficient = 1;
+      }
+      return;
+   }
+
+   if (_window->GetKeyState(GLFW_KEY_9) == GLFW_PRESS) {
+      scene->localLight.attenuationCoefficient -= 0.1f;
+      if (scene->localLight.attenuationCoefficient < 0) {
+         scene->localLight.attenuationCoefficient = 0;
+      }
+      return;
+   }
+
 }
 
 
