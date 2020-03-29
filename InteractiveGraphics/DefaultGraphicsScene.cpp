@@ -160,17 +160,18 @@ bool DefaultGraphicsScene::LoadObjects()
    crate1->frame.Move({ -3.0f, 1.0f, 0.0f });
    crate1->material.shininess = 512;
 
-   OpenGLGraphicsObject* crate2 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+   OpenGLGraphicsObject* crate2 = 
+      Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate2->SetTexture(_graphics->GetTexture("crateTexture"));
    AddObject("crate2", crate2, lightingShader);
-   crate2->frame.Move({ 0.0f, 1.0f, 0.0f });
-   crate2->material.shininess = 512;
+   crate2->frame.Move({ 0.0f, 1.0f, -2.0f });
 
    OpenGLGraphicsObject* crate3 = 
       Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate3->SetTexture(_graphics->GetTexture("metalTexture"));
    AddObject("crate3", crate3, lightingShader);
    crate3->frame.Move({ 3.0f, 1.0f, 0.0f });
+   crate3->material.shininess = 512;
 
    OpenGLGraphicsObject* crate4 = Generate::NormalizedTexturedCuboid(2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate4->SetTexture(_graphics->GetTexture("crateTexture"));
@@ -250,6 +251,9 @@ bool DefaultGraphicsScene::LoadObjects()
       0.1f, 0.1f, 0.1f, { 1.0f, 0.0f, 1.0f, 1.0f });
    AddObject("lamp3", lamp3, simple3DShader);
    lamp3->frame.Move({ 2.5f, 3.5f, 2.5f });
+
+   OpenGLGraphicsObject* axis = Generate::Axis();
+   AddObject("axis", axis, simple3DShader);
 
    return true;
 }

@@ -11,6 +11,7 @@ class PolygonMesh;
 class Generate
 {
 public:
+   static OpenGLGraphicsObject* Axis(float xLength = 1, float yLength = 1, float zLength = 1);
    static OpenGLGraphicsObject* FlatSurface(
       string type,
       float width, float depth, RGBA color, float maxS, float maxT);

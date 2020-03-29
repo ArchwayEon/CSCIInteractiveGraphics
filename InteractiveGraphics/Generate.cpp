@@ -6,6 +6,27 @@
 #include "PolygonMesh.h"
 #include "GraphicsStructures.h"
 
+OpenGLGraphicsObject* Generate::Axis(float xLength, float yLength, float zLength)
+{
+   auto axis = new OpenGLGraphicsObject();
+   axis->SetPrimitiveType(GL_LINES);
+   axis->vertexStrategy = new OpenGLVertexPCStrategy();
+   auto vertexStrategy = (OpenGLVertexPCStrategy*)axis->vertexStrategy;
+   VertexPC V1 = { 0, 0, 0, 1, 0, 0 };
+   VertexPC V2 = { xLength, 0, 0, 1, 0, 0 };
+   VertexPC V3 = { 0, 0, 0, 0, 1, 0 };
+   VertexPC V4 = { 0, yLength, 0, 0, 1, 0 };
+   VertexPC V5 = { 0, 0, 0, 0, 0, 1 };
+   VertexPC V6 = { 0, 0, zLength, 0, 0, 1 };
+   vertexStrategy->AddVertex(V1);
+   vertexStrategy->AddVertex(V2);
+   vertexStrategy->AddVertex(V3);
+   vertexStrategy->AddVertex(V4);
+   vertexStrategy->AddVertex(V5);
+   vertexStrategy->AddVertex(V6);
+   return axis;
+}
+
 OpenGLGraphicsObject* Generate::FlatSurface(string type, float width, float depth, RGBA color, float maxS, float maxT)
 {
    if (type == "Plain") return Generate::FlatSurface(width, depth, color);

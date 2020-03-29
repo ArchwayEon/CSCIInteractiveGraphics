@@ -12,18 +12,23 @@ using std::vector;
 class OpenGLGraphicsObject :
    public AbstractGraphicsObject
 {
+protected:
+   unsigned int _primitiveType;
+
 public:
-   OpenGLGraphicsObject() : 
-      AbstractGraphicsObject()
-   {}
+   OpenGLGraphicsObject();
    OpenGLGraphicsObject(
       AbstractGraphicsShader* shader,
-      AbstractTexture* texture = nullptr) :
-      AbstractGraphicsObject(shader, texture)
-   {}
+      AbstractTexture* texture = nullptr);
    ~OpenGLGraphicsObject();
+   virtual void SetPrimitiveType(unsigned int primitiveType) {
+      _primitiveType = primitiveType;
+   }
    void Setup();
    void Render();
+
+protected:
+   void Init();
 };
 
 #endif
