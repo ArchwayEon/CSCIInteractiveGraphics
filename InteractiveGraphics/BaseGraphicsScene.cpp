@@ -3,9 +3,11 @@
 #include "AbstractAnimation.h"
 #include "BaseCamera.h"
 
-BaseGraphicsScene::BaseGraphicsScene(BaseCamera* camera)
+BaseGraphicsScene::BaseGraphicsScene(AbstractGraphicsSystem* graphics, BaseCamera* camera)
 {
+   this->_graphics = graphics;
    this->camera = camera;
+   _error = "";
    Init();
 }
 

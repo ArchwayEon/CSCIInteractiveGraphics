@@ -11,12 +11,15 @@ using std::string;
 class AbstractGraphicsShader;
 class AbstractAnimation;
 class BaseCamera;
+class AbstractGraphicsSystem;
 
 class BaseGraphicsScene
 {
 protected:
    map<string, AbstractGraphicsObject*> _objects;
    size_t _numberOfLights;
+   AbstractGraphicsSystem* _graphics;
+   string _error;
 
 public:
    static const int NumberOfLights = 10;
@@ -25,7 +28,7 @@ public:
    BaseCamera* camera;
 
 public:
-   BaseGraphicsScene(BaseCamera* camera);
+   BaseGraphicsScene(AbstractGraphicsSystem* graphics, BaseCamera* camera);
    virtual ~BaseGraphicsScene();
    virtual void AddObject(
       const string& objectName, 
@@ -40,9 +43,17 @@ public:
    virtual void Update(double elapsedSeconds);
    virtual void Render();
    virtual size_t AddLight();
+   const string& GetError() const { return _error; }
+   void AddError(string error) { _error += error; }
+   virtual bool LoadScene() { return true; }
 
 protected:
    virtual void Init();
+   virtual bool LoadShaders() { return true; };
+   virtual bool LoadTextures() { return true; };
+   virtual bool LoadAnimations() { return true; };
+   virtual bool LoadObjects() { return true; };
+   virtual bool LoadLights() { return true; };
 };
 
 #endif

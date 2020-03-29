@@ -38,6 +38,8 @@ struct VertexPCNT {
 
 struct Material {
    float ambientIntensity; // Intensity of light applied to the object
+   float specularIntensity;
+   float shininess;
 };
 
 struct SphericalCoordinate {

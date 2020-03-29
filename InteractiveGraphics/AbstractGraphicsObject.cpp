@@ -17,6 +17,8 @@ AbstractGraphicsObject::AbstractGraphicsObject(AbstractGraphicsShader* shader, A
 void AbstractGraphicsObject::Init()
 {
    material.ambientIntensity = 0.01f;
+   material.specularIntensity = 0.5f;
+   material.shininess = 16;
 }
 
 AbstractGraphicsObject::~AbstractGraphicsObject()

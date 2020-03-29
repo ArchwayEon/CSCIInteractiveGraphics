@@ -31,11 +31,13 @@ void main()
    vec4 globalDiffuse = calculateDiffuse(
       toGlobalLightDir, fragNormal, globalLightIntensity, globalLightColor);
 
+   vec3 viewDir = normalize(viewPosition - fragPosition);
    vec4 totalLocalDiffuse;
    vec3 toLocalLightDir;
    vec4 localDiffuse;
    float distanceToLight;
    float attenuation;
+   vec4 totalSpecular;
    for(int i = 0; i < numberOfLights; i++){
       toLocalLightDir = normalize(localLightPosition[i] - fragPosition);
       localDiffuse = calculateDiffuse(
@@ -43,11 +45,18 @@ void main()
       distanceToLight = length(localLightPosition[i] - fragPosition);
       attenuation = 1.0 / (1.0 + localLightAttenuationCoefficient[i] * pow(distanceToLight, 2));
       totalLocalDiffuse += (attenuation * localDiffuse);
+      if(materialShininess > 0.0f){
+         vec3 reflectDir = reflect(-toLocalLightDir, fragNormal);
+         float angIncidence = max(dot(viewDir, reflectDir), 0.0f);
+         float spec = pow(angIncidence, materialShininess);
+         totalSpecular += materialSpecularIntensity * spec 
+            * localLightIntensity[i] * vec4(localLightColor[i], 1.0f); 
+      }
    }
 
    vec4 texFragColor = texture(tex, fragTexCoord) * fragColor;
    vec4 ambientColor = materialAmbientIntensity * vec4(1.0f, 1.0f, 1.0f, 1.0f);
-   color = (ambientColor + globalDiffuse + totalLocalDiffuse) * texFragColor;
+   color = (ambientColor + globalDiffuse + totalLocalDiffuse + totalSpecular) * texFragColor;
    // Gamma correction
    float gamma = 1.0/2.2;
    color.r = pow(color.r, gamma);
