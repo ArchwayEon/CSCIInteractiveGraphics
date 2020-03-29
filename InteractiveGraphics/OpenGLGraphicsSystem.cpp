@@ -144,6 +144,12 @@ void OpenGLGraphicsSystem::ProcessInput()
       return;
    }
    _camera->SetState(BaseCamera::CameraState::NotMoving);
+   if (_window->GetKeyState(GLFW_KEY_F1) == GLFW_PRESS) {
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+   }
+   if (_window->GetKeyState(GLFW_KEY_F2) == GLFW_PRESS) {
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+   }
 
 }
 

@@ -16,10 +16,12 @@ class BaseGraphicsScene
 {
 protected:
    map<string, AbstractGraphicsObject*> _objects;
+   size_t _numberOfLights;
 
 public:
+   static const int NumberOfLights = 10;
    Light globalLight;
-   Light localLight;
+   Light localLight[BaseGraphicsScene::NumberOfLights];
    BaseCamera* camera;
 
 public:
@@ -37,6 +39,7 @@ public:
    virtual void Setup();
    virtual void Update(double elapsedSeconds);
    virtual void Render();
+   virtual size_t AddLight();
 
 protected:
    virtual void Init();

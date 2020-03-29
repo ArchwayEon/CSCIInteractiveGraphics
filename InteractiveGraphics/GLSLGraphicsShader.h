@@ -36,9 +36,15 @@ public:
    void SendFloatToGPU(const string& name, float data) const;
    void SendIntegerToGPU(const string& name, int data) const;
    void SendVector3ToGPU(const string& name, const glm::vec3& vector) const;
+   void SendFloatArrayToGPU(const string& name, void* values, unsigned int count) const;
+   void SendVectorArrayToGPU(const string& name, void* vectorArray, unsigned int count) const;
    void SendGlobalLightToGPU(const glm::vec3& position, const glm::vec3& color, float intensity) const;
    void SendLocalLightToGPU(const glm::vec3& position, const glm::vec3& color, 
       float intensity, float attenuationCoefficient) const;
+   void SendLocalLightDataToGPU(
+      size_t numberOfLights,
+      glm::vec3 positions[], glm::vec3 colors[],
+      float intensities[], float attenuationCoefficients[]) const;
 
 private:
    GLuint CompileShader(GLenum type, const GLchar* source);

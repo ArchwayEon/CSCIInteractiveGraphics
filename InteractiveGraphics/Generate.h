@@ -42,6 +42,13 @@ public:
    static OpenGLGraphicsObject* NormalizedTexturedFlatSurface(
       float width, float depth, int widthFacetCount, int depthFacetCount,
       RGBA color, float textureWidthRepeat, float textureDepthRepeat);
+   static void NormalizedTexturedSphereMesh(
+      PolygonMesh* meshToFill,
+      float radius, int slices, int stacks,
+      RGBA color, SphereShadingType shadingType);
+   static OpenGLGraphicsObject* Sphere(
+      float radius, int slices, int stacks,
+      RGBA color, SphereShadingType shadingType);
 };
 
 #endif

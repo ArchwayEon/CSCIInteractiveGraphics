@@ -55,5 +55,9 @@ enum class PlaneType {
    XZ, XZ_Flipped, XY, XY_Flipped, YZ, YZ_Flipped
 };
 
+enum class SphereShadingType {
+   Flat_Shading, Smooth_Shading
+};
+
 
 #endif

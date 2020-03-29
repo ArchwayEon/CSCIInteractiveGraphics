@@ -118,6 +118,18 @@ void GLSLGraphicsShader::SendVector3ToGPU(const string& name, const glm::vec3& v
    glUniform3fv(location, 1, glm::value_ptr(vector));
 }
 
+void GLSLGraphicsShader::SendFloatArrayToGPU(const string& name, void* values, unsigned int count) const
+{
+   unsigned int location = glGetUniformLocation(_shaderProgram, name.c_str());
+   glUniform1fv(location, count, (float*)values);
+}
+
+void GLSLGraphicsShader::SendVectorArrayToGPU(const string& name, void* vectorArray, unsigned int count) const
+{
+   unsigned int location = glGetUniformLocation(_shaderProgram, name.c_str());
+   glUniform3fv(location, count, (float*)vectorArray);
+}
+
 void GLSLGraphicsShader::SendGlobalLightToGPU(const glm::vec3& position, const glm::vec3& color, float intensity) const
 {
    SendVector3ToGPU("globalLightPosition", position);
@@ -133,6 +145,15 @@ void GLSLGraphicsShader::SendLocalLightToGPU(
    SendVector3ToGPU("localLightColor", color);
    SendFloatToGPU("localLightIntensity", intensity);
    SendFloatToGPU("localLightAttenuationCoefficient", attenuationCoefficient);
+}
+
+void GLSLGraphicsShader::SendLocalLightDataToGPU(size_t numberOfLights, glm::vec3 positions[], glm::vec3 colors[], float intensities[], float attenuationCoefficients[]) const
+{
+   SendIntegerToGPU("numberOfLights", (int)numberOfLights);
+   SendVectorArrayToGPU("localLightPosition", positions, (int)numberOfLights);
+   SendVectorArrayToGPU("localLightColor", colors, (int)numberOfLights);
+   SendFloatArrayToGPU("localLightIntensity", intensities, (int)numberOfLights);
+   SendFloatArrayToGPU("localLightAttenuationCoefficient", attenuationCoefficients, (int)numberOfLights);
 }
 
 GLuint GLSLGraphicsShader::CompileShader(GLenum type, const GLchar* source)

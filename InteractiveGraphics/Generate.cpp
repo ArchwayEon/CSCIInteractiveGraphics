@@ -713,3 +713,277 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedFlatSurface(float width, float
    vertexStrategy->SetMesh(mesh);
    return flatSurface;
 }
+
+void Generate::NormalizedTexturedSphereMesh(
+   PolygonMesh* meshToFill, 
+   float radius, int slices, int stacks, 
+   RGBA color, SphereShadingType shadingType)
+{
+   float sliceStep = 360.0f / slices;
+   float stackStep = 180.0f / stacks;
+   float phi = stackStep;
+   float rho = radius;
+   float theta, sinTheta, cosTheta, cosPhi, sinPhi, thetaRad, phiRad;
+   VertexPCNT V1, V2, V3, V4;
+   glm::vec3 VA, VB, VC, VD;
+
+   // Texture variables
+   float tHeight = 1.0f / stacks;
+   float tWidth = 1.0f / slices;
+   float s = 0.0f, t = 1.0f - tHeight;
+
+   // The top pole is composed of triangles.
+   //        V1
+   //       / \
+	//      /   \
+	//    V2-----V3
+   // Generate top vertices
+   for (theta = 0; theta < 360.0f; theta += sliceStep) {
+      // Vertex A is the north pole
+      V1.position = { 0.0f, radius, 0.0f };
+      VA = glm::vec3(V1.position.x, V1.position.y, V1.position.z);
+      V1.color = { color.red, color.green, color.blue, color.alpha };
+      V1.normal = { 0, 0, 0 };
+      V1.tex = { s, 1.0f };
+
+      thetaRad = glm::radians(theta);
+      phiRad = glm::radians(phi);
+      sinTheta = sinf(thetaRad);
+      sinPhi = sinf(phiRad);
+      cosPhi = cosf(phiRad);
+      cosTheta = cosf(thetaRad);
+      V2.position = { rho * sinTheta * sinPhi, rho * cosPhi, rho * cosTheta * sinPhi };
+      VB = glm::vec3(V2.position.x, V2.position.y, V2.position.z);
+      V2.color = { color.red, color.green, color.blue, color.alpha };
+      V2.normal = { 0, 0, 0 };
+      V2.tex = { s, t };
+
+      thetaRad = glm::radians(theta + sliceStep);
+      sinTheta = sinf(thetaRad);
+      cosTheta = cosf(thetaRad);
+      V3.position = { rho * sinTheta * sinPhi, V2.position.y, rho * cosTheta * sinPhi };
+      VC = glm::vec3(V3.position.x, V3.position.y, V3.position.z);
+      V3.color = { color.red, color.green, color.blue, color.alpha };
+      V3.normal = { 0, 0, 0 };
+      V3.tex = { s + tWidth, t };
+
+      if (shadingType == SphereShadingType::Flat_Shading) { // Flat shading
+         glm::vec3 AB = glm::normalize(VB - VA);
+         glm::vec3 AC = glm::normalize(VC - VA);
+         glm::vec3 NA = glm::cross(AB, AC);
+         V1.normal = { NA.x, NA.y, NA.z };
+
+         glm::vec3 BC = glm::normalize(VC - VB);
+         glm::vec3 BA = glm::normalize(VA - VB);
+         glm::vec3 NB = glm::cross(BC, BA);
+         V2.normal = { NB.x, NB.y, NB.z };
+
+         glm::vec3 CA = glm::normalize(VA - VC);
+         glm::vec3 CB = glm::normalize(VB - VC);
+         glm::vec3 NC = glm::cross(CA, CB);
+         V3.normal = { NC.x, NC.y, NC.z };
+      }
+      else { // Smooth shading (Use the normalized position vectors as the normal)
+         glm::vec3 NA = glm::normalize(VA);
+         V1.normal = { NA.x, NA.y, NA.z };
+
+         glm::vec3 NB = glm::normalize(VB);
+         V2.normal = { NB.x, NB.y, NB.z };
+
+         glm::vec3 NC = glm::normalize(VC);
+         V3.normal = { NC.x, NC.y, NC.z };
+      }
+
+      meshToFill->AddVertex(V1);
+      meshToFill->AddVertex(V2);
+      meshToFill->AddVertex(V3);
+      s += tWidth;
+   } // Top vertices
+
+   s = 0;
+   t = 1.0f - tHeight;
+   // The middle facets have 4 vertices
+   // V1--V4
+   // |\  |
+   // | \ |
+   // |  \|
+   // V2--V3
+   float phiUp = phi;
+   float phiDown = phi + stackStep;
+   // Generate the middle
+   const int MiddleStackCount = stacks - 2; // Subtract top and bottom stack
+   for (int stack = 0; stack < MiddleStackCount; stack++) {
+      for (theta = 0; theta < 360.0f; theta += sliceStep) {
+         // V1
+         thetaRad = glm::radians(theta);
+         sinTheta = sinf(thetaRad);
+         cosTheta = cos(thetaRad);
+         phiRad = glm::radians(phiUp);
+         sinPhi = sinf(phiRad);
+         cosPhi = cosf(phiRad);
+         V1.position = { rho * sinTheta * sinPhi, rho * cosPhi, rho * cosTheta * sinPhi };
+         VA = glm::vec3(V1.position.x, V1.position.y, V1.position.z);
+         V1.color = { color.red, color.green, color.blue, color.alpha };
+         V1.tex = { s, t };
+         // V2
+         phiRad = glm::radians(phiDown);
+         sinPhi = sinf(phiRad);
+         cosPhi = cosf(phiRad);
+         V2.position = { rho * sinTheta * sinPhi, rho * cosPhi, rho * cosTheta * sinPhi };
+         VB = glm::vec3(V2.position.x, V2.position.y, V2.position.z);
+         V2.color = { color.red, color.green, color.blue, color.alpha };
+         V2.tex = { s, t - tHeight };
+         // V3
+         thetaRad = glm::radians(theta + sliceStep);
+         sinTheta = sinf(thetaRad);
+         cosTheta = cos(thetaRad);
+         V3.position = { rho * sinTheta * sinPhi, V2.position.y, rho * cosTheta * sinPhi };
+         VC = glm::vec3(V3.position.x, V3.position.y, V3.position.z);
+         V3.color = { color.red, color.green, color.blue, color.alpha };
+         V3.tex = { s + tWidth, t - tHeight };
+         // V4
+         phiRad = glm::radians(phiUp);
+         sinPhi = sinf(phiRad);
+         V4.position = { rho * sinTheta * sinPhi, V1.position.y, rho * cosTheta * sinPhi };
+         VD = glm::vec3(V4.position.x, V4.position.y, V4.position.z);
+         V4.color = { color.red, color.green, color.blue, color.alpha };
+         V4.tex = { s + tWidth, t };
+
+         // V1--V4
+         // |\  |
+         // | \ |
+         // |  \|
+         // V2--V3
+         if (shadingType == SphereShadingType::Flat_Shading) {
+            glm::vec3 AB = glm::normalize(VB - VA);
+            glm::vec3 AC = glm::normalize(VC - VA);
+            glm::vec3 NA = glm::cross(AB, AC);
+            V1.normal = { NA.x, NA.y, NA.z };
+
+            glm::vec3 BC = glm::normalize(VC - VB);
+            glm::vec3 BA = glm::normalize(VA - VB);
+            glm::vec3 NB = glm::cross(BC, BA);
+            V2.normal = { NB.x, NB.y, NB.z };
+
+            glm::vec3 CA = glm::normalize(VA - VC);
+            glm::vec3 CB = glm::normalize(VB - VC);
+            glm::vec3 NC = glm::cross(CA, CB);
+            V3.normal = { NC.x, NC.y, NC.z };
+
+            glm::vec3 AD = glm::normalize(VD - VA);
+            glm::vec3 ND = glm::cross(AC, AD);
+            V4.normal = { ND.x, ND.y, ND.z };
+         }
+         else { // Use the normalized position vectors as the normal
+            glm::vec3 NA = glm::normalize(VA);
+            V1.normal = { NA.x, NA.y, NA.z };
+
+            glm::vec3 NB = glm::normalize(VB);
+            V2.normal = { NB.x, NB.y, NB.z };
+
+            glm::vec3 NC = glm::normalize(VC);
+            V3.normal = { NC.x, NC.y, NC.z };
+
+            glm::vec3 ND = glm::normalize(VD);
+            V4.normal = { ND.x, ND.y, ND.z };
+         }
+
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V2);
+         meshToFill->AddVertex(V3);
+
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V3);
+         meshToFill->AddVertex(V4);
+         s += tWidth;
+      }
+      phiUp = phiDown;
+      phiDown = phiUp + stackStep;
+      t -= tHeight;
+   }
+   s = 0.0f;
+   // The bottom pole
+   //  V1---V3
+   //   \   /
+   //    \ /
+   //     V2
+   phi = phiUp;
+   for (theta = 0; theta < 360.0f; theta += sliceStep) {
+      // V1
+      thetaRad = glm::radians(theta);
+      sinTheta = sinf(thetaRad);
+      cosTheta = cosf(thetaRad);
+      phiRad = glm::radians(phi);
+      sinPhi = sinf(phiRad);
+      cosPhi = cosf(phiRad);
+      V1.position = { rho * sinTheta * sinPhi, rho * cosPhi, rho * cosTheta * sinPhi };
+      VA = glm::vec3(V1.position.x, V1.position.y, V1.position.z);
+      V1.color = { color.red, color.green, color.blue, color.alpha };
+      V1.normal = { 0, 0, 0 };
+      V1.tex = { s, t };
+      // V2
+      V2.position = { 0, -radius, 0 };
+      VB = glm::vec3(V2.position.x, V2.position.y, V2.position.z);
+      V2.color = { color.red, color.green, color.blue, color.alpha };
+      V2.normal = { 0, 0, 0 };
+      V2.tex = { s, 0.0f };
+      // V3
+      thetaRad = glm::radians(theta + sliceStep);
+      sinTheta = sinf(thetaRad);
+      cosTheta = cos(thetaRad);
+      V3.position = { rho * sinTheta * sinPhi, V1.position.y, rho * cosTheta * sinPhi };
+      VC = glm::vec3(V3.position.x, V3.position.y, V3.position.z);
+      V3.color = { color.red, color.green, color.blue, color.alpha };
+      V3.normal = { 0, 0, 0 };
+      V3.tex = { s + tWidth, t };
+
+      if (shadingType == SphereShadingType::Flat_Shading) {
+         glm::vec3 AB = glm::normalize(VB - VA);
+         glm::vec3 AC = glm::normalize(VC - VA);
+         glm::vec3 NA = glm::cross(AB, AC);
+         V1.normal = { NA.x, NA.y, NA.z };
+
+         glm::vec3 BC = glm::normalize(VC - VB);
+         glm::vec3 BA = glm::normalize(VA - VB);
+         glm::vec3 NB = glm::cross(BC, BA);
+         V2.normal = { NB.x, NB.y, NB.z };
+
+         glm::vec3 CA = glm::normalize(VA - VC);
+         glm::vec3 CB = glm::normalize(VB - VC);
+         glm::vec3 NC = glm::cross(CA, CB);
+         V3.normal = { NC.x, NC.y, NC.z };
+      }
+      else { // Use the normalized position vectors as the normal
+         glm::vec3 NA = glm::normalize(VA);
+         V1.normal = { NA.x, NA.y, NA.z };
+
+         glm::vec3 NB = glm::normalize(VB);
+         V2.normal = { NB.x, NB.y, NB.z };
+
+         glm::vec3 NC = glm::normalize(VC);
+         V3.normal = { NC.x, NC.y, NC.z };
+      }
+
+      meshToFill->AddVertex(V1);
+      meshToFill->AddVertex(V2);
+      meshToFill->AddVertex(V3);
+
+      s += tWidth;
+   }
+} // NormalizedTexturedSphereMesh
+
+OpenGLGraphicsObject* Generate::Sphere(
+   float radius, int slices, int stacks, 
+   RGBA color, SphereShadingType shadingType)
+{
+   auto sphere = new OpenGLGraphicsObject();
+   sphere->vertexStrategy = new OpenGLVertexPCNTStrategy();
+   auto vertexStrategy = (OpenGLVertexPCNTStrategy*)sphere->vertexStrategy;
+   auto mesh = new PolygonMesh();
+   Generate::NormalizedTexturedSphereMesh(
+      mesh,
+      radius, slices, stacks, color,
+      shadingType);
+   vertexStrategy->SetMesh(mesh);
+   return sphere;
+} // Sphere

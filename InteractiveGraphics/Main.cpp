@@ -36,8 +36,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer);
    graphics->scene = new BaseGraphicsScene(camera);
    graphics->scene->globalLight.intensity = 0.05f;
-   graphics->scene->localLight.color = { 1, 1, 1 };
-   graphics->scene->localLight.intensity = 0.7f;
 
    // Load the shaders
    GLSLGraphicsShader* simple3DShader = new GLSLGraphicsShader(new TextFileReader());
@@ -116,6 +114,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    smileyTexture->SetMinFilter(GL_LINEAR);
    graphics->AddTexture("smiley", smileyTexture);
 
+   OpenGLTexture* worldTexture = new OpenGLTexture();
+   worldTexture->LoadFromFile("world.jpg");
+   worldTexture->SetMagFilter(GL_LINEAR);
+   worldTexture->SetMinFilter(GL_LINEAR);
+   graphics->AddTexture("world", worldTexture);
+
    OpenGLGraphicsObject* wall = 
       Generate::NormalizedTexturedMeshedCuboid(
          10, 1, 10, 
@@ -151,12 +155,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
       Generate::NormalizedTexturedMeshedCuboid(
          2, 0.5f, 2, 
          { 1.0f, 1.0f, 1.0f, 1.0f },
-         12, 12, 13,
+         12, 1, 12,
          3, 5
    );
    crate5->SetTexture(smileyTexture);
    graphics->scene->AddObject("crate5", crate5, lightingShader);
    crate5->frame.Move({ 0.0f, 4.0f, 2.0f });
+
+   OpenGLGraphicsObject* world =
+      Generate::Sphere(
+         1, 18, 18,
+         { 1.0f, 1.0f, 1.0f, 1.0f }, 
+         SphereShadingType::Smooth_Shading);
+   world->SetTexture(worldTexture);
+   graphics->scene->AddObject("world", world, lightingShader);
+   world->frame.Move({ -4.0f, 4.0f, 2.0f });
+
+   OpenGLGraphicsObject* world2 =
+      Generate::Sphere(
+         1, 18, 18,
+         { 1.0f, 1.0f, 1.0f, 1.0f },
+         SphereShadingType::Flat_Shading);
+   world2->SetTexture(worldTexture);
+   graphics->scene->AddObject("world2", world2, lightingShader);
+   world2->frame.Move({ 4.0f, 4.0f, 2.0f });
 
    auto rotateAnimation1 = new RotateAnimation(30);
    graphics->AddAnimation("RotateAnimation1", rotateAnimation1);
@@ -168,28 +190,57 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->AddAnimation("RotateAnimation4", rotateAnimation4);
    auto rotateAnimation5 = new RotateAnimation(31);
    graphics->AddAnimation("RotateAnimation5", rotateAnimation5);
+   auto rotateAnimation6 = new RotateAnimation(65);
+   graphics->AddAnimation("RotateAnimation6", rotateAnimation6);
+   auto rotateAnimation7 = new RotateAnimation(65);
+   graphics->AddAnimation("RotateAnimation7", rotateAnimation7);
 
    graphics->scene->SetObjectsAnimation("crate1", rotateAnimation1);
    graphics->scene->SetObjectsAnimation("crate2", rotateAnimation2);
    graphics->scene->SetObjectsAnimation("crate3", rotateAnimation3);
    graphics->scene->SetObjectsAnimation("crate4", rotateAnimation4);
    graphics->scene->SetObjectsAnimation("crate5", rotateAnimation5);
+   graphics->scene->SetObjectsAnimation("world", rotateAnimation6);
+   graphics->scene->SetObjectsAnimation("world2", rotateAnimation7);
 
    OpenGLGraphicsObject* floor = 
-      Generate::NormalizedTexturedFlatSurface(50, 50, 50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 100.0f, 100.0f);
+      Generate::NormalizedTexturedFlatSurface(
+         50, 50, 50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 100.0f, 100.0f);
    floor->SetTexture(floorTexture);
    graphics->scene->AddObject("floor", floor, lightingShader);
 
-   OpenGLGraphicsObject* sky = Generate::TexturedFlatSurface(100, 100, { 1.0f, 1.0f, 1.0f, 1.0f }, 1, 1);
+   OpenGLGraphicsObject* sky = Generate::TexturedFlatSurface(
+      100, 100, { 1.0f, 1.0f, 1.0f, 1.0f }, 1, 1);
    sky->SetTexture(skyTexture);
    graphics->scene->AddObject("sky", sky, simplePCTShader);
    sky->frame.Move({ 0.0f, 15.0f, 0.0f });
    sky->frame.Rotate(180.0f, wall->frame.GetXAxis());
 
-   OpenGLGraphicsObject* cube = Generate::Cuboid(0.1f, 0.1f, 0.1f, { 1.0f, 1.0f, 1.0f, 1.0f });
-   graphics->scene->AddObject("cube", cube, simple3DShader);
-   cube->frame.Move({ 0.0f, 0.5f, 3.5f });
-   graphics->scene->localLight.position = { 0.0f, 0.5f, 3.5f };
+   OpenGLGraphicsObject* lamp = Generate::Cuboid(
+      0.1f, 0.1f, 0.1f, { 1.0f, 1.0f, 1.0f, 1.0f });
+   graphics->scene->AddObject("lamp", lamp, simple3DShader);
+   lamp->frame.Move({ 0.0f, 0.5f, 3.5f });
+   graphics->scene->localLight[0].position = { 0.0f, 0.5f, 3.5f };
+   graphics->scene->localLight[0].color = { 1, 1, 1 };
+   graphics->scene->localLight[0].intensity = 0.1f;
+
+   auto index = graphics->scene->AddLight();
+   OpenGLGraphicsObject* lamp2 = Generate::Cuboid(
+      0.1f, 0.1f, 0.1f, { 1.0f, 1.0f, 0.0f, 1.0f });
+   graphics->scene->AddObject("lamp2", lamp2, simple3DShader);
+   lamp2->frame.Move({ -2.5f, 3.5f, 2.5f });
+   graphics->scene->localLight[index].position = { -2.5f, 3.5f, 2.5f };
+   graphics->scene->localLight[index].color = { 1, 1, 0 };
+   graphics->scene->localLight[index].intensity = 0.2f;
+
+   index = graphics->scene->AddLight();
+   OpenGLGraphicsObject* lamp3 = Generate::Cuboid(
+      0.1f, 0.1f, 0.1f, { 1.0f, 0.0f, 1.0f, 1.0f });
+   graphics->scene->AddObject("lamp3", lamp3, simple3DShader);
+   lamp3->frame.Move({ 2.5f, 3.5f, 2.5f });
+   graphics->scene->localLight[index].position = { 2.5f, 3.5f, 2.5f };
+   graphics->scene->localLight[index].color = { 1, 0, 1 };
+   graphics->scene->localLight[index].intensity = 0.3f;
 
    if (graphics->InitializeContext()) {
       graphics->ShowWindow();

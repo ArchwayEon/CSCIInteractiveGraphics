@@ -232,5 +232,8 @@
     <Image Include="smiley.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="world.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
