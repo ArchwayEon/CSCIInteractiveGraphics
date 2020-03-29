@@ -6,7 +6,7 @@ BaseCamera::BaseCamera() :
    nearPlane(0.1f), farPlane(50.0f), frame(), 
    target({ 0.0f, 0.0f, 0.0f }), 
    _projection(1.0f), _view(1.0f),
-   _state(CameraState::NotMoving)
+   _state(CameraState::NotMoving), euler({0, -90.0f, 0})
 {
    frame.SetPosition(0.0f, 0.0f, 5.0f);
 }

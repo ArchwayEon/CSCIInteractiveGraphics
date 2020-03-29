@@ -1,5 +1,7 @@
 #include "OpenGLGraphicsWindow.h"
 
+OpenGLGraphicsWindow* OpenGLGraphicsWindow::self;
+
 bool OpenGLGraphicsWindow::Create()
 {
    _window = glfwCreateWindow(_width, _height, _title.c_str(), NULL, NULL);
@@ -13,6 +15,11 @@ bool OpenGLGraphicsWindow::Create()
 void OpenGLGraphicsWindow::SetOnResize()
 {
    glfwSetFramebufferSizeCallback(_window, OpenGLGraphicsWindow::OnResize);
+}
+
+void OpenGLGraphicsWindow::SetOnMouseEvent()
+{
+   glfwSetCursorPosCallback(_window, OpenGLGraphicsWindow::OnMouseEvent);
 }
 
 void OpenGLGraphicsWindow::Show()
@@ -67,7 +74,17 @@ float OpenGLGraphicsWindow::GetAspectRatio()
    return _width / (float)_height;
 }
 
+void OpenGLGraphicsWindow::HideAndCaptureMouseCursor()
+{
+   glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
 void OpenGLGraphicsWindow::OnResize(GLFWwindow* window, int width, int height)
 {
    glViewport(0, 0, width, height);
+}
+
+void OpenGLGraphicsWindow::OnMouseEvent(GLFWwindow* window, double mouseX, double mouseY)
+{
+   OpenGLGraphicsWindow::self->ProcessMouse(mouseX, mouseY);
 }

@@ -26,6 +26,15 @@ public:
    static OpenGLGraphicsObject* Cuboid(float width, float depth, float height, RGBA color);
    static OpenGLGraphicsObject* TexturedCuboid(float width, float depth, float height, RGBA color, float maxS = 1, float maxT = 1);
    static OpenGLGraphicsObject* NormalizedTexturedCuboid(float width, float depth, float height, RGBA color, float maxS=1, float maxT=1);
+   static OpenGLGraphicsObject* NormalizedTexturedMeshedCuboid(
+      float width, float depth, float height, RGBA color, 
+      int widthFacetCount, int depthFacetCount, int heightFacetCount,
+      float maxS = 1, float maxT = 1, float maxSdepth = 1);
+   static void NormalizedTexturedFlatMesh(
+      PolygonMesh* meshToFill,
+      PlaneType plane, float offst,
+      float width, float depth, int widthFacetCount, int depthFacetCount,
+      RGBA color, float textureWidthRepeat, float textureDepthRepeat);
    static void NormalizedTexturedFlatMesh(
       PolygonMesh* meshToFill,
       float width, float depth, int widthFacetCount, int depthFacetCount,

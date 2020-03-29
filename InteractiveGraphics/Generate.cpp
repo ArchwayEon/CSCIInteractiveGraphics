@@ -4,6 +4,7 @@
 #include "OpenGLVertexPCTStrategy.h"
 #include "OpenGLVertexPCNTStrategy.h"
 #include "PolygonMesh.h"
+#include "GraphicsStructures.h"
 
 OpenGLGraphicsObject* Generate::FlatSurface(string type, float width, float depth, RGBA color, float maxS, float maxT)
 {
@@ -405,6 +406,234 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedCuboid(float width, float dept
 
 }
 
+OpenGLGraphicsObject* Generate::NormalizedTexturedMeshedCuboid(
+   float width, float depth, float height, RGBA color, 
+   int widthFacetCount, int depthFacetCount, int heightFacetCount, 
+   float maxS, float maxT, float maxSdepth)
+{
+   auto cuboid = new OpenGLGraphicsObject();
+   cuboid->vertexStrategy = new OpenGLVertexPCNTStrategy();
+   auto vertexStrategy = (OpenGLVertexPCNTStrategy*)cuboid->vertexStrategy;
+   auto mesh = (PolygonMesh*)vertexStrategy->GetMesh();
+   float halfWidth = width / 2;
+   float halfDepth = depth / 2;
+   float halfHeight = height / 2;
+   // Front face
+   Generate::NormalizedTexturedFlatMesh(mesh, PlaneType::XY, halfDepth,
+      width, height, widthFacetCount, heightFacetCount, color, maxS, maxT);
+   // Right face
+   Generate::NormalizedTexturedFlatMesh(mesh, PlaneType::YZ, halfWidth,
+      depth, height, depthFacetCount, heightFacetCount, color, maxSdepth, maxT);
+   // Back face
+   Generate::NormalizedTexturedFlatMesh(mesh, PlaneType::XY_Flipped, -halfDepth,
+      width, height, widthFacetCount, heightFacetCount, color, maxS, maxT);
+   // Left face
+   Generate::NormalizedTexturedFlatMesh(mesh, PlaneType::YZ_Flipped, -halfWidth,
+      depth, height, depthFacetCount, heightFacetCount, color, maxSdepth, maxT);
+   // Top face
+   Generate::NormalizedTexturedFlatMesh(mesh, PlaneType::XZ, halfHeight,
+      width, depth, widthFacetCount, depthFacetCount, color, maxS, maxSdepth);
+   // Bottom face
+   Generate::NormalizedTexturedFlatMesh(mesh, PlaneType::XZ_Flipped, -halfHeight,
+      width, depth, widthFacetCount, depthFacetCount, color, maxS, maxSdepth);
+   return cuboid;
+}
+
+void Generate::NormalizedTexturedFlatMesh(
+   PolygonMesh* meshToFill, PlaneType plane, float offset, 
+   float width, float depth, int widthFacetCount, int depthFacetCount, 
+   RGBA color, float textureWidthRepeat, float textureDepthRepeat)
+{
+   VertexPCNT V1, V2, V3, V4;
+   float halfWidth = width / 2;
+   float halfDepth = depth / 2;
+   float facetWidth = width / widthFacetCount;
+   float facetDepth = depth / depthFacetCount;
+   float sDelta = textureWidthRepeat / widthFacetCount;
+   float tDelta = textureDepthRepeat / depthFacetCount;
+   float startS, startT, endS, endT = textureDepthRepeat;
+   float x, y = 0, z = -halfDepth;
+   startT = endT - tDelta;
+   Vector3 normal;
+   switch (plane) {
+   case PlaneType::XZ:
+      normal = { 0, 1, 0 };
+      y = offset;
+      z = -halfDepth;
+      break;
+   case PlaneType::XZ_Flipped:
+      normal = { 0, -1, 0 };
+      y = offset;
+      z = -halfDepth;
+      break;
+   case PlaneType::XY:
+      normal = { 0, 0, 1 };
+      y = halfDepth;
+      z = offset;
+      break;
+   case PlaneType::XY_Flipped:
+      normal = { 0, 0, -1 };
+      y = halfDepth;
+      z = offset;
+      break;
+   case PlaneType::YZ:
+      normal = { 1, 0, 0 };
+      x = offset;
+      y = halfDepth;
+      break;
+   case PlaneType::YZ_Flipped:
+      normal = { -1, 0, 0 };
+      x = offset;
+      y = halfDepth;
+      break;
+   }
+   for (int row = 1; row <= depthFacetCount; ++row) {
+      switch (plane) {
+      case PlaneType::XZ:
+         x = -halfWidth;
+         break;
+      case PlaneType::XZ_Flipped:
+         x = halfWidth;
+         break;
+      case PlaneType::XY:
+         x = -halfWidth;
+         break;
+      case PlaneType::XY_Flipped:
+         x = halfWidth;
+         break;
+      case PlaneType::YZ:
+         z = halfWidth;
+         break;
+      case PlaneType::YZ_Flipped:
+         z = -halfWidth;
+         break;
+      }
+      startS = 0;
+      endT = startT + tDelta;
+      for (int col = 1; col <= widthFacetCount; ++col) {
+         endS = startS + sDelta;
+         if (endS > textureWidthRepeat) endS = textureWidthRepeat;
+         V1.position = { x, y, z };
+         V1.color = color;
+         V1.normal = normal;
+         V1.tex = { startS, endT };
+
+         switch (plane) {
+         case PlaneType::XZ:
+            V2.position = { x, y, z + facetDepth };
+            break;
+         case PlaneType::XZ_Flipped:
+            V2.position = { x, y, z + facetDepth };
+            break;
+         case PlaneType::XY:
+         case PlaneType::XY_Flipped:
+         case PlaneType::YZ:
+         case PlaneType::YZ_Flipped:
+            V2.position = { x, y - facetDepth, z };
+            break;
+         }
+         V2.color = color;
+         V2.normal = normal;
+         V2.tex = { startS, startT };
+
+         
+         switch (plane) {
+         case PlaneType::XZ:
+            V3.position = { x + facetWidth, y, z + facetDepth };
+            break;
+         case PlaneType::XZ_Flipped:
+            V3.position = { x - facetWidth, y, z + facetDepth };
+            break;
+         case PlaneType::XY:
+            V3.position = { x + facetWidth, y - facetDepth, z };
+            break;
+         case PlaneType::XY_Flipped:
+            V3.position = { x - facetWidth, y - facetDepth, z };
+            break;
+         case PlaneType::YZ:
+            V3.position = { x, y - facetDepth, z - facetWidth};
+            break;
+         case PlaneType::YZ_Flipped:
+            V3.position = { x, y - facetDepth, z + facetWidth };
+            break;
+         }
+         V3.color = color;
+         V3.normal = normal;
+         V3.tex = { endS, startT };
+
+         switch (plane) {
+         case PlaneType::XZ:
+            V4.position = { x + facetWidth, y, z };
+            break;
+         case PlaneType::XZ_Flipped:
+            V4.position = { x - facetWidth, y, z };
+            break;
+         case PlaneType::XY:
+            V4.position = { x + facetWidth, y, z };
+            break;
+         case PlaneType::XY_Flipped:
+            V4.position = { x - facetWidth, y, z };
+            break;
+         case PlaneType::YZ:
+            V4.position = { x, y, z - facetWidth };
+            break;
+         case PlaneType::YZ_Flipped:
+            V4.position = { x, y, z + facetWidth };
+            break;
+         }
+         V4.color = color;
+         V4.normal = normal;
+         V4.tex = { endS, endT };
+
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V2);
+         meshToFill->AddVertex(V3);
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V3);
+         meshToFill->AddVertex(V4);
+
+         startS = endS;
+         if (startS >= textureWidthRepeat) startS = 0;
+         
+         switch (plane) {
+         case PlaneType::XZ:
+            x += facetWidth;
+            break;
+         case PlaneType::XZ_Flipped:
+            x -= facetWidth;
+            break;
+         case PlaneType::XY:
+            x += facetWidth;
+            break;
+         case PlaneType::XY_Flipped:
+            x -= facetWidth;
+            break;
+         case PlaneType::YZ:
+            z -= facetWidth;
+            break;
+         case PlaneType::YZ_Flipped:
+            z += facetWidth;
+            break;
+         }
+      } // Next col
+      startT -= tDelta;
+      if (startT < 0) startT = 0;
+      
+      switch (plane) {
+      case PlaneType::XZ:
+      case PlaneType::XZ_Flipped:
+         z += facetDepth;
+         break;
+      case PlaneType::XY:
+      case PlaneType::XY_Flipped:
+      case PlaneType::YZ:
+      case PlaneType::YZ_Flipped:
+         y -= facetDepth;
+         break;
+      }
+   } // Next row
+}
+
 void Generate::NormalizedTexturedFlatMesh(
    PolygonMesh* meshToFill,
    float width, float depth, int widthFacetCount, int depthFacetCount, 
@@ -431,7 +660,7 @@ void Generate::NormalizedTexturedFlatMesh(
       x = -halfWidth;
       startS = 0;
       endT = startT + tDelta;
-      for (int col = 1; col <= depthFacetCount; ++col) {
+      for (int col = 1; col <= widthFacetCount; ++col) {
          endS = startS + sDelta;
          if (endS > textureWidthRepeat) endS = textureWidthRepeat;
          V1.position = { x, y, z };

@@ -110,7 +110,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    metalTexture->LoadFromFile("metal.jpg");
    graphics->AddTexture("metal", metalTexture);
 
-   OpenGLGraphicsObject* wall = Generate::NormalizedTexturedCuboid(10, 1, 10, { 1.0f, 1.0f, 1.0f, 1.0f }, 5.0f, 5.0f);
+   OpenGLTexture* smileyTexture = new OpenGLTexture();
+   smileyTexture->LoadFromFile("smiley.jpg");
+   smileyTexture->SetMagFilter(GL_LINEAR);
+   smileyTexture->SetMinFilter(GL_LINEAR);
+   graphics->AddTexture("smiley", smileyTexture);
+
+   OpenGLGraphicsObject* wall = 
+      Generate::NormalizedTexturedMeshedCuboid(
+         10, 1, 10, 
+         { 1.0f, 1.0f, 1.0f, 1.0f }, 
+         5, 1, 5,
+         5, 5
+         );
    wall->SetTexture(wallTexture);
    graphics->scene->AddObject("wall", wall, lightingShader);
    wall->frame.Move({ 0.0f, 5.0f, -5.0f });
@@ -135,6 +147,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->scene->AddObject("crate4", crate4, lightingShader);
    crate4->frame.Move({ 0.0f, 7.0f, -3.0f });
 
+   OpenGLGraphicsObject* crate5 = 
+      Generate::NormalizedTexturedMeshedCuboid(
+         2, 0.5f, 2, 
+         { 1.0f, 1.0f, 1.0f, 1.0f },
+         12, 12, 13,
+         3, 5
+   );
+   crate5->SetTexture(smileyTexture);
+   graphics->scene->AddObject("crate5", crate5, lightingShader);
+   crate5->frame.Move({ 0.0f, 4.0f, 2.0f });
+
    auto rotateAnimation1 = new RotateAnimation(30);
    graphics->AddAnimation("RotateAnimation1", rotateAnimation1);
    auto rotateAnimation2 = new RotateAnimation(60);
@@ -143,11 +166,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    graphics->AddAnimation("RotateAnimation3", rotateAnimation3);
    auto rotateAnimation4 = new RotateAnimation(15);
    graphics->AddAnimation("RotateAnimation4", rotateAnimation4);
+   auto rotateAnimation5 = new RotateAnimation(31);
+   graphics->AddAnimation("RotateAnimation5", rotateAnimation5);
 
    graphics->scene->SetObjectsAnimation("crate1", rotateAnimation1);
    graphics->scene->SetObjectsAnimation("crate2", rotateAnimation2);
    graphics->scene->SetObjectsAnimation("crate3", rotateAnimation3);
    graphics->scene->SetObjectsAnimation("crate4", rotateAnimation4);
+   graphics->scene->SetObjectsAnimation("crate5", rotateAnimation5);
 
    OpenGLGraphicsObject* floor = 
       Generate::NormalizedTexturedFlatSurface(50, 50, 50, 50, { 1.0f, 1.0f, 1.0f, 1.0f }, 100.0f, 100.0f);

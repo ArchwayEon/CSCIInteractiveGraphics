@@ -24,6 +24,7 @@ public:
 
 protected:
    size_t GetSizeOfVertex() { return sizeof(VertexPCT); }
+   size_t GetOffset(OffsetType offsetType);
 
 };
 

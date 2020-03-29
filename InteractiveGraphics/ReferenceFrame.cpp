@@ -42,3 +42,18 @@ void ReferenceFrame::PointAt(const glm::vec3& point)
    this->orientation[1] = glm::vec4(cameraUp, 0.0f);
    this->orientation[2] = glm::vec4(forward, 0.0f);
 }
+
+void ReferenceFrame::SetFromSphericalCoordinates(SphericalCoordinate spherical)
+{
+   glm::vec3 forward;
+   forward.x = sin(glm::radians(spherical.theta)) * sin(glm::radians(spherical.phi));
+   forward.y = cos(glm::radians(spherical.phi));
+   forward.z = cos(glm::radians(spherical.theta)) * sin(glm::radians(spherical.phi));
+
+   glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+   glm::vec3 cameraRight = glm::normalize(glm::cross(up, forward));
+   glm::vec3 cameraUp = glm::cross(forward, cameraRight);
+   this->orientation[0] = glm::vec4(cameraRight, 0.0f);
+   this->orientation[1] = glm::vec4(cameraUp, 0.0f);
+   this->orientation[2] = glm::vec4(forward, 0.0f);
+}

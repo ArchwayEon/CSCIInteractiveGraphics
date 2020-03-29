@@ -3,9 +3,6 @@
 
 OpenGLVertexPCTStrategy::OpenGLVertexPCTStrategy() : OpenGLVertexStrategy()
 {
-   _positionOffset = 0;
-   _colorOffset = 3;
-   _textureOffset = 7;
 }
 
 void OpenGLVertexPCTStrategy::SetColor(int facet, int numberOfVertices, RGBA color)
@@ -35,10 +32,27 @@ void OpenGLVertexPCTStrategy::Render(unsigned int primitiveType)
 {
    size_t vertexSize = GetSizeOfVertex();
    // Positions
-   SetBufferInterpretation(0, 3, vertexSize, _positionOffset);
+   SetBufferInterpretation(0, 3, vertexSize, GetOffset(OffsetType::Position));
    // Colors
-   SetBufferInterpretation(1, 4, vertexSize, (sizeof(GLfloat) * _colorOffset));
+   SetBufferInterpretation(1, 4, vertexSize, (sizeof(GLfloat) * GetOffset(OffsetType::Color)));
    // Texture Coordinates
-   SetBufferInterpretation(2, 2, vertexSize, (sizeof(GLfloat) * _textureOffset));
+   SetBufferInterpretation(2, 2, vertexSize, (sizeof(GLfloat) * GetOffset(OffsetType::Texture)));
    glDrawArrays(primitiveType, 0, (GLsizei)_vertices.size());
+}
+
+size_t OpenGLVertexPCTStrategy::GetOffset(OffsetType offsetType)
+{
+   size_t offset = 0;
+   switch (offsetType) {
+   case OffsetType::Position:
+      offset = 0;
+      break;
+   case OffsetType::Color:
+      offset = 3;
+      break;
+   case OffsetType::Texture:
+      offset = 7;
+      break;
+   }
+   return offset;
 }

@@ -17,6 +17,7 @@ protected:
    glm::mat4 _projection, _view;
    float _aspectRatio;
    CameraState _state;
+   SphericalCoordinate euler;
 
 public:
    float fieldOfView, nearPlane, farPlane;

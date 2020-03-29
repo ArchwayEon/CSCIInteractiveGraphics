@@ -56,10 +56,13 @@ void OpenGLGraphicsSystem::ShowWindow()
 {
    _window->SetOnResize();
    _window->ShowMaximized();
+   _window->SetOnMouseEvent();
 }
 
 void OpenGLGraphicsSystem::Setup()
 {
+   _window->HideAndCaptureMouseCursor();
+
    // Cull back faces and use counter-clockwise winding of front faces
    glEnable(GL_CULL_FACE);
    glCullFace(GL_BACK);
@@ -78,12 +81,15 @@ void OpenGLGraphicsSystem::Run()
 {
    double elapsedSeconds;
    _timer->StartTiming();
+   _window->GetWindowSize();
+   _window->ResetMouse();
    while (!_window->IsTimeToClose()) {
       elapsedSeconds = _timer->GetElapsedTimeInSeconds();
       ProcessInput();
       
       _camera->SetupLookingForward();
       _camera->SetupProjectionAndView(_window->GetAspectRatio());
+
       for (auto shaderIter = _shaders.begin(); shaderIter != _shaders.end(); shaderIter++) {
          auto shader = (GLSLGraphicsShader*)shaderIter->second;
          shader->projection = _camera->GetProjection();
@@ -102,24 +108,15 @@ void OpenGLGraphicsSystem::ProcessInput()
 {
    if (_window->GetKeyState(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
       _window->Close();
+      return;
    }
-
+   _camera->frame.SetFromSphericalCoordinates(_window->spherical);
    if (_window->GetKeyState(GLFW_KEY_D) == GLFW_PRESS) {
-      if (_window->GetKeyState(GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-         _camera->SetState(BaseCamera::CameraState::MovingRight);
-      }
-      else {
-         _camera->SetState(BaseCamera::CameraState::TurningRight);
-      }
+      _camera->SetState(BaseCamera::CameraState::MovingRight);
       return;
    }
    if (_window->GetKeyState(GLFW_KEY_A) == GLFW_PRESS) {
-      if (_window->GetKeyState(GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-         _camera->SetState(BaseCamera::CameraState::MovingLeft);
-      }
-      else {
-         _camera->SetState(BaseCamera::CameraState::TurningLeft);
-      }
+      _camera->SetState(BaseCamera::CameraState::MovingLeft);
       return;
    }
    if (_window->GetKeyState(GLFW_KEY_W) == GLFW_PRESS) {

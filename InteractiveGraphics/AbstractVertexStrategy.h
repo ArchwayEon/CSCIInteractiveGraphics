@@ -4,6 +4,10 @@
 class AbstractMesh;
 class AbstractVertexStrategy
 {
+public:
+   enum class OffsetType {
+      Position, Color, Normal, Texture
+   };
 protected:
    AbstractMesh* _mesh;
 
@@ -15,6 +19,7 @@ public:
    virtual void SetupBuffer() = 0;
    virtual void SetupIndexBuffer() {}
    virtual void Render(unsigned int primitiveType) {};
+   
 
 protected:
    // Instructs the GPU how to interpret the buffer
@@ -25,6 +30,7 @@ protected:
    virtual void SetBufferInterpretation(
       unsigned int location, unsigned int count,
       size_t bytesToNext, size_t offset) = 0;
+   virtual size_t GetOffset(OffsetType offsetType) = 0;
 };
 
 #endif

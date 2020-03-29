@@ -2,6 +2,7 @@
 #ifndef REFERENCE_FRAME
 #define REFERENCE_FRAME
 #include <glm\glm.hpp>
+#include "GraphicsStructures.h"
 
 class ReferenceFrame
 {
@@ -30,6 +31,7 @@ public:
    void Move(const glm::vec3& vector);
    void PointAt(float x, float y, float z);
    void PointAt(const glm::vec3& point);
+   void SetFromSphericalCoordinates(SphericalCoordinate euler);
 };
 
 #endif

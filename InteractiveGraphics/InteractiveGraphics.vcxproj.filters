@@ -197,6 +197,9 @@
     <ClInclude Include="PolygonMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SceneReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleVertexShader.glsl" />
@@ -211,6 +214,7 @@
     <None Include="FSPCNTLight.glsl" />
     <None Include="FSPCNTLocalLight.glsl" />
     <None Include="FSPCNTLighting.glsl" />
+    <None Include="CrateScene.scn" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="crate.jpg">
@@ -223,6 +227,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="metal.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="smiley.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

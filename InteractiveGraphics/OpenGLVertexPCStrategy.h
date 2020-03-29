@@ -19,9 +19,10 @@ public:
    virtual void SetColor(int facet, int numberOfVertices, RGBA color);
    void SetupBuffer();
    void Render(unsigned int primitiveType);
-
+   
 protected:
    size_t GetSizeOfVertex() { return sizeof(VertexPC); }
+   size_t GetOffset(OffsetType offsetType);
 };
 
 #endif

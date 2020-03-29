@@ -40,11 +40,19 @@ struct Material {
    float ambientIntensity; // Intensity of light applied to the object
 };
 
+struct SphericalCoordinate {
+   float phi, theta, rho;
+};
+
 struct Light {
    Vector3 position;
    RGB color;
    float intensity;
    float attenuationCoefficient;
+};
+
+enum class PlaneType {
+   XZ, XZ_Flipped, XY, XY_Flipped, YZ, YZ_Flipped
 };
 
 
