@@ -123,7 +123,7 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedFlatSurface(float width, float
       0.0f, 1.0f, 0.0f,
       maxS, maxT
    };
-   auto mesh = (PolygonMesh*)vertexStrategy->GetMesh();
+   auto mesh = (PolygonMesh<VertexPCNT>*)vertexStrategy->GetMesh();
    mesh->AddVertex(V1);
    mesh->AddVertex(V2);
    mesh->AddVertex(V3);
@@ -319,7 +319,7 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedCuboid(float width, float dept
    auto cuboid = new OpenGLGraphicsObject();
    cuboid->vertexStrategy = new OpenGLVertexPCNTStrategy();
    auto vertexStrategy = (OpenGLVertexPCNTStrategy*)cuboid->vertexStrategy;
-   auto mesh = (PolygonMesh*)vertexStrategy->GetMesh();
+   auto mesh = (PolygonMesh<VertexPCNT>*)vertexStrategy->GetMesh();
    float halfWidth = width / 2;
    float halfDepth = depth / 2;
    float halfHeight = height / 2;
@@ -435,7 +435,7 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedMeshedCuboid(
    auto cuboid = new OpenGLGraphicsObject();
    cuboid->vertexStrategy = new OpenGLVertexPCNTStrategy();
    auto vertexStrategy = (OpenGLVertexPCNTStrategy*)cuboid->vertexStrategy;
-   auto mesh = (PolygonMesh*)vertexStrategy->GetMesh();
+   auto mesh = (PolygonMesh<VertexPCNT>*)vertexStrategy->GetMesh();
    float halfWidth = width / 2;
    float halfDepth = depth / 2;
    float halfHeight = height / 2;
@@ -461,7 +461,7 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedMeshedCuboid(
 }
 
 void Generate::NormalizedTexturedFlatMesh(
-   PolygonMesh* meshToFill, PlaneType plane, float offset, 
+   PolygonMesh<VertexPCNT>* meshToFill, PlaneType plane, float offset,
    float width, float depth, int widthFacetCount, int depthFacetCount, 
    RGBA color, float textureWidthRepeat, float textureDepthRepeat)
 {
@@ -656,7 +656,7 @@ void Generate::NormalizedTexturedFlatMesh(
 }
 
 void Generate::NormalizedTexturedFlatMesh(
-   PolygonMesh* meshToFill,
+   PolygonMesh<VertexPCNT>* meshToFill,
    float width, float depth, int widthFacetCount, int depthFacetCount, 
    RGBA color, float textureWidthRepeat, float textureDepthRepeat)
 {
@@ -726,7 +726,7 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedFlatSurface(float width, float
    auto flatSurface = new OpenGLGraphicsObject();
    flatSurface->vertexStrategy = new OpenGLVertexPCNTStrategy();
    auto vertexStrategy = (OpenGLVertexPCNTStrategy*)flatSurface->vertexStrategy;
-   auto mesh = new PolygonMesh();
+   auto mesh = new PolygonMesh<VertexPCNT>();
    Generate::NormalizedTexturedFlatMesh(
       mesh,
       width, depth, widthFacetCount, depthFacetCount, color, 
@@ -736,7 +736,7 @@ OpenGLGraphicsObject* Generate::NormalizedTexturedFlatSurface(float width, float
 }
 
 void Generate::NormalizedTexturedSphereMesh(
-   PolygonMesh* meshToFill, 
+   PolygonMesh<VertexPCNT>* meshToFill,
    float radius, int slices, int stacks, 
    RGBA color, SphereShadingType shadingType)
 {
@@ -1000,7 +1000,7 @@ OpenGLGraphicsObject* Generate::Sphere(
    auto sphere = new OpenGLGraphicsObject();
    sphere->vertexStrategy = new OpenGLVertexPCNTStrategy();
    auto vertexStrategy = (OpenGLVertexPCNTStrategy*)sphere->vertexStrategy;
-   auto mesh = new PolygonMesh();
+   auto mesh = new PolygonMesh<VertexPCNT>();
    Generate::NormalizedTexturedSphereMesh(
       mesh,
       radius, slices, stacks, color,
@@ -1008,3 +1008,187 @@ OpenGLGraphicsObject* Generate::Sphere(
    vertexStrategy->SetMesh(mesh);
    return sphere;
 } // Sphere
+
+void Generate::NormalizedTexturedCylinderMesh(
+   PolygonMesh<VertexPCNT>* meshToFill, float radius, float height,
+   int slices, int stacks, RGBA color, SphereShadingType shadingType)
+{
+   float sliceStep = 360.0f / slices;
+   float halfHeight = height / 2;
+   VertexPCNT V1, V2, V3, V4;
+
+   // Texture variables
+   float tHeight = 1.0f / stacks;
+   float tWidth = 1.0f / slices;
+   float s = 0.0f, t = 1.0f - tHeight;
+
+   float theta, thetaRad, sinTheta, cosTheta;
+   for (theta = 0; theta < 360.0f; theta += sliceStep) {
+      V1.position = { 0.0f, halfHeight, 0.0f };
+      V1.color = color;
+      V1.normal = { 0, 1, 0 };
+      V1.tex = { s, 1.0f };
+
+      thetaRad = glm::radians(theta);
+      sinTheta = sinf(thetaRad);
+      cosTheta = cosf(thetaRad);
+      V2.position = { radius * sinTheta, halfHeight, radius * cosTheta };
+      V2.color = color;
+      V2.normal = { 0, 1, 0 };
+      V2.tex = { s, t };
+
+      thetaRad = glm::radians(theta + sliceStep);
+      sinTheta = sinf(thetaRad);
+      cosTheta = cosf(thetaRad);
+      V3.position = { radius * sinTheta, halfHeight, radius * cosTheta };
+      V3.color = color;
+      V3.normal = { 0, 1, 0 };
+      V3.tex = { s + tWidth, t };
+
+      meshToFill->AddVertex(V1);
+      meshToFill->AddVertex(V2);
+      meshToFill->AddVertex(V3);
+      s += tWidth;
+   }
+
+   s = 0;
+   t = 1.0f - tHeight;
+   // The middle facets have 4 vertices
+   // V1--V4
+   // |\  |
+   // | \ |
+   // |  \|
+   // V2--V3
+   // Generate the middle
+   glm::vec3 VA, VB, VC, VD;
+   float y = halfHeight;
+   float stackHeight = height / stacks;
+   for (int stack = 0; stack < stacks; stack++) {
+      for (theta = 0; theta < 360.0f; theta += sliceStep) {
+         // V1
+         thetaRad = glm::radians(theta);
+         sinTheta = sinf(thetaRad);
+         cosTheta = cos(thetaRad);
+         V1.position = { radius * sinTheta, y, radius * cosTheta };
+         VA = glm::vec3(V1.position.x, V1.position.y, V1.position.z);
+         V1.color = color;
+         V1.tex = { s, t };
+         // V2
+         V2.position = { radius * sinTheta, y - stackHeight, radius * cosTheta };
+         VB = glm::vec3(V2.position.x, V2.position.y, V2.position.z);
+         V2.color = color;
+         V2.tex = { s, t - tHeight };
+         // V3
+         thetaRad = glm::radians(theta + sliceStep);
+         sinTheta = sinf(thetaRad);
+         cosTheta = cos(thetaRad);
+         V3.position = { radius * sinTheta, y - stackHeight, radius * cosTheta };
+         VC = glm::vec3(V3.position.x, V3.position.y, V3.position.z);
+         V3.color = color;
+         V3.tex = { s + tWidth, t - tHeight };
+         // V4
+         V4.position = { radius * sinTheta, y, radius * cosTheta };
+         VD = glm::vec3(V4.position.x, V4.position.y, V4.position.z);
+         V4.color = color;
+         V4.tex = { s + tWidth, t };
+
+         if (shadingType == SphereShadingType::Flat_Shading) {
+            glm::vec3 AB = glm::normalize(VB - VA);
+            glm::vec3 AC = glm::normalize(VC - VA);
+            glm::vec3 NA = glm::cross(AB, AC);
+            V1.normal = { NA.x, NA.y, NA.z };
+
+            glm::vec3 BC = glm::normalize(VC - VB);
+            glm::vec3 BA = glm::normalize(VA - VB);
+            glm::vec3 NB = glm::cross(BC, BA);
+            V2.normal = { NB.x, NB.y, NB.z };
+
+            glm::vec3 CA = glm::normalize(VA - VC);
+            glm::vec3 CB = glm::normalize(VB - VC);
+            glm::vec3 NC = glm::cross(CA, CB);
+            V3.normal = { NC.x, NC.y, NC.z };
+
+            glm::vec3 AD = glm::normalize(VD - VA);
+            glm::vec3 ND = glm::cross(AC, AD);
+            V4.normal = { ND.x, ND.y, ND.z };
+         }
+         else { // Use the normalized position vectors as the normal
+            glm::vec3 NA = glm::normalize(VA);
+            V1.normal = { NA.x, NA.y, NA.z };
+
+            glm::vec3 NB = glm::normalize(VB);
+            V2.normal = { NB.x, NB.y, NB.z };
+
+            glm::vec3 NC = glm::normalize(VC);
+            V3.normal = { NC.x, NC.y, NC.z };
+
+            glm::vec3 ND = glm::normalize(VD);
+            V4.normal = { ND.x, ND.y, ND.z };
+         }
+
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V2);
+         meshToFill->AddVertex(V3);
+
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V3);
+         meshToFill->AddVertex(V4);
+         s += tWidth;
+      } // for theta
+      t -= tHeight;
+      y -= stackHeight;
+   } // for each stack
+
+   s = 0.0f;
+   y = -halfHeight;
+   // The bottom
+   //  V1---V3
+   //   \   /
+   //    \ /
+   //     V2
+   for (theta = 0; theta < 360.0f; theta += sliceStep) {
+      // V1
+      thetaRad = glm::radians(theta);
+      sinTheta = sinf(thetaRad);
+      cosTheta = cosf(thetaRad);
+      V1.position = { radius * sinTheta, y, radius * cosTheta };
+      V1.color = color;
+      V1.normal = { 0, -1, 0 };
+      V1.tex = { s, t };
+      // V2
+      V2.position = { 0, y, 0 };
+      V2.color = color;
+      V2.normal = { 0, -1, 0 };
+      V2.tex = { s, 0.0f };
+      // V3
+      thetaRad = glm::radians(theta + sliceStep);
+      sinTheta = sinf(thetaRad);
+      cosTheta = cos(thetaRad);
+      V3.position = { radius * sinTheta, y, radius * cosTheta };
+      V3.color = color;
+      V3.normal = { 0, -1, 0 };
+      V3.tex = { s + tWidth, t };
+
+      meshToFill->AddVertex(V1);
+      meshToFill->AddVertex(V2);
+      meshToFill->AddVertex(V3);
+
+      s += tWidth;
+   }
+
+} // NormalizedTexturedCylinderMesh
+
+OpenGLGraphicsObject* Generate::Cylinder(float radius, float height, int slices, int stacks, RGBA color, SphereShadingType shadingType)
+{
+   auto cylinder = new OpenGLGraphicsObject();
+   cylinder->vertexStrategy = new OpenGLVertexPCNTStrategy();
+   auto vertexStrategy = (OpenGLVertexPCNTStrategy*)cylinder->vertexStrategy;
+   auto mesh = new PolygonMesh<VertexPCNT>();
+   Generate::NormalizedTexturedCylinderMesh(
+      mesh,
+      radius, height, 
+      slices, stacks, color,
+      shadingType);
+   vertexStrategy->SetMesh(mesh);
+   return cylinder;
+} // Cylinder

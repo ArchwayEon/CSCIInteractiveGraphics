@@ -6,6 +6,7 @@
 #include "OpenGLGraphicsObject.h"
 #include "GraphicsStructures.h"
 
+template <class T>
 class PolygonMesh;
 
 class Generate
@@ -32,23 +33,31 @@ public:
       int widthFacetCount, int depthFacetCount, int heightFacetCount,
       float maxS = 1, float maxT = 1, float maxSdepth = 1);
    static void NormalizedTexturedFlatMesh(
-      PolygonMesh* meshToFill,
+      PolygonMesh<VertexPCNT>* meshToFill,
       PlaneType plane, float offst,
       float width, float depth, int widthFacetCount, int depthFacetCount,
       RGBA color, float textureWidthRepeat, float textureDepthRepeat);
    static void NormalizedTexturedFlatMesh(
-      PolygonMesh* meshToFill,
+      PolygonMesh<VertexPCNT>* meshToFill,
       float width, float depth, int widthFacetCount, int depthFacetCount,
       RGBA color, float textureWidthRepeat, float textureDepthRepeat);
    static OpenGLGraphicsObject* NormalizedTexturedFlatSurface(
       float width, float depth, int widthFacetCount, int depthFacetCount,
       RGBA color, float textureWidthRepeat, float textureDepthRepeat);
    static void NormalizedTexturedSphereMesh(
-      PolygonMesh* meshToFill,
+      PolygonMesh<VertexPCNT>* meshToFill,
       float radius, int slices, int stacks,
       RGBA color, SphereShadingType shadingType);
    static OpenGLGraphicsObject* Sphere(
       float radius, int slices, int stacks,
+      RGBA color, SphereShadingType shadingType);
+
+   static void NormalizedTexturedCylinderMesh(
+      PolygonMesh<VertexPCNT>* meshToFill,
+      float radius, float height, int slices, int stacks,
+      RGBA color, SphereShadingType shadingType);
+   static OpenGLGraphicsObject* Cylinder(
+      float radius, float height, int slices, int stacks,
       RGBA color, SphereShadingType shadingType);
 };
 

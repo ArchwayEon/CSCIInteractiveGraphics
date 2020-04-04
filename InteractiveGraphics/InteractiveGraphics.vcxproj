@@ -163,17 +163,18 @@
     <ClCompile Include="GraphicsObjectReader.cpp" />
     <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MyScene.cpp" />
     <ClCompile Include="OpenGLGraphicsObject.cpp" />
     <ClCompile Include="OpenGLGraphicsSystem.cpp" />
     <ClCompile Include="OpenGLGraphicsWindow.cpp" />
     <ClCompile Include="OpenGLIndexedGraphicsObject.cpp" />
     <ClCompile Include="OpenGLIndexedVertexPCStrategy.cpp" />
     <ClCompile Include="OpenGLTexture.cpp" />
+    <ClCompile Include="OpenGLVertexPCNStrategy.cpp" />
     <ClCompile Include="OpenGLVertexPCNTStrategy.cpp" />
     <ClCompile Include="OpenGLVertexPCStrategy.cpp" />
     <ClCompile Include="OpenGLVertexPCTStrategy.cpp" />
     <ClCompile Include="OpenGLVertexStrategy.cpp" />
-    <ClCompile Include="PolygonMesh.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="RotateAnimation.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
@@ -196,12 +197,14 @@
     <ClInclude Include="GraphicsObjectReader.h" />
     <ClInclude Include="GraphicsStructures.h" />
     <ClInclude Include="HighResolutionTimer.h" />
+    <ClInclude Include="MyScene.h" />
     <ClInclude Include="OpenGLGraphicsObject.h" />
     <ClInclude Include="OpenGLGraphicsSystem.h" />
     <ClInclude Include="OpenGLGraphicsWindow.h" />
     <ClInclude Include="OpenGLIndexedGraphicsObject.h" />
     <ClInclude Include="OpenGLIndexedVertexPCStrategy.h" />
     <ClInclude Include="OpenGLTexture.h" />
+    <ClInclude Include="OpenGLVertexPCNStrategy.h" />
     <ClInclude Include="OpenGLVertexPCNTStrategy.h" />
     <ClInclude Include="OpenGLVertexPCStrategy.h" />
     <ClInclude Include="OpenGLVertexPCTStrategy.h" />
@@ -215,6 +218,7 @@
   <ItemGroup>
     <None Include="CrateScene.scn" />
     <None Include="cube.ig" />
+    <None Include="FSPCNLighting.glsl" />
     <None Include="FSPCNTLight.glsl" />
     <None Include="FSPCNTLocalLight.glsl" />
     <None Include="FSPCNTLighting.glsl" />
@@ -224,6 +228,7 @@
     <None Include="Simple3DVertexShader.glsl" />
     <None Include="SimpleFragmentShader.glsl" />
     <None Include="SimpleVertexShader.glsl" />
+    <None Include="VSPCNLighting.glsl" />
     <None Include="VSPCNTLighting.glsl" />
     <None Include="VSPositionColorTexture.glsl" />
   </ItemGroup>
@@ -232,7 +237,9 @@
     <Image Include="crate.jpg" />
     <Image Include="marble-stone-floor.jpg" />
     <Image Include="metal.jpg" />
+    <Image Include="pluto_texture.jpg" />
     <Image Include="smiley.jpg" />
+    <Image Include="wood_floor.jpg" />
     <Image Include="world.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

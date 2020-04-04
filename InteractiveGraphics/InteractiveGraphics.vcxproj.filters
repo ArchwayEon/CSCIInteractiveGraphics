@@ -102,10 +102,13 @@
     <ClCompile Include="BaseGraphicsScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PolygonMesh.cpp">
+    <ClCompile Include="DefaultGraphicsScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DefaultGraphicsScene.cpp">
+    <ClCompile Include="MyScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLVertexPCNStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -206,6 +209,12 @@
     <ClInclude Include="DefaultGraphicsScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLVertexPCNStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleVertexShader.glsl" />
@@ -221,6 +230,8 @@
     <None Include="FSPCNTLocalLight.glsl" />
     <None Include="FSPCNTLighting.glsl" />
     <None Include="CrateScene.scn" />
+    <None Include="VSPCNLighting.glsl" />
+    <None Include="FSPCNLighting.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="crate.jpg">
@@ -239,6 +250,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="world.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="wood_floor.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pluto_texture.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
