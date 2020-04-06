@@ -1192,3 +1192,261 @@ OpenGLGraphicsObject* Generate::Cylinder(float radius, float height, int slices,
    vertexStrategy->SetMesh(mesh);
    return cylinder;
 } // Cylinder
+
+OpenGLGraphicsObject* Generate::Circle(float radius, RGBA color, int steps)
+{
+   auto circle = new OpenGLGraphicsObject();
+   circle->SetPrimitiveType(GL_LINES); // 2 vertices 
+   circle->vertexStrategy = new OpenGLVertexPCStrategy();
+   auto vertexStrategy = (OpenGLVertexPCStrategy*)circle->vertexStrategy;
+   VertexPC V;
+   float x, y, radians;
+   for (float theta = 0; theta <= 360; theta += steps) {
+      radians = glm::radians(theta);
+      x = radius * cosf(radians);
+      y = radius * sinf(radians);
+      V = { x, y, 0, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+      radians = glm::radians(theta + steps);
+      x = radius * cosf(radians);
+      y = radius * sinf(radians);
+      V = { x, y, 0, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+   }
+   return circle;
+}
+
+OpenGLGraphicsObject* Generate::Spirograph(float R, float l, float k, RGBA color, float revolutions, int steps)
+{
+   auto spirograph = new OpenGLGraphicsObject();
+   spirograph->SetPrimitiveType(GL_LINES);
+   spirograph->vertexStrategy = new OpenGLVertexPCStrategy();
+   auto vertexStrategy = (OpenGLVertexPCStrategy*)spirograph->vertexStrategy;
+   VertexPC V;
+   float x, y, radians,q = (1-k)/k;
+   float degrees = 360.0f * revolutions;
+   for (float theta = 0; theta <= degrees; theta += steps) {
+      radians = glm::radians(theta);
+      x = R * (((1 - k) * cosf(radians)) + (l * k * cosf(q * radians)));
+      y = R * (((1 - k) * sinf(radians)) - (l * k * sinf(q * radians)));
+      V = { x, y, 0, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+      radians = glm::radians(theta + steps);
+      x = R * (((1 - k) * cosf(radians)) + (l * k * cosf(q * radians)));
+      y = R * (((1 - k) * sinf(radians)) - (l * k * sinf(q * radians)));
+      V = { x, y, 0, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+   }
+   return spirograph;
+}
+
+OpenGLGraphicsObject* Generate::QuadraticBezier(glm::vec3 points[], RGBA color, int steps)
+{
+   auto bezier = new OpenGLGraphicsObject();
+   bezier->SetPrimitiveType(GL_LINES);
+   bezier->vertexStrategy = new OpenGLVertexPCStrategy();
+   auto vertexStrategy = (OpenGLVertexPCStrategy*)bezier->vertexStrategy;
+   glm::vec3 Q0;
+   VertexPC V;
+   float tick = 1.0f / steps;
+   for (float t = 0; t <= 1; t += tick) {
+      float coef = 1 - t;
+      float coef2 = coef * coef;
+      Q0 = (coef2 * points[0])
+         + (2 * coef * t * points[1])
+         + (t * t * points[2]);
+      V = { Q0.x, Q0.y, Q0.z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+      float t2 = t + tick;
+      coef = 1 - t2;
+      coef2 = coef * coef;
+      Q0 = (coef2 * points[0])
+         + (2 * coef * t2 * points[1])
+         + (t2 * t2 * points[2]);
+      V = { Q0.x, Q0.y, Q0.z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+   }
+   return bezier;
+}
+
+OpenGLGraphicsObject* Generate::QuadraticBezierM(glm::vec3 points[], RGBA color, int steps)
+{
+   auto bezier = new OpenGLGraphicsObject();
+   bezier->SetPrimitiveType(GL_LINES);
+   bezier->vertexStrategy = new OpenGLVertexPCStrategy();
+   auto vertexStrategy = (OpenGLVertexPCStrategy*)bezier->vertexStrategy;
+   glm::mat3 CM;
+   CM[0] = glm::vec3(1, -2, 1);
+   CM[1] = glm::vec3(-2, 2, 0);
+   CM[2] = glm::vec3(1, 0, 0);
+   glm::mat3 PM;
+   PM[0] = points[0];
+   PM[1] = points[1];
+   PM[2] = points[2];
+   glm::vec3 tv = { 0, 0, 1 };
+   glm::vec3 Q0;
+   VertexPC V;
+   float tick = 1.0f / steps;
+   for (float t = 0; t <= 1; t += tick) {
+      tv[0] = t * t;
+      tv[1] = t;
+      Q0 = PM * CM * tv;
+      V = { Q0.x, Q0.y, Q0.z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+      float t2 = t + tick;
+      tv[0] = t2 * t2;
+      tv[1] = t2;
+      Q0 = PM * CM * tv;
+      V = { Q0.x, Q0.y, Q0.z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+   }
+   return bezier;
+}
+
+OpenGLGraphicsObject* Generate::CubicBezier(glm::vec3 points[], RGBA color, int steps)
+{
+   auto bezier = new OpenGLGraphicsObject();
+   bezier->SetPrimitiveType(GL_LINES);
+   bezier->vertexStrategy = new OpenGLVertexPCStrategy();
+   auto vertexStrategy = (OpenGLVertexPCStrategy*)bezier->vertexStrategy;
+   glm::vec3 C0;
+   VertexPC V;
+   float tick = 1.0f / steps;
+   for (float t = 0; t <= 1; t += tick) {
+      float coef = 1 - t;
+      float coef2 = coef * coef;
+      float coef3 = coef * coef * coef;
+      C0 = (coef3 * points[0])
+         + (3 * coef2 * t * points[1])
+         + (3 * coef * t * t * points[2])
+         + (t * t * t * points[3]);
+      V = { C0.x, C0.y, C0.z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+      float t2 = t + tick;
+      coef = 1 - t2;
+      coef2 = coef * coef;
+      coef3 = coef * coef * coef;
+      C0 = (coef3 * points[0])
+         + (3 * coef2 * t2 * points[1])
+         + (3 * coef * t2 * t2 * points[2])
+         + (t2 * t2 * t2 * points[3]);
+      V = { C0.x, C0.y, C0.z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+   }
+   return bezier;
+}
+
+OpenGLGraphicsObject* Generate::CubicBezierM(glm::vec3 points[], RGBA color, int steps)
+{
+   auto bezier = new OpenGLGraphicsObject();
+   bezier->SetPrimitiveType(GL_LINES);
+   bezier->vertexStrategy = new OpenGLVertexPCStrategy();
+   auto vertexStrategy = (OpenGLVertexPCStrategy*)bezier->vertexStrategy;
+   glm::mat4 CM;
+   CM[0] = glm::vec4(-1, 3, -3, 1);
+   CM[1] = glm::vec4(3, -6, 3, 0);
+   CM[2] = glm::vec4(-3, 3, 0, 0);
+   CM[3] = glm::vec4(1, 0, 0, 0);
+   glm::mat4 PM;
+   PM[0] = glm::vec4(points[0], 1);
+   PM[1] = glm::vec4(points[1], 1);
+   PM[2] = glm::vec4(points[2], 1);
+   PM[3] = glm::vec4(points[3], 1);
+   glm::vec4 tv = { 0, 0, 0, 1 };
+   glm::vec3 C0;
+   VertexPC V;
+   float tick = 1.0f / steps;
+   for (float t = 0; t <= 1; t += tick) {
+      tv[0] = t * t * t;
+      tv[1] = t * t;
+      tv[2] = t;
+      C0 = PM * CM * tv;
+      V = { C0.x, C0.y, C0.z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+      float t2 = t + tick;
+      tv[0] = t2 * t2 * t2;
+      tv[1] = t2 * t2;
+      tv[2] = t2;
+      C0 = PM * CM * tv;
+      V = { C0.x, C0.y, C0.z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V);
+   }
+   return bezier;
+}
+
+OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA color, int steps)
+{
+   auto bezierPatch = new OpenGLGraphicsObject();
+   bezierPatch->SetPrimitiveType(GL_LINES);
+   bezierPatch->vertexStrategy = new OpenGLVertexPCStrategy();
+   auto vertexStrategy = (OpenGLVertexPCStrategy*)bezierPatch->vertexStrategy;
+   glm::mat4 CM;
+   CM[0] = glm::vec4(-1, 3, -3, 1);
+   CM[1] = glm::vec4(3, -6, 3, 0);
+   CM[2] = glm::vec4(-3, 3, 0, 0);
+   CM[3] = glm::vec4(1, 0, 0, 0);
+   glm::mat4 Px, Py, Pz;
+   for (auto row = 0; row < 4; row++) {
+      for (auto col = 0; col < 4; col++) {
+         Px[row][col] = points[row][col].x;
+         Py[row][col] = points[row][col].y;
+         Pz[row][col] = points[row][col].z;
+      }
+   }
+   glm::vec4 sv = { 0, 0, 0, 1 };
+   glm::vec4 tv = { 0, 0, 0, 1 };
+   float x, y, z;
+   float tick = 1.0f / steps;
+   vector<glm::vec3> vertices;
+   int row = 0, col = 0;
+   for (float s = 0; s <= 1; s += tick) {
+      sv[0] = s * s * s;
+      sv[1] = s * s;
+      sv[2] = s;
+      for (float t = 0; t <= 1; t += tick) {
+         tv[0] = t * t * t;
+         tv[1] = t * t;
+         tv[2] = t;
+         x = glm::dot(sv, CM * Px * CM * tv);
+         y = glm::dot(sv, CM * Py * CM * tv);
+         z = glm::dot(sv, CM * Pz * CM * tv);
+         vertices.push_back({ x, y, z });
+         col++;
+      }
+      row++;
+   }
+   int index;
+   VertexPC V1, V2, V3, V4;
+   for (row = 0; row < steps - 1; row++) {
+      for (col = 0; col < steps - 1; col++) {
+         index = row * steps + col;
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V1 = { x, y, z, color.red, color.green, color.blue };
+         index = row * steps + (col + 1);
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V2 = { x, y, z, color.red, color.green, color.blue };
+         index = (row + 1) * steps + col;
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V3 = { x, y, z, color.red, color.green, color.blue };
+         index = (row + 1) * steps + (col + 1);
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V4 = { x, y, z, color.red, color.green, color.blue };
+         vertexStrategy->AddVertex(V1);
+         vertexStrategy->AddVertex(V2);
+         vertexStrategy->AddVertex(V1);
+         vertexStrategy->AddVertex(V3);
+         vertexStrategy->AddVertex(V1);
+         vertexStrategy->AddVertex(V4);
+      }
+   }
+   
+   return bezierPatch;
+}
