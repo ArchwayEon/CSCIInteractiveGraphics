@@ -156,6 +156,7 @@
     <ClCompile Include="AbstractGraphicsWindow.cpp" />
     <ClCompile Include="AbstractReader.cpp" />
     <ClCompile Include="BaseGraphicsScene.cpp" />
+    <ClCompile Include="CurvesScene.cpp" />
     <ClCompile Include="DefaultGraphicsScene.cpp" />
     <ClCompile Include="Generate.cpp" />
     <ClCompile Include="glad.c" />
@@ -191,6 +192,7 @@
     <ClInclude Include="AbstractGraphicsWindow.h" />
     <ClInclude Include="AbstractReader.h" />
     <ClInclude Include="BaseGraphicsScene.h" />
+    <ClInclude Include="CurvesScene.h" />
     <ClInclude Include="DefaultGraphicsScene.h" />
     <ClInclude Include="Generate.h" />
     <ClInclude Include="GLSLGraphicsShader.h" />

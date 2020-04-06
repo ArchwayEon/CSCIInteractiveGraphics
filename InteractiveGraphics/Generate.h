@@ -59,6 +59,17 @@ public:
    static OpenGLGraphicsObject* Cylinder(
       float radius, float height, int slices, int stacks,
       RGBA color, SphereShadingType shadingType);
+
+   static OpenGLGraphicsObject* Circle(float radius, RGBA color, int steps=10);
+   static OpenGLGraphicsObject* Spirograph(float R, float l, float k, RGBA color, 
+      float revolutions=1, int steps = 10);
+
+   static OpenGLGraphicsObject* QuadraticBezier(glm::vec3 points[], RGBA color, int steps = 10);
+   static OpenGLGraphicsObject* QuadraticBezierM(glm::vec3 points[], RGBA color, int steps = 10);
+   static OpenGLGraphicsObject* CubicBezier(glm::vec3 points[], RGBA color, int steps = 10);
+   static OpenGLGraphicsObject* CubicBezierM(glm::vec3 points[], RGBA color, int steps = 10);
+   static OpenGLGraphicsObject* CubicBezierPatch(glm::vec3 points[][4], RGBA color, int steps = 10);
+
 };
 
 #endif

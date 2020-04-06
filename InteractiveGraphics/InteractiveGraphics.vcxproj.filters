@@ -111,6 +111,9 @@
     <ClCompile Include="OpenGLVertexPCNStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CurvesScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h">
@@ -213,6 +216,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OpenGLVertexPCNStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CurvesScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

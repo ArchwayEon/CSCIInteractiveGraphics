@@ -12,7 +12,7 @@
 #include "OpenGLTexture.h"
 #include "RotateAnimation.h"
 #include "DefaultGraphicsScene.h"
-#include "MyScene.h"
+#include "CurvesScene.h"
 
 void ReportError(const string& error) 
 {
@@ -31,11 +31,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    _In_ int       nCmdShow)
 {
    OpenGLGraphicsWindow* window = 
-      new OpenGLGraphicsWindow("Interactive Graphics Lab Week 11");
+      new OpenGLGraphicsWindow("Interactive Graphics Lec Week 12");
    auto timer = new HighResolutionTimer();
    auto camera = new BaseCamera();
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer);
-   graphics->scene = new MyScene(graphics, camera);
+   graphics->scene = new CurvesScene(graphics, camera);
    
    if (!graphics->scene->LoadScene()) {
       ReportError(graphics->scene->GetError());
