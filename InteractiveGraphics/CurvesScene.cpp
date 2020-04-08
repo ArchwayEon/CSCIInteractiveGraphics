@@ -81,9 +81,9 @@ bool CurvesScene::LoadObjects()
    OpenGLGraphicsObject* axis = Generate::Axis();
    AddObject("axis", axis, simple3DShader);
 
-   OpenGLGraphicsObject* circle = Generate::Circle(3, { 1, 0, 0, 1 });
-   circle->frame.Move({ 0, 3, -20 });
-   AddObject("circle", circle, simple3DShader);
+   //OpenGLGraphicsObject* circle = Generate::Circle(3, { 1, 0, 0, 1 });
+   //circle->frame.Move({ 0, 3, -20 });
+   //AddObject("circle", circle, simple3DShader);
 
    //OpenGLGraphicsObject* spirograph = 
    //   Generate::Spirograph(4, 0.955f, 0.55f, { 1, 0, 1, 1 }, 20);
@@ -133,26 +133,26 @@ bool CurvesScene::LoadObjects()
    //AddObject("p3", p3, simple3DShader);
    //p3->frame.Move(points[3]);
 
-   //glm::vec3 spoints[4][4];
-   //spoints[0][0] = { -5,  1, -2 };
-   //spoints[0][1] = {  0,  3, -2 };
-   //spoints[0][2] = {  5, -3, -2 };
-   //spoints[0][3] = {  5,  2, -2 };
-   //spoints[1][0] = { -5,  0, -1 };
-   //spoints[1][1] = {  0,  3, -1 };
-   //spoints[1][2] = {  5, -3, -1 };
-   //spoints[1][3] = {  5,  -3, -1 };
-   //spoints[2][0] = { -5,  2, 0 };
-   //spoints[2][1] = {  0,  3, 0 };
-   //spoints[2][2] = {  5, -3, 0 };
-   //spoints[2][3] = {  5,  1, 0 };
-   //spoints[3][0] = { -5,  -2, 1 };
-   //spoints[3][1] = {  0,  3, 1 };
-   //spoints[3][2] = {  5, -3, 1 };
-   //spoints[3][3] = {  5,  -2, 1 };
-   //OpenGLGraphicsObject* bezierSurface =
-   //   Generate::CubicBezierPatch(spoints, { 0, 1, 0, 1 }, 20);
-   //AddObject("bezierSurface", bezierSurface, simple3DShader);
+   glm::vec3 spoints[4][4];
+   spoints[0][0] = { -5,  1, -2 };
+   spoints[0][1] = {  0,  3, -2 };
+   spoints[0][2] = {  5, -3, -2 };
+   spoints[0][3] = {  5,  2, -2 };
+   spoints[1][0] = { -5,  0, -1 };
+   spoints[1][1] = {  0,  3, -1 };
+   spoints[1][2] = {  5, -3, -1 };
+   spoints[1][3] = {  5,  -3, -1 };
+   spoints[2][0] = { -5,  2, 0 };
+   spoints[2][1] = {  0,  3, 0 };
+   spoints[2][2] = {  5, -3, 0 };
+   spoints[2][3] = {  5,  1, 0 };
+   spoints[3][0] = { -5,  -2, 1 };
+   spoints[3][1] = {  0,  3, 1 };
+   spoints[3][2] = {  5, -3, 1 };
+   spoints[3][3] = {  5,  -2, 1 };
+   OpenGLGraphicsObject* bezierSurface =
+      Generate::CubicBezierPatch(spoints, { 0, 1, 0, 1 }, 20);
+   AddObject("bezierSurface", bezierSurface, simple3DShader);
 
 
    return true;
