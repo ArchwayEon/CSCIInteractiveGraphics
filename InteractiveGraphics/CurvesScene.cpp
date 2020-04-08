@@ -5,6 +5,8 @@
 #include "OpenGLGraphicsObject.h"
 #include "Generate.h"
 #include "OpenGLTexture.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 bool CurvesScene::LoadScene()
 {
@@ -133,6 +135,7 @@ bool CurvesScene::LoadObjects()
    //AddObject("p3", p3, simple3DShader);
    //p3->frame.Move(points[3]);
 
+   srand((unsigned int)time(nullptr)); // Initialize the randon seed
    glm::vec3 spoints[4][4];
    spoints[0][0] = { -4,  1, -4 };
    spoints[1][0] = { -4,  3, -2 };
@@ -153,6 +156,11 @@ bool CurvesScene::LoadObjects()
    spoints[1][3] = { 4,  3,  -2 };
    spoints[2][3] = { 4, -3,   2 };
    spoints[3][3] = { 4,  -2,  4 };
+   for (int row = 0; row < 4; row++) {
+      for (int col = 0; col < 4; col++) {
+         spoints[row][col].y = (float)((rand() % 9) - 4);
+      }
+   }
    OpenGLGraphicsObject* bezierSurface =
       Generate::CubicBezierPatch(spoints, { 0, 1, 0, 1 }, 20);
    AddObject("bezierSurface", bezierSurface, simple3DShader);
