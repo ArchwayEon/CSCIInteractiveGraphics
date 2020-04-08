@@ -31,7 +31,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
    _In_ int       nCmdShow)
 {
    OpenGLGraphicsWindow* window = 
-      new OpenGLGraphicsWindow("Interactive Graphics Lec Week 12");
+      new OpenGLGraphicsWindow("Interactive Graphics Lab Week 12");
    auto timer = new HighResolutionTimer();
    auto camera = new BaseCamera();
    AbstractGraphicsSystem* graphics = new OpenGLGraphicsSystem(window, camera, timer);
