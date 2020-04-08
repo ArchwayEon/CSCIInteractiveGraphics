@@ -1416,7 +1416,8 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
       row++;
    }
    int index;
-   VertexPC V1, V2, V3, V4;
+   VertexPC V1, V2, V3, V4, N1, N2;
+   glm::vec3 vec1, vec2, n;
    for (row = 0; row < steps - 1; row++) {
       for (col = 0; col < steps - 1; col++) {
          index = row * steps + col;
@@ -1445,6 +1446,15 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
          vertexStrategy->AddVertex(V3);
          vertexStrategy->AddVertex(V1);
          vertexStrategy->AddVertex(V4);
+         vec1 = { V3.x - V1.x, V3.y - V1.y, V3.z - V1.z };
+         vec1 = glm::normalize(vec1);
+         vec2 = { V2.x - V1.x, V2.y - V1.y, V2.z - V1.z };
+         vec2 = glm::normalize(vec2);
+         n = glm::cross(vec2, vec1);
+         N1 = { V1.x, V1.y, V1.z, 1, 0, 0 };
+         N2 = { V1.x + n.x, V1.y + n.y, V1.z + n.z, 1, 0, 0 };
+         vertexStrategy->AddVertex(N1);
+         vertexStrategy->AddVertex(N2);
       }
    }
    
