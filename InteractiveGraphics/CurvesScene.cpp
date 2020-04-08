@@ -137,25 +137,25 @@ bool CurvesScene::LoadObjects()
 
    srand((unsigned int)time(nullptr)); // Initialize the randon seed
    glm::vec3 spoints[4][4];
-   spoints[0][0] = { -4,  1, -4 };
-   spoints[1][0] = { -4,  3, -2 };
-   spoints[2][0] = { -4, -3,  2 };
-   spoints[3][0] = { -4,  2,  4 };
+   spoints[0][0] = { -10,  1, -10 };
+   spoints[1][0] = { -10,  3, -3.33 };
+   spoints[2][0] = { -10, -3,  3.34 };
+   spoints[3][0] = { -10,  2,  10 };
 
-   spoints[0][1] = { -2,  0, -4 };
-   spoints[1][1] = { -2,  3, -2 };
-   spoints[2][1] = { -2, -3,  2 };
-   spoints[3][1] = { -2,  -3, 4 };
+   spoints[0][1] = { -3.33,  0, -10 };
+   spoints[1][1] = { -3.33,  3, -3.33 };
+   spoints[2][1] = { -3.33, -3,  3.34 };
+   spoints[3][1] = { -3.33,  -3, 10 };
 
-   spoints[0][2] = { 2,  2, -4 };
-   spoints[1][2] = { 2,  3, -2 };
-   spoints[2][2] = { 2, -3,  2 };
-   spoints[3][2] = { 2,  1,  4 };
+   spoints[0][2] = { 3.34,  2, -10 };
+   spoints[1][2] = { 3.34,  3, -3.33 };
+   spoints[2][2] = { 3.34, -3,  3.34 };
+   spoints[3][2] = { 3.34,  1,  10 };
 
-   spoints[0][3] = { 4,  -2, -4 };
-   spoints[1][3] = { 4,  3,  -2 };
-   spoints[2][3] = { 4, -3,   2 };
-   spoints[3][3] = { 4,  -2,  4 };
+   spoints[0][3] = { 10,  -2, -10 };
+   spoints[1][3] = { 10,  3,  -3.33 };
+   spoints[2][3] = { 10, -3,   3.34 };
+   spoints[3][3] = { 10,  -2,  10 };
    for (int row = 0; row < 4; row++) {
       for (int col = 0; col < 4; col++) {
          spoints[row][col].y = (float)((rand() % 9) - 4);
