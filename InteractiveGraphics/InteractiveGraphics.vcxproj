@@ -238,6 +238,7 @@
   <ItemGroup>
     <Image Include="brickwall.jpg" />
     <Image Include="crate.jpg" />
+    <Image Include="grass.jpg" />
     <Image Include="marble-stone-floor.jpg" />
     <Image Include="metal.jpg" />
     <Image Include="pluto_texture.jpg" />
