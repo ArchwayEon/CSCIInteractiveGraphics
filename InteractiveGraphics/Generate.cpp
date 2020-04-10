@@ -1397,13 +1397,17 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
    glm::vec4 tv = { 0, 0, 0, 1 };
    float x, y, z;
    float tick = 1.0f / steps;
+   // endTick accounts for a rounding error when checking for
+   // 1 inclusive (s <= 1 in the loop below)
+   float endTick = 1.0f + (tick / 2.0f);
    vector<glm::vec3> vertices;
    int row = 0, col = 0;
-   for (float s = 0; s <= 1; s += tick) {
+   float s, t;
+   for (s = 0; s <= endTick; s += tick) {
       sv[0] = s * s * s;
       sv[1] = s * s;
       sv[2] = s;
-      for (float t = 0; t <= 1; t += tick) {
+      for (t = 0; t <= endTick; t += tick) {
          tv[0] = t * t * t;
          tv[1] = t * t;
          tv[2] = t;
@@ -1415,27 +1419,28 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
       }
       row++;
    }
+   // Since the range is from 0 to 1 inclusive we'll have one extra row
+   // and column
    int index;
-   VertexPC V1, V2, V3, V4, N1, N2;
-   glm::vec3 vec1, vec2, n;
-   for (row = 0; row < steps - 1; row++) {
-      for (col = 0; col < steps - 1; col++) {
-         index = row * steps + col;
+   VertexPC V1, V2, V3, V4;
+   for (col = 0; col < steps; col++) {
+      for (row = 0; row < steps; row++) {
+         index = col * (steps + 1) + row;
          x = vertices[index].x;
          y = vertices[index].y;
          z = vertices[index].z;
          V1 = { x, y, z, color.red, color.green, color.blue };
-         index = row * steps + (col + 1);
+         index = col * (steps + 1) + (row + 1);
          x = vertices[index].x;
          y = vertices[index].y;
          z = vertices[index].z;
          V2 = { x, y, z, color.red, color.green, color.blue };
-         index = (row + 1) * steps + col;
+         index = (col + 1) * (steps + 1) + row;
          x = vertices[index].x;
          y = vertices[index].y;
          z = vertices[index].z;
          V3 = { x, y, z, color.red, color.green, color.blue };
-         index = (row + 1) * steps + (col + 1);
+         index = (col + 1) * (steps + 1) + (row + 1);
          x = vertices[index].x;
          y = vertices[index].y;
          z = vertices[index].z;
@@ -1456,6 +1461,22 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
          vertexStrategy->AddVertex(N1);
          vertexStrategy->AddVertex(N2);
       }
+      vertexStrategy->AddVertex(V2);
+      vertexStrategy->AddVertex(V4);
+   }
+   for (row = 0; row < steps; row++) {
+      index = col * (steps + 1) + row;
+      x = vertices[index].x;
+      y = vertices[index].y;
+      z = vertices[index].z;
+      V1 = { x, y, z, color.red, color.green, color.blue };
+      index = col * (steps + 1) + (row + 1);
+      x = vertices[index].x;
+      y = vertices[index].y;
+      z = vertices[index].z;
+      V2 = { x, y, z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V1);
+      vertexStrategy->AddVertex(V2);
    }
    
    return bezierPatch;
