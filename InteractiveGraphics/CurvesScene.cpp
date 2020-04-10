@@ -134,22 +134,25 @@ bool CurvesScene::LoadObjects()
    //p3->frame.Move(points[3]);
 
    glm::vec3 spoints[4][4];
-   spoints[0][0] = { -5,  1, -2 };
-   spoints[0][1] = {  0,  3, -2 };
-   spoints[0][2] = {  5, -3, -2 };
-   spoints[0][3] = {  5,  2, -2 };
-   spoints[1][0] = { -5,  0, -1 };
-   spoints[1][1] = {  0,  3, -1 };
-   spoints[1][2] = {  5, -3, -1 };
-   spoints[1][3] = {  5,  -3, -1 };
-   spoints[2][0] = { -5,  2, 0 };
-   spoints[2][1] = {  0,  3, 0 };
-   spoints[2][2] = {  5, -3, 0 };
-   spoints[2][3] = {  5,  1, 0 };
-   spoints[3][0] = { -5,  -2, 1 };
-   spoints[3][1] = {  0,  3, 1 };
-   spoints[3][2] = {  5, -3, 1 };
-   spoints[3][3] = {  5,  -2, 1 };
+   spoints[0][0] = { -10,  1, -10 };
+   spoints[1][0] = { -10,  3, -3.33 };
+   spoints[2][0] = { -10, -3,  3.34 };
+   spoints[3][0] = { -10,  2,  10 };
+
+   spoints[0][1] = { -3.33,  0, -10 };
+   spoints[1][1] = { -3.33,  3, -3.33 };
+   spoints[2][1] = { -3.33, -3,  3.34 };
+   spoints[3][1] = { -3.33,  -3, 10 };
+
+   spoints[0][2] = { 3.34,  2, -10 };
+   spoints[1][2] = { 3.34,  3, -3.33 };
+   spoints[2][2] = { 3.34, -3,  3.34 };
+   spoints[3][2] = { 3.34,  1,  10 };
+
+   spoints[0][3] = { 10,  -2, -10 };
+   spoints[1][3] = { 10,  3,  -3.33 };
+   spoints[2][3] = { 10, -3,   3.34 };
+   spoints[3][3] = { 10,  -2,  10 };
    OpenGLGraphicsObject* bezierSurface =
       Generate::CubicBezierPatch(spoints, { 0, 1, 0, 1 }, 10);
    AddObject("bezierSurface", bezierSurface, simple3DShader);

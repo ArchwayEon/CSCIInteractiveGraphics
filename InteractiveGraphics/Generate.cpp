@@ -1397,6 +1397,8 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
    glm::vec4 tv = { 0, 0, 0, 1 };
    float x, y, z;
    float tick = 1.0f / steps;
+   // endTick accounts for a rounding error when checking for
+   // 1 inclusive (s <= 1 in the loop below)
    float endTick = 1.0f + (tick / 2.0f);
    vector<glm::vec3> vertices;
    int row = 0, col = 0;
@@ -1421,24 +1423,24 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
    // and column
    int index;
    VertexPC V1, V2, V3, V4;
-   for (row = 0; row < steps; row++) {
-      for (col = 0; col < steps; col++) {
-         index = row * (steps + 1) + col;
+   for (col = 0; col < steps; col++) {
+      for (row = 0; row < steps; row++) {
+         index = col * (steps + 1) + row;
          x = vertices[index].x;
          y = vertices[index].y;
          z = vertices[index].z;
          V1 = { x, y, z, color.red, color.green, color.blue };
-         index = row * (steps + 1) + (col + 1);
+         index = col * (steps + 1) + (row + 1);
          x = vertices[index].x;
          y = vertices[index].y;
          z = vertices[index].z;
          V2 = { x, y, z, color.red, color.green, color.blue };
-         index = (row + 1) * (steps + 1) + col;
+         index = (col + 1) * (steps + 1) + row;
          x = vertices[index].x;
          y = vertices[index].y;
          z = vertices[index].z;
          V3 = { x, y, z, color.red, color.green, color.blue };
-         index = (row + 1) * (steps + 1) + (col + 1);
+         index = (col + 1) * (steps + 1) + (row + 1);
          x = vertices[index].x;
          y = vertices[index].y;
          z = vertices[index].z;
@@ -1450,6 +1452,22 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
          vertexStrategy->AddVertex(V1);
          vertexStrategy->AddVertex(V4);
       }
+      vertexStrategy->AddVertex(V2);
+      vertexStrategy->AddVertex(V4);
+   }
+   for (row = 0; row < steps; row++) {
+      index = col * (steps + 1) + row;
+      x = vertices[index].x;
+      y = vertices[index].y;
+      z = vertices[index].z;
+      V1 = { x, y, z, color.red, color.green, color.blue };
+      index = col * (steps + 1) + (row + 1);
+      x = vertices[index].x;
+      y = vertices[index].y;
+      z = vertices[index].z;
+      V2 = { x, y, z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V1);
+      vertexStrategy->AddVertex(V2);
    }
    
    return bezierPatch;
