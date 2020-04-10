@@ -1422,7 +1422,8 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
    // Since the range is from 0 to 1 inclusive we'll have one extra row
    // and column
    int index;
-   VertexPC V1, V2, V3, V4;
+   VertexPC V1, V2, V3, V4, N1, N2;
+   glm::vec3 vec1, vec2, n;
    for (col = 0; col < steps; col++) {
       for (row = 0; row < steps; row++) {
          index = col * (steps + 1) + row;
