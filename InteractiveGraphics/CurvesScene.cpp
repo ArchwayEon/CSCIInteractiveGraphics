@@ -151,7 +151,7 @@ bool CurvesScene::LoadObjects()
    spoints[3][2] = {  5, -3, 1 };
    spoints[3][3] = {  5,  -2, 1 };
    OpenGLGraphicsObject* bezierSurface =
-      Generate::CubicBezierPatch(spoints, { 0, 1, 0, 1 }, 20);
+      Generate::CubicBezierPatch(spoints, { 0, 1, 0, 1 }, 10);
    AddObject("bezierSurface", bezierSurface, simple3DShader);
 
 

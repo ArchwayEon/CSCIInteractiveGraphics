@@ -1397,6 +1397,85 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
    glm::vec4 tv = { 0, 0, 0, 1 };
    float x, y, z;
    float tick = 1.0f / steps;
+   float endTick = 1.0f + (tick / 2.0f);
+   vector<glm::vec3> vertices;
+   int row = 0, col = 0;
+   float s, t;
+   for (s = 0; s <= endTick; s += tick) {
+      sv[0] = s * s * s;
+      sv[1] = s * s;
+      sv[2] = s;
+      for (t = 0; t <= endTick; t += tick) {
+         tv[0] = t * t * t;
+         tv[1] = t * t;
+         tv[2] = t;
+         x = glm::dot(sv, CM * Px * CM * tv);
+         y = glm::dot(sv, CM * Py * CM * tv);
+         z = glm::dot(sv, CM * Pz * CM * tv);
+         vertices.push_back({ x, y, z });
+         col++;
+      }
+      row++;
+   }
+   // Since the range is from 0 to 1 inclusive we'll have one extra row
+   // and column
+   int index;
+   VertexPC V1, V2, V3, V4;
+   for (row = 0; row < steps; row++) {
+      for (col = 0; col < steps; col++) {
+         index = row * (steps + 1) + col;
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V1 = { x, y, z, color.red, color.green, color.blue };
+         index = row * (steps + 1) + (col + 1);
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V2 = { x, y, z, color.red, color.green, color.blue };
+         index = (row + 1) * (steps + 1) + col;
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V3 = { x, y, z, color.red, color.green, color.blue };
+         index = (row + 1) * (steps + 1) + (col + 1);
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V4 = { x, y, z, color.red, color.green, color.blue };
+         vertexStrategy->AddVertex(V1);
+         vertexStrategy->AddVertex(V2);
+         vertexStrategy->AddVertex(V1);
+         vertexStrategy->AddVertex(V3);
+         vertexStrategy->AddVertex(V1);
+         vertexStrategy->AddVertex(V4);
+      }
+   }
+   
+   return bezierPatch;
+}
+
+void Generate::NormalizedTexturedBezierPatchMesh(
+   PolygonMesh<VertexPCNT>* meshToFill, glm::vec3 controlPoints[][4], 
+   RGBA color, float maxS, float maxT, int steps)
+{
+   glm::mat4 CM;
+   CM[0] = glm::vec4(-1, 3, -3, 1);
+   CM[1] = glm::vec4(3, -6, 3, 0);
+   CM[2] = glm::vec4(-3, 3, 0, 0);
+   CM[3] = glm::vec4(1, 0, 0, 0);
+   glm::mat4 Px, Py, Pz;
+   for (auto row = 0; row < 4; row++) {
+      for (auto col = 0; col < 4; col++) {
+         Px[row][col] = controlPoints[row][col].x;
+         Py[row][col] = controlPoints[row][col].y;
+         Pz[row][col] = controlPoints[row][col].z;
+      }
+   }
+   glm::vec4 sv = { 0, 0, 0, 1 };
+   glm::vec4 tv = { 0, 0, 0, 1 };
+   float x, y, z;
+   float tick = 1.0f / steps;
    vector<glm::vec3> vertices;
    int row = 0, col = 0;
    for (float s = 0; s <= 1; s += tick) {
@@ -1415,38 +1494,4 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
       }
       row++;
    }
-   int index;
-   VertexPC V1, V2, V3, V4;
-   for (row = 0; row < steps - 1; row++) {
-      for (col = 0; col < steps - 1; col++) {
-         index = row * steps + col;
-         x = vertices[index].x;
-         y = vertices[index].y;
-         z = vertices[index].z;
-         V1 = { x, y, z, color.red, color.green, color.blue };
-         index = row * steps + (col + 1);
-         x = vertices[index].x;
-         y = vertices[index].y;
-         z = vertices[index].z;
-         V2 = { x, y, z, color.red, color.green, color.blue };
-         index = (row + 1) * steps + col;
-         x = vertices[index].x;
-         y = vertices[index].y;
-         z = vertices[index].z;
-         V3 = { x, y, z, color.red, color.green, color.blue };
-         index = (row + 1) * steps + (col + 1);
-         x = vertices[index].x;
-         y = vertices[index].y;
-         z = vertices[index].z;
-         V4 = { x, y, z, color.red, color.green, color.blue };
-         vertexStrategy->AddVertex(V1);
-         vertexStrategy->AddVertex(V2);
-         vertexStrategy->AddVertex(V1);
-         vertexStrategy->AddVertex(V3);
-         vertexStrategy->AddVertex(V1);
-         vertexStrategy->AddVertex(V4);
-      }
-   }
-   
-   return bezierPatch;
 }

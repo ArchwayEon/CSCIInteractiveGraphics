@@ -216,6 +216,7 @@
     <ClInclude Include="RotateAnimation.h" />
     <ClInclude Include="SceneReader.h" />
     <ClInclude Include="TextFileReader.h" />
+    <ClInclude Include="UsefulMacros.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CrateScene.scn" />

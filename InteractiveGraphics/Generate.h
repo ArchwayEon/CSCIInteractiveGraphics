@@ -70,6 +70,11 @@ public:
    static OpenGLGraphicsObject* CubicBezierM(glm::vec3 points[], RGBA color, int steps = 10);
    static OpenGLGraphicsObject* CubicBezierPatch(glm::vec3 points[][4], RGBA color, int steps = 10);
 
+   static void NormalizedTexturedBezierPatchMesh(
+      PolygonMesh<VertexPCNT>* meshToFill,
+      glm::vec3 controlPoints[][4],
+      RGBA color, float maxS = 1, float maxT = 1, int steps = 10);
+
 };
 
 #endif
