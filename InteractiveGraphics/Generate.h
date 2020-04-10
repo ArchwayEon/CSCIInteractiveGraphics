@@ -74,6 +74,9 @@ public:
       PolygonMesh<VertexPCNT>* meshToFill,
       glm::vec3 controlPoints[][4],
       RGBA color, float maxS = 1, float maxT = 1, int steps = 10);
+   static OpenGLGraphicsObject* TexturedBezierPatch(
+      glm::vec3 controlPoints[][4],
+      RGBA color, float maxS = 1, float maxT = 1, int steps = 10);
 
 };
 
