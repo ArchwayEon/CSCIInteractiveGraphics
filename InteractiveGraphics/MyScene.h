@@ -13,6 +13,7 @@ public:
    MyScene(AbstractGraphicsSystem* graphics, BaseCamera* camera)
       : BaseGraphicsScene(graphics, camera) {}
    bool LoadScene();
+   void Update(double elapsedSeconds);
 
 protected:
    bool LoadShaders();
