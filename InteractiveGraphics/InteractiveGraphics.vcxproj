@@ -156,9 +156,11 @@
     <ClCompile Include="AbstractGraphicsWindow.cpp" />
     <ClCompile Include="AbstractReader.cpp" />
     <ClCompile Include="BaseGraphicsScene.cpp" />
+    <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="CurvesScene.cpp" />
     <ClCompile Include="DefaultGraphicsScene.cpp" />
     <ClCompile Include="Generate.cpp" />
+    <ClCompile Include="GeometricPlane.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLSLGraphicsShader.cpp" />
     <ClCompile Include="GraphicsObjectReader.cpp" />
@@ -179,6 +181,7 @@
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="RotateAnimation.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
+    <ClCompile Include="ViewingFrustum.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractMesh.h" />
@@ -192,9 +195,11 @@
     <ClInclude Include="AbstractGraphicsWindow.h" />
     <ClInclude Include="AbstractReader.h" />
     <ClInclude Include="BaseGraphicsScene.h" />
+    <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="CurvesScene.h" />
     <ClInclude Include="DefaultGraphicsScene.h" />
     <ClInclude Include="Generate.h" />
+    <ClInclude Include="GeometricPlane.h" />
     <ClInclude Include="GLSLGraphicsShader.h" />
     <ClInclude Include="GraphicsObjectReader.h" />
     <ClInclude Include="GraphicsStructures.h" />
@@ -216,6 +221,7 @@
     <ClInclude Include="RotateAnimation.h" />
     <ClInclude Include="SceneReader.h" />
     <ClInclude Include="TextFileReader.h" />
+    <ClInclude Include="ViewingFrustum.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CrateScene.scn" />
