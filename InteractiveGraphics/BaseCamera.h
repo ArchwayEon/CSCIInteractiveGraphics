@@ -3,6 +3,7 @@
 #define ABSTRACT_CAMERA
 #include "ReferenceFrame.h"
 #include <glm\glm.hpp>
+#include "ViewingFrustum.h"
 
 class BaseCamera
 {
@@ -22,6 +23,7 @@ protected:
 public:
    float fieldOfView, nearPlane, farPlane;
    ReferenceFrame frame;
+   ViewingFrustum viewingFrustum;
    glm::vec3 target;
 
 public:
@@ -34,6 +36,8 @@ public:
    virtual const glm::mat4& GetView() const { return _view; }
    virtual void SetupLookingForward();
    virtual void SetupProjectionAndView(float aspectRatio);
+   virtual void SetupViewingFrustum(float depth);
+   virtual void OrientViewingFrustum();
 };
 
 #endif
