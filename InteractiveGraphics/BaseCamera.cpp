@@ -94,7 +94,7 @@ void BaseCamera::SetupViewingFrustum(float depth)
 {
    auto fieldOfViewRadians = glm::radians(fieldOfView);
    auto frontHeight = tanf(fieldOfViewRadians) * nearPlane * 2;
-   auto backHeight = tanf(fieldOfViewRadians)* depth * 2;
+   auto backHeight = tanf(fieldOfViewRadians) * depth * 2;
    auto frontWidth = _aspectRatio * frontHeight;
    auto backWidth = _aspectRatio * backHeight;
    viewingFrustum.Set(frontWidth, frontHeight, backWidth, backHeight, depth);

@@ -2,7 +2,7 @@
 
 void GeometricPlane::Set(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3)
 {
-   auto v1 = p2 = p1;
+   auto v1 = p2 - p1;
    auto v2 = p3 - p1;
    N = glm::normalize(glm::cross(v1, v2));
    d = -(glm::dot(p1, N));
