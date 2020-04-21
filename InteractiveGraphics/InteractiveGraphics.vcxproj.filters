@@ -221,6 +221,9 @@
     <ClInclude Include="CurvesScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UsefulMacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleVertexShader.glsl" />
@@ -262,6 +265,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="pluto_texture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="grass.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

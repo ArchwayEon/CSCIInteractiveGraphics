@@ -29,13 +29,13 @@ void BaseCamera::Update(double elapsedSeconds)
          break;
       }
       case CameraState::MovingUp: {
-         auto up = frame.GetYAxis();
+         auto up = glm::vec3{ 0, 1, 0 };
          up *= (2.0 * elapsedSeconds);
          frame.Move(up);
          break;
       }
       case CameraState::MovingDown: {
-         auto down = -frame.GetYAxis();
+         auto down = glm::vec3{ 0, -1, 0 };
          down *= (2.0 * elapsedSeconds);
          frame.Move(down);
          break;
@@ -51,13 +51,13 @@ void BaseCamera::Update(double elapsedSeconds)
          break;
       }
       case CameraState::MovingRight: {
-         auto right = frame.GetXAxis();
+         auto right = glm::vec3{ 1, 0, 0 };
          right *= (2.0 * elapsedSeconds);
          frame.Move(right);
          break;
       }
       case CameraState::MovingLeft: {
-         auto left = -frame.GetXAxis();
+         auto left = glm::vec3{ -1, 0, 0 };
          left *= (2.0 * elapsedSeconds);
          frame.Move(left);
          break;

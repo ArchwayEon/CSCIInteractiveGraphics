@@ -1479,6 +1479,142 @@ OpenGLGraphicsObject* Generate::CubicBezierPatch(glm::vec3 points[][4], RGBA col
       vertexStrategy->AddVertex(V1);
       vertexStrategy->AddVertex(V2);
    }
+   for (row = 0; row < steps; row++) {
+      index = col * (steps + 1) + row;
+      x = vertices[index].x;
+      y = vertices[index].y;
+      z = vertices[index].z;
+      V1 = { x, y, z, color.red, color.green, color.blue };
+      index = col * (steps + 1) + (row + 1);
+      x = vertices[index].x;
+      y = vertices[index].y;
+      z = vertices[index].z;
+      V2 = { x, y, z, color.red, color.green, color.blue };
+      vertexStrategy->AddVertex(V1);
+      vertexStrategy->AddVertex(V2);
+   }
    
    return bezierPatch;
+}
+
+void Generate::NormalizedTexturedBezierPatchMesh(
+   PolygonMesh<VertexPCNT>* meshToFill, glm::vec3 controlPoints[][4], 
+   RGBA color, float maxS, float maxT, int steps)
+{
+   glm::mat4 CM;
+   CM[0] = glm::vec4(-1, 3, -3, 1);
+   CM[1] = glm::vec4(3, -6, 3, 0);
+   CM[2] = glm::vec4(-3, 3, 0, 0);
+   CM[3] = glm::vec4(1, 0, 0, 0);
+   glm::mat4 Px, Py, Pz;
+   for (auto row = 0; row < 4; row++) {
+      for (auto col = 0; col < 4; col++) {
+         Px[row][col] = controlPoints[row][col].x;
+         Py[row][col] = controlPoints[row][col].y;
+         Pz[row][col] = controlPoints[row][col].z;
+      }
+   }
+   glm::vec4 sv = { 0, 0, 0, 1 };
+   glm::vec4 tv = { 0, 0, 0, 1 };
+   float x, y, z;
+   float tick = 1.0f / steps;
+   // endTick accounts for a rounding error when checking for
+   // 1 inclusive (s <= 1 in the loop below)
+   float endTick = 1.0f + (tick / 2.0f);
+   vector<glm::vec3> vertices;
+   int row = 0, col = 0;
+   float s, t;
+   for (s = 0; s <= endTick; s += tick) {
+      sv[0] = s * s * s;
+      sv[1] = s * s;
+      sv[2] = s;
+      for (t = 0; t <= endTick; t += tick) {
+         tv[0] = t * t * t;
+         tv[1] = t * t;
+         tv[2] = t;
+         x = glm::dot(sv, CM * Px * CM * tv);
+         y = glm::dot(sv, CM * Py * CM * tv);
+         z = glm::dot(sv, CM * Pz * CM * tv);
+         vertices.push_back({ x, y, z });
+         col++;
+      }
+      row++;
+   }
+   // Since the range is from 0 to 1 inclusive we'll have one extra row
+   // and column
+   int index;
+   float sInc = maxS / steps;
+   float tInc = maxT / steps;
+   s = 0.0f;
+   VertexPCNT V1, V2, V3, V4;
+   glm::vec3 vec1, vec2, vec3, n1, n2;
+   for (col = 0; col < steps; col++) {
+      t = maxT;
+      for (row = 0; row < steps; row++) {
+         index = col * (steps + 1) + row;
+         V1.position = { vertices[index].x, vertices[index].y, vertices[index].z };
+         V1.color = { color.red, color.green, color.blue, color.alpha };
+         V1.tex = { s, t };
+
+         index = col * (steps + 1) + (row + 1);
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V2.position = { vertices[index].x, vertices[index].y, vertices[index].z };
+         V2.color = { color.red, color.green, color.blue, color.alpha };
+         V2.tex = { s, t - tInc };
+
+         index = (col + 1) * (steps + 1) + (row + 1);
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V3.position = { vertices[index].x, vertices[index].y, vertices[index].z };
+         V3.color = { color.red, color.green, color.blue, color.alpha };
+         V3.tex = { s + sInc, t - tInc };
+
+         index = (col + 1) * (steps + 1) + row;
+         x = vertices[index].x;
+         y = vertices[index].y;
+         z = vertices[index].z;
+         V4.position = { vertices[index].x, vertices[index].y, vertices[index].z };
+         V4.color = { color.red, color.green, color.blue, color.alpha };
+         V4.tex = { s + sInc, t };
+
+         vec1 = { V2.position.x - V1.position.x, V2.position.y - V1.position.y, V2.position.z - V1.position.z };
+         vec2 = { V3.position.x - V1.position.x, V3.position.y - V1.position.y, V3.position.z - V1.position.z };
+         vec3 = { V4.position.x - V1.position.x, V4.position.y - V1.position.y, V4.position.z - V1.position.z };
+
+         n1 = glm::normalize(glm::cross(vec1, vec2));
+         V1.normal = { n1.x, n1.y, n1.z };
+         V2.normal = { n1.x, n1.y, n1.z };
+         V3.normal = { n1.x, n1.y, n1.z };
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V2);
+         meshToFill->AddVertex(V3);
+
+         n2 = glm::normalize(glm::cross(vec2, vec3));
+         V1.normal = { n2.x, n2.y, n2.z };
+         V3.normal = { n2.x, n2.y, n2.z };
+         V4.normal = { n2.x, n2.y, n2.z };
+         meshToFill->AddVertex(V1);
+         meshToFill->AddVertex(V3);
+         meshToFill->AddVertex(V4);
+
+         t -= tInc;
+      }
+      s += sInc;
+   }
+}
+
+OpenGLGraphicsObject* Generate::TexturedBezierPatch(
+   glm::vec3 controlPoints[][4], RGBA color, float maxS, float maxT, int steps)
+{
+   auto patch = new OpenGLGraphicsObject();
+   patch->vertexStrategy = new OpenGLVertexPCNTStrategy();
+   auto vertexStrategy = (OpenGLVertexPCNTStrategy*)patch->vertexStrategy;
+   auto mesh = new PolygonMesh<VertexPCNT>();
+   Generate::NormalizedTexturedBezierPatchMesh(
+      mesh, controlPoints, color, maxS, maxT, steps);
+   vertexStrategy->SetMesh(mesh);
+   return patch;
 }
