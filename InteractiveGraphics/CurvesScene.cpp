@@ -175,16 +175,6 @@ bool CurvesScene::LoadObjects()
    bezierSurface->SetTexture(_graphics->GetTexture("grassTexture"));
    AddObject("bezierSurface", bezierSurface, lightingShader);
 
-   OpenGLGraphicsObject* cp;
-   for (int row = 0; row < 4; row++) {
-      for (int col = 0; col < 4; col++) {
-         cp = Generate::Cuboid(
-            0.1f, 0.1f, 0.1f, { 0.0f, 0.0f, 1.0f, 1.0f });
-         AddObject("cp" + std::to_string(row) + std::to_string(col), cp, simple3DShader);
-         cp->frame.Move(spoints[row][col]);
-      }
-   }
-
    OpenGLGraphicsObject* lamp1 = Generate::Cuboid(
       0.1f, 0.1f, 0.1f, { 1.0f, 1.0f, 1.0f, 1.0f });
    AddObject("lamp1", lamp1, simple3DShader);
