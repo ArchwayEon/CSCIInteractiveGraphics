@@ -146,9 +146,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractAnimation.cpp" />
     <ClCompile Include="AbstractTexture.cpp" />
     <ClCompile Include="AbstractTimer.cpp" />
     <ClCompile Include="AbstractVertexStrategy.cpp" />
+    <ClCompile Include="BackForthAnimation.cpp" />
     <ClCompile Include="BaseCamera.cpp" />
     <ClCompile Include="AbstractGraphicsObject.cpp" />
     <ClCompile Include="AbstractGraphicsShader.cpp" />
@@ -184,10 +186,12 @@
     <ClCompile Include="ViewingFrustum.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractAnimation.h" />
     <ClInclude Include="AbstractMesh.h" />
     <ClInclude Include="AbstractTexture.h" />
     <ClInclude Include="AbstractTimer.h" />
     <ClInclude Include="AbstractVertexStrategy.h" />
+    <ClInclude Include="BackForthAnimation.h" />
     <ClInclude Include="BaseCamera.h" />
     <ClInclude Include="AbstractGraphicsObject.h" />
     <ClInclude Include="AbstractGraphicsShader.h" />

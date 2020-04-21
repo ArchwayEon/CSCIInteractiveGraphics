@@ -123,6 +123,12 @@
     <ClCompile Include="ViewingFrustum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BackForthAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h">
@@ -237,6 +243,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ViewingFrustum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BackForthAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
