@@ -13,6 +13,7 @@
 #include "RotateAnimation.h"
 #include "DefaultGraphicsScene.h"
 #include "MyScene.h"
+#include "CurvesScene.h"
 
 void ReportError(const string& error) 
 {
