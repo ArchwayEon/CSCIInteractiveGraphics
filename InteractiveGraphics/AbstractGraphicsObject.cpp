@@ -19,6 +19,8 @@ void AbstractGraphicsObject::Init()
    material.ambientIntensity = 0.01f;
    material.specularIntensity = 0.5f;
    material.shininess = 16;
+   isVisible = true;
+   boundingSphere.radius = 1.0f;
 }
 
 AbstractGraphicsObject::~AbstractGraphicsObject()
@@ -33,6 +35,7 @@ void AbstractGraphicsObject::Update(double elapsedSeconds)
    if (this->animation != nullptr) {
       this->animation->Update(elapsedSeconds);
    }
+   boundingSphere.position = frame.GetPosition();
 }
 
 

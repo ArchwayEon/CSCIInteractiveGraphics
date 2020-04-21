@@ -7,6 +7,7 @@
 #include "AbstractVertexStrategy.h"
 #include "ReferenceFrame.h"
 #include "GraphicsStructures.h"
+#include "BoundingSphere.h"
 
 class AbstractAnimation;
 
@@ -21,6 +22,8 @@ public:
    ReferenceFrame frame;
    AbstractAnimation* animation;
    Material material;
+   bool isVisible;
+   BoundingSphere boundingSphere;
 
 public:
    AbstractGraphicsObject();

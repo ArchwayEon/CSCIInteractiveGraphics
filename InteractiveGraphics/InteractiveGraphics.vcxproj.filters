@@ -114,6 +114,15 @@
     <ClCompile Include="CurvesScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BoundingSphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometricPlane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewingFrustum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h">
@@ -221,7 +230,13 @@
     <ClInclude Include="CurvesScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UsefulMacros.h">
+    <ClInclude Include="BoundingSphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometricPlane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewingFrustum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

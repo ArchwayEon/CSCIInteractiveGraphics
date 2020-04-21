@@ -27,6 +27,22 @@ bool MyScene::LoadScene()
    return true;
 }
 
+void MyScene::Update(double elapsedSeconds)
+{
+   BaseGraphicsScene::Update(elapsedSeconds);
+   camera->SetupViewingFrustum(5.0f);
+   camera->OrientViewingFrustum();
+   for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
+      auto object = iterator->second;
+      if (camera->viewingFrustum.HasSphereInside(object->boundingSphere)) {
+         object->material.ambientIntensity = 0.5f;
+      }
+      else {
+         object->material.ambientIntensity = 0.05f;
+      }
+   }
+}
+
 bool MyScene::LoadShaders()
 {
    GLSLGraphicsShader* simple3DShader = new GLSLGraphicsShader(new TextFileReader());
@@ -79,6 +95,12 @@ bool MyScene::LoadTextures()
    smileyTexture->SetMinFilter(GL_LINEAR);
    _graphics->AddTexture("smileyTexture", smileyTexture);
 
+   OpenGLTexture* crateTexture = new OpenGLTexture();
+   crateTexture->LoadFromFile("crate.jpg");
+   crateTexture->SetMagFilter(GL_LINEAR);
+   crateTexture->SetMinFilter(GL_LINEAR);
+   _graphics->AddTexture("crateTexture", crateTexture);
+
    return true;
 }
 
@@ -121,8 +143,36 @@ bool MyScene::LoadObjects()
    AddObject("cylinder", cylinder, lightingShader);
    cylinder->material.specularIntensity = 0.9f;
    cylinder->material.shininess = 256;
-
    cylinder->frame.Move({ 0.0f, 6.0f, 0.0f });
+
+
+   OpenGLGraphicsObject* crate1 =
+      Generate::Cuboid( "NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+   crate1->SetTexture(_graphics->GetTexture("crateTexture"));
+   AddObject("crate1", crate1, lightingShader);
+   crate1->frame.Move({ -4.0f, 2.0f, -4.0f });
+   crate1->material.ambientIntensity = 0.05f;
+
+   OpenGLGraphicsObject* crate2 =
+      Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+   crate2->SetTexture(_graphics->GetTexture("crateTexture"));
+   AddObject("crate2", crate2, lightingShader);
+   crate2->frame.Move({ -4.0f, 2.0f, 4.0f });
+   crate2->material.ambientIntensity = 0.05f;
+
+   OpenGLGraphicsObject* crate3 =
+      Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+   crate3->SetTexture(_graphics->GetTexture("crateTexture"));
+   AddObject("crate3", crate3, lightingShader);
+   crate3->frame.Move({ 4.0f, 2.0f, 4.0f });
+   crate3->material.ambientIntensity = 0.05f;
+
+   OpenGLGraphicsObject* crate4 =
+      Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+   crate4->SetTexture(_graphics->GetTexture("crateTexture"));
+   AddObject("crate4", crate4, lightingShader);
+   crate4->frame.Move({ 4.0f, 2.0f, -4.0f });
+   crate4->material.ambientIntensity = 0.05f;
 
    auto simple3DShader = _graphics->GetShader("simple3DShader");
    OpenGLGraphicsObject* axis = Generate::Axis();
