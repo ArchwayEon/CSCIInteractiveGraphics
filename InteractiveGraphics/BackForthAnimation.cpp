@@ -8,14 +8,11 @@ BackForthAnimation::BackForthAnimation(float speed, float distance) :
 {
 }
 
-void BackForthAnimation::Update(float elapsedSeconds)
+void BackForthAnimation::Update(double elapsedSeconds)
 {
-   float distanceToMove = _speed * elapsedSeconds;
+   float distanceToMove = _speed * (float)elapsedSeconds;
    glm::vec4 forward = this->graphicsObject->frame.orientation[2];
-   glm::vec4 backward;
-   backward.x = -forward.x;
-   backward.y = -forward.y;
-   backward.z = -forward.z;
+   glm::vec4 backward = -forward;
 
    switch (_moveState) {
    case MoveState::Forward:

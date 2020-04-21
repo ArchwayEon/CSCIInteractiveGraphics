@@ -6,6 +6,8 @@
 #include "Generate.h"
 #include "OpenGLTexture.h"
 #include "RotateAnimation.h"
+#include "BackForthAnimation.h"
+#include <vector>
 
 bool MyScene::LoadScene()
 {
@@ -32,14 +34,28 @@ void MyScene::Update(double elapsedSeconds)
    BaseGraphicsScene::Update(elapsedSeconds);
    camera->SetupViewingFrustum(5.0f);
    camera->OrientViewingFrustum();
+   vector<AbstractGraphicsObject*> collidingObjects;
    for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
       auto object = iterator->second;
+      for (auto iter = _objects.begin(); iter != _objects.end(); iter++) {
+         auto object2 = iter->second;
+         if (object == object2) continue;
+
+         if (object->boundingSphere.OverlapsWith(object2->boundingSphere)) {
+            collidingObjects.push_back(object);
+            collidingObjects.push_back(object2);
+         }
+      }
       if (camera->viewingFrustum.HasSphereInside(object->boundingSphere)) {
          object->material.ambientIntensity = 0.5f;
       }
       else {
          object->material.ambientIntensity = 0.05f;
       }
+   }
+
+   for (auto i = 0; i < collidingObjects.size(); i++) {
+      collidingObjects[i]->material.ambientIntensity = 0.5;
    }
 }
 
@@ -108,6 +124,16 @@ bool MyScene::LoadAnimations()
 {
    auto rotateAnimation1 = new RotateAnimation(30);
    _graphics->AddAnimation("rotateAnimation1", rotateAnimation1);
+
+   auto bf1 = new BackForthAnimation(1, 5);
+   _graphics->AddAnimation("bf1", bf1);
+
+   auto bf2 = new BackForthAnimation(3, 10);
+   _graphics->AddAnimation("bf2", bf2);
+
+   auto bf3 = new BackForthAnimation(5, 20);
+   _graphics->AddAnimation("bf3", bf3);
+
    return true;
 }
 
@@ -128,9 +154,10 @@ bool MyScene::LoadObjects()
          SphereShadingType::Smooth_Shading);
    pluto->SetTexture(_graphics->GetTexture("plutoTexture"));
    AddObject("pluto", pluto, lightingShader);
-   pluto->frame.Move({ 0.0f, 4.0f, -5.0f });
+   pluto->frame.Move({ 0.0f, 8.0f, -5.0f });
    pluto->material.specularIntensity = 0.9f;
    pluto->material.shininess = 256;
+   pluto->boundingSphere.radius = 2.0f;
 
    SetObjectsAnimation("pluto", _graphics->GetAnimation("rotateAnimation1"));
 
@@ -144,21 +171,28 @@ bool MyScene::LoadObjects()
    cylinder->material.specularIntensity = 0.9f;
    cylinder->material.shininess = 256;
    cylinder->frame.Move({ 0.0f, 6.0f, 0.0f });
+   cylinder->frame.Rotate(180.0f, cylinder->frame.GetYAxis());
+   SetObjectsAnimation("cylinder", _graphics->GetAnimation("bf3"));
 
 
    OpenGLGraphicsObject* crate1 =
-      Generate::Cuboid( "NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
+      Generate::Cuboid( "NormalizedTextured", 2, 2, 2, { 1.0f, 0.0f, 1.0f, 1.0f });
    crate1->SetTexture(_graphics->GetTexture("crateTexture"));
    AddObject("crate1", crate1, lightingShader);
    crate1->frame.Move({ -4.0f, 2.0f, -4.0f });
    crate1->material.ambientIntensity = 0.05f;
+
+   SetObjectsAnimation("crate1", _graphics->GetAnimation("bf1"));
 
    OpenGLGraphicsObject* crate2 =
       Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
    crate2->SetTexture(_graphics->GetTexture("crateTexture"));
    AddObject("crate2", crate2, lightingShader);
    crate2->frame.Move({ -4.0f, 2.0f, 4.0f });
+   crate2->frame.Rotate(180.0f, crate2->frame.GetYAxis());
    crate2->material.ambientIntensity = 0.05f;
+
+   SetObjectsAnimation("crate2", _graphics->GetAnimation("bf2"));
 
    OpenGLGraphicsObject* crate3 =
       Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });

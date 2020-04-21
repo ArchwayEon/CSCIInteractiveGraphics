@@ -17,7 +17,7 @@ protected:
 public:
    BackForthAnimation(float speed, float distance);
 
-   void Update(float elapsedSeconds);
+   void Update(double elapsedSeconds);
 };
 
 #endif
