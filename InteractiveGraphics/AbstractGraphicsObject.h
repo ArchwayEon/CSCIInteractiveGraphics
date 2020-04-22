@@ -8,6 +8,7 @@
 #include "ReferenceFrame.h"
 #include "GraphicsStructures.h"
 #include "BoundingSphere.h"
+#include "BoundingBox.h"
 
 class AbstractAnimation;
 
@@ -20,6 +21,7 @@ protected:
 public:
    AbstractVertexStrategy* vertexStrategy;
    ReferenceFrame frame;
+   BoundingBox boundingBox;
    AbstractAnimation* animation;
    Material material;
    bool isVisible;

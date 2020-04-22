@@ -21,6 +21,7 @@ void AbstractGraphicsObject::Init()
    material.shininess = 16;
    isVisible = true;
    boundingSphere.radius = 1.0f;
+   boundingBox.frame = &frame;
 }
 
 AbstractGraphicsObject::~AbstractGraphicsObject()
@@ -35,7 +36,7 @@ void AbstractGraphicsObject::Update(double elapsedSeconds)
    if (this->animation != nullptr) {
       this->animation->Update(elapsedSeconds);
    }
-   boundingSphere.position = frame.GetPosition();
+  boundingSphere.position = frame.GetPosition();
 }
 
 

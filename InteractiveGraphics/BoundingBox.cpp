@@ -11,6 +11,13 @@ BoundingBox::BoundingBox(float width, float height, float depth) :
 {
 }
 
+void BoundingBox::Set(float width, float height, float depth)
+{
+   this->width = width;
+   this->height = height;
+   this->depth = depth;
+}
+
 bool BoundingBox::OverlapsWith(const BoundingBox& other)
 {
    glm::vec3 xAxis = frame->orientation[0];

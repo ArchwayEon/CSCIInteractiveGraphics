@@ -34,9 +34,11 @@ void MyScene::Update(double elapsedSeconds)
    BaseGraphicsScene::Update(elapsedSeconds);
    camera->SetupViewingFrustum(5.0f);
    camera->OrientViewingFrustum();
+
    vector<AbstractGraphicsObject*> collidingObjects;
    for (auto iterator = _objects.begin(); iterator != _objects.end(); iterator++) {
       auto object = iterator->second;
+      object->material.ambientIntensity = 0.05f;
       for (auto iter = _objects.begin(); iter != _objects.end(); iter++) {
          auto object2 = iter->second;
          if (object == object2) continue;
@@ -45,12 +47,14 @@ void MyScene::Update(double elapsedSeconds)
             collidingObjects.push_back(object);
             collidingObjects.push_back(object2);
          }
+
+         if (object->boundingBox.OverlapsWith(object2->boundingBox)) {
+            //collidingObjects.push_back(object);
+            //collidingObjects.push_back(object2);
+         }
       }
       if (camera->viewingFrustum.HasSphereInside(object->boundingSphere)) {
          object->material.ambientIntensity = 0.5f;
-      }
-      else {
-         object->material.ambientIntensity = 0.05f;
       }
    }
 
@@ -158,6 +162,7 @@ bool MyScene::LoadObjects()
    pluto->material.specularIntensity = 0.9f;
    pluto->material.shininess = 256;
    pluto->boundingSphere.radius = 2.0f;
+   pluto->boundingBox.Set(2, 2, 2);
 
    SetObjectsAnimation("pluto", _graphics->GetAnimation("rotateAnimation1"));
 
@@ -172,6 +177,7 @@ bool MyScene::LoadObjects()
    cylinder->material.shininess = 256;
    cylinder->frame.Move({ 0.0f, 6.0f, 0.0f });
    cylinder->frame.Rotate(180.0f, cylinder->frame.GetYAxis());
+   cylinder->boundingBox.Set(2, 2, 2);
    SetObjectsAnimation("cylinder", _graphics->GetAnimation("bf3"));
 
 
@@ -181,6 +187,7 @@ bool MyScene::LoadObjects()
    AddObject("crate1", crate1, lightingShader);
    crate1->frame.Move({ -4.0f, 2.0f, -4.0f });
    crate1->material.ambientIntensity = 0.05f;
+   crate1->boundingBox.Set(2, 2, 2);
 
    SetObjectsAnimation("crate1", _graphics->GetAnimation("bf1"));
 
@@ -191,6 +198,7 @@ bool MyScene::LoadObjects()
    crate2->frame.Move({ -4.0f, 2.0f, 4.0f });
    crate2->frame.Rotate(180.0f, crate2->frame.GetYAxis());
    crate2->material.ambientIntensity = 0.05f;
+   crate2->boundingBox.Set(2, 2, 2);
 
    SetObjectsAnimation("crate2", _graphics->GetAnimation("bf2"));
 
@@ -200,6 +208,7 @@ bool MyScene::LoadObjects()
    AddObject("crate3", crate3, lightingShader);
    crate3->frame.Move({ 4.0f, 2.0f, 4.0f });
    crate3->material.ambientIntensity = 0.05f;
+   crate3->boundingBox.Set(2, 2, 2);
 
    OpenGLGraphicsObject* crate4 =
       Generate::Cuboid("NormalizedTextured", 2, 2, 2, { 1.0f, 1.0f, 1.0f, 1.0f });
@@ -207,6 +216,7 @@ bool MyScene::LoadObjects()
    AddObject("crate4", crate4, lightingShader);
    crate4->frame.Move({ 4.0f, 2.0f, -4.0f });
    crate4->material.ambientIntensity = 0.05f;
+   crate4->boundingBox.Set(2, 2, 2);
 
    auto simple3DShader = _graphics->GetShader("simple3DShader");
    OpenGLGraphicsObject* axis = Generate::Axis();

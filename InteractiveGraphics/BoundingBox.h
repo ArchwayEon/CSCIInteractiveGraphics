@@ -21,6 +21,7 @@ public:
    BoundingBox();
    BoundingBox(float width, float height, float depth);
 
+   void Set(float width, float height, float depth);
    bool OverlapsWith(const BoundingBox& other);
    MinMax GetMinMaxProjection(const glm::vec3& axis) const;
 };
